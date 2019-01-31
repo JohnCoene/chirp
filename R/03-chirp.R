@@ -89,7 +89,7 @@ chirp <- function(){
   ui <- navbarPage(
     title = div(
       img(
-        src = "https://auritus.io/logo.png",
+        src = "https://chirp.sh/logo.png",
         height="28",
         style = "margin-right: 25px;"
       )
