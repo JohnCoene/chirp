@@ -9,7 +9,11 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports:
 	cli,
+	yaml,
 	dplyr,
+	shiny,
+	rtweet,
 	crayon,
 	sigmajs,
-	graphTweets
+	graphTweets,
+	shinythemes

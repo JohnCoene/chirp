@@ -2,8 +2,11 @@
 #'
 #' Create a \code{_chirp.yml} file in working directory.
 #'
+#' @import shiny
+#' @import dplyr
+#'
 #' @export
-nest <- function(){
+build_nest <- function(){
 
   config <- "_chirp.yml"
 

@@ -15,3 +15,6 @@ style:
     - "#24C96B"
   background: 'rgba(0,0,0,0)'   # background of network graph
   inverse: false                # Boostrap inverse navbar
+
+tracking:
+  ganalytics: "UA-74544116-1"
