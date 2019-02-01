@@ -1,7 +1,7 @@
 #' Launch
-#' 
+#'
 #' Launch dashboard.
-#' 
+#'
 #' @export
 chirp <- function(){
 
@@ -15,6 +15,31 @@ chirp <- function(){
 	}
 
   settings <- yaml::read_yaml(file)
+
+  if(length(settings$credentials) == 0){
+    cat(
+      crayon::red(cli::symbol$cross), "No credentials in", file, "\n"
+    )
+    return(NULL)
+  }
+
+  rtweet_token <- tryCatch(
+    rtweet::create_token(
+      app = "chirp",
+      consumer_key = settings$credentials$consumer_key,
+      consumer_secret = settings$credentials$consumer_secret,
+      access_token = settings$credentials$access_token,
+      access_secret = settings$credentials$access_secret
+    ),
+    error = function(e) e
+  )
+
+  if(inherits(rtweet_token, "error")){
+    cat(
+      crayon::red(cli::symbol$cross), "Invalid credentials in", file, "\n"
+    )
+    return(NULL)
+  }
 
   if(!"theme" %in% names(settings[["style"]])){
     cat(
@@ -37,15 +62,14 @@ chirp <- function(){
     font <- settings[["style"]][["font"]]
   }
 
-  if(!"chart_theme" %in% names(settings[["style"]])){
+  if(!"palette" %in% names(settings[["style"]])){
     cat(
-      crayon::yellow(cli::symbol$warning), "No chart theme set in _chirp.yml, setting to",
-      crayon::underline("default.\n")
+      crayon::yellow(cli::symbol$warning), "No palette set in _chirp.yml, setting to default palette.\n"
     )
 
-    echarts4r_theme <- "default"
+    palette <- c("#4b2991", "#872ca2", "#c0369d", "#ea4f88", "#fa7876", "#f6a97a", "#edd9a3")
   } else {
-    echarts4r_theme <- settings[["style"]][["chart_theme"]]
+    palette <- settings[["style"]][["palette"]]
   }
 
   font_name <- gsub("[[:space:]]", "+", font)
@@ -86,6 +110,8 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
+  options(chirp_palette = palette)
+
   ui <- navbarPage(
     title = div(
       img(
@@ -99,17 +125,97 @@ chirp <- function(){
     windowTitle = "auritus",
     header = head,
     theme = shinythemes::shinytheme(theme),
+		id = "tabs",
     tabPanel(
       "HOME",
-      homeUI("home")
+      shinyjs::useShinyjs(),
+      br(),
+      br(),
+      div(
+        class = "container",
+        style = "min-height:90vh;",
+        br(),
+        br(),
+        img(
+          width = "70%",
+          src = "https://chirp.sh/logo.png",
+          alt = "chirp"
+        ),
+        br(),
+        br(),
+        h2("Free, Open-Source Twitter Network Explorer."),
+        br(),
+        br(),
+        fluidRow(
+          column(
+            9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
+          ),
+          column(
+            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
+          ),
+          column(
+            1, br(), actionButton("opts", "", icon = icon("plus"))
+          )
+        ),
+        div(
+          id = "options",
+          style = "display:none;",
+          fluidRow(
+            column(
+              4,
+              sliderInput(
+                "n",
+                label = "Number of tweets",
+                min = 100,
+                max = 15000,
+                value = 1000,
+                step = 500,
+                width = "100%"
+              )
+            ),
+            column(
+              4, selectInput(
+                "type",
+                "Type",
+                choices = c("recent", "mixed", "popular"),
+                selected = "recent",
+                width = "100%"
+              )
+            ),
+            column(
+              4, checkboxInput(
+                "include_rts",
+                "Include retweets",
+                TRUE,
+                width = "100%"
+              )
+            )
+          ),
+          fluidRow(
+            column(
+              4, textInput("longitude", "Longitude", value = "", width = "100%")
+            ),
+            column(
+              4, textInput("latitude", "Latitude", value = "", width = "100%")
+            ),
+            column(
+              4, textInput("radius", "Radius", value = "", width = "100%")
+            )
+          )
+        )
+      )
     ),
+		tabPanel(
+			"NETWORKS",
+			networks_ui("networks")
+		),
     footer = tagList(
       hr(),
       div(
         class = "container",
         fluidRow(
           column(
-            12, 
+            12,
             "Developed with",
             class = "pull-right",
             tags$a(
@@ -126,6 +232,57 @@ chirp <- function(){
   )
 
   server <- function(input, output, session){
+
+    # tab initialy hidden
+		hideTab(inputId = "tabs", target = "NETWORKS")
+
+    shinyjs::hide("options")
+
+    observeEvent(input$opts, {
+      shinyjs::toggle("options")
+    })
+
+    tweets <- eventReactive(input$submit, {
+
+      geocode <- NULL
+
+      if(input$longitude != "" && input$latitude != "" && input$radius != "")
+        geocode <- paste0(input$longitude, input$latitude, input$radius)
+
+      if(input$q == ""){
+        showModal(modalDialog(
+          title = "No search entered!",
+          "Enter a search\nCan include boolean operators such as 'OR' and 'AND'.",
+          easyClose = TRUE,
+          footer = NULL
+        ))
+      }
+
+      progress <- shiny::Progress$new()
+      on.exit(progress$close())
+      progress$set(message = "Fetching tweets", value = sample(seq(.1, .9, by = .1), 1))
+
+      if(input$q != ""){
+        rtweet::search_tweets(
+          input$q,
+          n = input$n,
+          type = input$type,
+          include_rts = input$include_rts,
+          geocode = geocode,
+          token = rtweet_token
+        )
+      }
+
+    })
+
+    observeEvent(input$submit, {
+      if(input$q != ""){
+        showTab(inputId = "tabs", target = "NETWORKS")
+        updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+        callModule(networks, "networks", tweets)
+      }
+    })
+
   }
 
   shinyApp(ui, server)
