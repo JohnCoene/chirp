@@ -10,9 +10,9 @@ networks_ui <- function(id){
           ns("network"),
           "Network type",
           choices = c(
-            "Retweets",
-            "Hashtags",
-            "Conversations"
+            "Retweets" = "retweet_screen_name",
+            "Hashtags" = "hashtags",
+            "Conversations" = "mentions_screen_name"
           )
         )
       ),
@@ -20,7 +20,7 @@ networks_ui <- function(id){
         3,
         br(),
         conditionalPanel(
-          "input['networks-network'] != 'Retweets'",
+          "input['networks-network'] != 'retweet_screen_name'",
           checkboxInput(
             ns("comentions"),
             "Co-mentions",
@@ -35,7 +35,7 @@ networks_ui <- function(id){
         10, sigmajs::sigmajsOutput(ns("graph"), height = "95vh")
       ),
       column(
-        2, htmlOutput(ns("tweet"))
+        2, htmlOutput(ns("display"))
       )
     )
   )
@@ -45,8 +45,13 @@ networks_ui <- function(id){
 networks <- function(input, output, session, data){
 
   output$graph <- sigmajs::renderSigmajs({
-    graph <- data() %>%
-      gt_edges(screen_name, mentions_screen_name) %>%
+
+    if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
+      edges <- data() %>% gt_co_edges(!!sym(input$network))
+    else
+      edges <- data() %>% gt_edges(screen_name, !!sym(input$network))
+
+    graph <- edges %>%
       gt_nodes() %>%
       gt_collect()
 
@@ -65,10 +70,11 @@ networks <- function(input, output, session, data){
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(edges, id, source, target) %>%
       sigmajs::sg_force_start() %>%
-      sigmajs::sg_force_stop(3000)
+      sigmajs::sg_force_stop(10000) %>%
+      sigmajs::sg_kill()
   })
 
-  output$tweet <- renderText({
+  output$display <- renderText({
     user <- input$graph_click_node$label
 
     if(!is.null(input$graph_click_node$label)){
