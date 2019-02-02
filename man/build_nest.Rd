@@ -7,5 +7,5 @@
 build_nest()
 }
 \description{
-Create a \code{_chirp.yml} file in working directory.
+Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.
 }

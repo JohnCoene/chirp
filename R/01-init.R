@@ -1,6 +1,6 @@
 #' Initialise
 #'
-#' Create a \code{_chirp.yml} file in working directory.
+#' Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.
 #'
 #' @import shiny
 #' @import dplyr
@@ -10,6 +10,7 @@
 #' @export
 build_nest <- function(){
 
+  dir <- "www"
   config <- "_chirp.yml"
 
   if(file.exists(config)){
@@ -18,7 +19,6 @@ build_nest <- function(){
       sep = ""
     )
 
-
   } else {
     file.copy(
       system.file("templates/chirp.yml", package = "chirp"),
@@ -26,7 +26,7 @@ build_nest <- function(){
     )
 
     cat(
-      crayon::green(cli::symbol$tick), "Copied", crayon::underline(config), "\n"
+      crayon::green(cli::symbol$tick), "Copied", config, "\n"
     )
   }
 

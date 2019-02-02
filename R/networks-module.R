@@ -71,6 +71,7 @@ networks <- function(input, output, session, data){
       sigmajs::sg_edges(edges, id, source, target) %>%
       sigmajs::sg_force_start() %>%
       sigmajs::sg_force_stop(10000) %>%
+      sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill()
   })
 
@@ -79,7 +80,7 @@ networks <- function(input, output, session, data){
 
     if(!is.null(input$graph_click_node$label)){
       data() %>%
-        filter(screen_name == user | quoted_screen_name == user) %>%
+        filter(screen_name == user | !!sym(input$network) == user) %>%
         arrange(-retweet_count) %>%
         slice(1) %>%
         .get_tweet()

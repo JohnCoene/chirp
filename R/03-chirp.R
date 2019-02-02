@@ -84,6 +84,9 @@ chirp <- function(){
     ),
     tags$style(
       paste0("*{font-family: '", font, "', sans-serif;}")
+    ),
+    tags$script(
+      src = "chirp-assets/custom.js"
     )
   )
 
@@ -115,14 +118,14 @@ chirp <- function(){
   ui <- navbarPage(
     title = div(
       img(
-        src = "https://chirp.sh/logo.png",
+        src = "chirp-assets/logo.png",
         height="28",
         style = "margin-right: 25px;"
       )
     ),
     fluid = TRUE,
     inverse = inverse,
-    windowTitle = "auritus",
+    windowTitle = "chirp",
     header = head,
     theme = shinythemes::shinytheme(theme),
 		id = "tabs",
@@ -137,9 +140,10 @@ chirp <- function(){
         br(),
         br(),
         img(
-          width = "70%",
-          src = "https://chirp.sh/logo.png",
-          alt = "chirp"
+          width = "20%",
+          src = "chirp-assets/logo.png",
+          alt = "chirp",
+          align = "right"
         ),
         br(),
         br(),
@@ -154,7 +158,7 @@ chirp <- function(){
             9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
           ),
           column(
-            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
+            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-info")
           )
         ),
         div(
