@@ -148,18 +148,19 @@ chirp <- function(){
         br(),
         fluidRow(
           column(
+            1, br(), actionButton("opts", "", icon = icon("plus"))
+          ),
+          column(
             9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
           ),
           column(
             2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
-          ),
-          column(
-            1, br(), actionButton("opts", "", icon = icon("plus"))
           )
         ),
         div(
           id = "options",
-          style = "display:none;",
+          style = "display:none;border:1px;",
+          h3("Options"),
           fluidRow(
             column(
               4,
@@ -177,7 +178,11 @@ chirp <- function(){
               4, selectInput(
                 "type",
                 "Type",
-                choices = c("recent", "mixed", "popular"),
+                choices = c(
+                  "Recent" = "recent",
+                  "Mixed" = "mixed",
+                  "Popular" = "popular"
+                ),
                 selected = "recent",
                 width = "100%"
               )

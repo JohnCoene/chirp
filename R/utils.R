@@ -1,3 +1,16 @@
+globalVariables(
+  c(
+    "mentions_screen_name",
+    "quoted_screen_name",
+    "retweet_count",
+    "screen_name",
+    "target",
+    "color",
+    "label",
+    "size"
+  )
+)
+
 "%||%" <- function(x, y) {
   if (length(x) > 0 || !is.null(x)) x else y
 }

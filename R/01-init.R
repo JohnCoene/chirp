@@ -4,6 +4,8 @@
 #'
 #' @import shiny
 #' @import dplyr
+#' @import graphTweets
+#' @importFrom utils URLencode
 #'
 #' @export
 build_nest <- function(){

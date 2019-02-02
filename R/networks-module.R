@@ -3,15 +3,39 @@ networks_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    div(
-      class = "container",
-      fluidRow(
-        column(
-          10, sigmajs::sigmajsOutput(ns("graph"), height = "95vh")
-        ),
-        column(
-          2, htmlOutput(ns("tweet"))
+    fluidRow(
+      column(
+        3,
+        selectInput(
+          ns("network"),
+          "Network type",
+          choices = c(
+            "Retweets",
+            "Hashtags",
+            "Conversations"
+          )
         )
+      ),
+      column(
+        3,
+        br(),
+        conditionalPanel(
+          "input['networks-network'] != 'Retweets'",
+          checkboxInput(
+            ns("comentions"),
+            "Co-mentions",
+            width = "100%"
+          )
+        )
+      )
+    ),
+    hr(),
+    fluidRow(
+      column(
+        10, sigmajs::sigmajsOutput(ns("graph"), height = "95vh")
+      ),
+      column(
+        2, htmlOutput(ns("tweet"))
       )
     )
   )
@@ -41,7 +65,7 @@ networks <- function(input, output, session, data){
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(edges, id, source, target) %>%
       sigmajs::sg_force_start() %>%
-      sigmajs::sg_force_stop(7000)
+      sigmajs::sg_force_stop(3000)
   })
 
   output$tweet <- renderText({

@@ -10,10 +10,16 @@ RoxygenNote: 6.1.1
 Imports:
 	cli,
 	yaml,
+	httr,
 	dplyr,
 	shiny,
+	scales,
 	rtweet,
 	crayon,
 	sigmajs,
+	shinyjs,
 	graphTweets,
-	shinythemes
+	shinythemes,
+	twinetverse
+Remotes: 
+  JohnCoene/twinetverse
