@@ -3,6 +3,8 @@ networks_ui <- function(id){
   ns <- NS(id)
 
   tagList(
+    reactrend::reactrendOutput(ns("trend"), height = 200),
+    renderUI(ns("filter_date")),
     fluidRow(
       column(
         3,
@@ -43,6 +45,16 @@ networks_ui <- function(id){
 }
 
 networks <- function(input, output, session, data){
+
+  output$trend <- reactrend::renderReactrend({
+    data() %>%
+      mutate(
+        created_at = format(created_at, "%Y-%m-%d %H:%M")
+      ) %>%
+      count(created_at) %>%
+      pull(n) %>%
+      reactrend::reactrend()
+  })
 
   output$graph <- sigmajs::renderSigmajs({
 
