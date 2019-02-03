@@ -13,6 +13,7 @@ Imports:
 	httr,
 	dplyr,
 	shiny,
+	tidyr,
 	scales,
 	rtweet,
 	crayon,

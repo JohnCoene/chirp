@@ -44,7 +44,7 @@ networks_ui <- function(id){
     hr(),
     fluidRow(
       column(
-        10, sigmajs::sigmajsOutput(ns("graph"), height = "90vh")
+        10, sigmajs::sigmajsOutput(ns("graph"), height = "80vh")
       ),
       column(
         2, htmlOutput(ns("display"))
@@ -61,7 +61,7 @@ networks <- function(input, output, session, data){
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
       edges <- data() %>% gt_co_edges(!!sym(input$network))
     else
-      edges <- data() %>% gt_edges(screen_name, !!sym(input$network), created_at)
+      edges <- data() %>% gt_edges(screen_name, !!sym(input$network))
 
     graph <- edges %>%
       gt_nodes() %>%
@@ -99,10 +99,22 @@ networks <- function(input, output, session, data){
 
   output$display <- renderText({
     user <- input$graph_click_node$label
+    user <- gsub("#", "", user)
 
     if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
       data() %>%
-        filter(screen_name == user | !!sym(input$network) == user) %>%
+        select(
+          status_id,
+          screen_name,
+          retweet_count,
+          v2 = !!sym(input$network)
+        ) %>%
+        tidyr::separate_rows(v2) %>%
+        mutate(
+          v1 = tolower(v1),
+          v2 = tolower(v2)
+        ) %>%
+        filter(screen_name == user | v2 == user) %>%
         arrange(-retweet_count) %>%
         slice(1) %>%
         .get_tweet()
