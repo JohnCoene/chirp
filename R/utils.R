@@ -36,3 +36,9 @@ globalVariables(
   content$html[1]
 }
 
+.rescale <- function(x, t){
+  x <- as.numeric(x)
+  x <-  (x - min(x)) / (max(x) - min(x))
+  x <- x * t
+  return(x)
+}

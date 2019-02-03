@@ -3,36 +3,48 @@ networks_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    fluidRow(
-      column(
-        3,
-        selectInput(
-          ns("network"),
-          "Network type",
-          choices = c(
-            "Retweets" = "retweet_screen_name",
-            "Hashtags" = "hashtags",
-            "Conversations" = "mentions_screen_name"
+    div(
+      class = "container",
+      fluidRow(
+        column(
+          2,
+          selectInput(
+            ns("network"),
+            "NETWORK TYPE",
+            choices = c(
+              "Retweets" = "retweet_screen_name",
+              "Hashtags" = "hashtags",
+              "Conversations" = "mentions_screen_name"
+            )
           )
-        )
-      ),
-      column(
-        3,
-        br(),
-        conditionalPanel(
-          "input['networks-network'] != 'retweet_screen_name'",
-          checkboxInput(
-            ns("comentions"),
-            "Co-mentions",
-            width = "100%"
+        ),
+        column(
+          2,
+          br(),
+          conditionalPanel(
+            "input['networks-network'] != 'retweet_screen_name'",
+            checkboxInput(
+              ns("comentions"),
+              "CO-MENTIONS",
+              width = "100%"
+            )
           )
+        ),
+        column(
+          2, br(), checkboxInput(ns("delete_nodes"), "DELETE NODES", value = FALSE)
+        ),
+        column(
+          2, br(), actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram"))
+        ),
+        column(
+          2, br(), actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat"))
         )
       )
     ),
     hr(),
     fluidRow(
       column(
-        10, sigmajs::sigmajsOutput(ns("graph"), height = "95vh")
+        10, sigmajs::sigmajsOutput(ns("graph"), height = "90vh")
       ),
       column(
         2, htmlOutput(ns("display"))
@@ -44,12 +56,12 @@ networks_ui <- function(id){
 
 networks <- function(input, output, session, data){
 
-  output$graph <- sigmajs::renderSigmajs({
+  graph <- reactive({
 
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
       edges <- data() %>% gt_co_edges(!!sym(input$network))
     else
-      edges <- data() %>% gt_edges(screen_name, !!sym(input$network))
+      edges <- data() %>% gt_edges(screen_name, !!sym(input$network), created_at)
 
     graph <- edges %>%
       gt_nodes() %>%
@@ -63,27 +75,65 @@ networks <- function(input, output, session, data){
         color = scales::col_numeric(
           .get_pal(),
           domain = range(size)
-        )(size)
+        )(size),
+        size = scales::rescale(size, to = c(3, 15))
       )
 
+    list(
+      nodes = nodes,
+      edges = edges
+    )
+
+  })
+
+  output$graph <- sigmajs::renderSigmajs({
+
     sigmajs::sigmajs() %>%
-      sigmajs::sg_nodes(nodes, id, label, size, color) %>%
-      sigmajs::sg_edges(edges, id, source, target) %>%
+      sigmajs::sg_nodes(graph()$nodes, id, label, size, color) %>%
+      sigmajs::sg_edges(graph()$edges, id, source, target) %>%
       sigmajs::sg_layout() %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill()
+
   })
 
   output$display <- renderText({
     user <- input$graph_click_node$label
 
-    if(!is.null(input$graph_click_node$label)){
+    if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
       data() %>%
         filter(screen_name == user | !!sym(input$network) == user) %>%
         arrange(-retweet_count) %>%
         slice(1) %>%
         .get_tweet()
     }
+
+  })
+
+  observeEvent(input$graph_click_node, {
+
+    node_clicked <- input$graph_click_node$label
+    ns <- session$ns
+
+    if(isTRUE(input$delete_nodes)){
+      sigmajs::sigmajsProxy(ns("graph")) %>%
+        sigmajs::sg_drop_node_p(id = input$graph_click_node$id)
+    }
+  })
+
+  observeEvent(input$start_layout, {
+    ns <- session$ns
+
+    sigmajs::sigmajsProxy(ns("graph")) %>%
+      sigmajs::sg_force_start_p()
+
+  })
+
+  observeEvent(input$kill_layout, {
+    ns <- session$ns
+
+    sigmajs::sigmajsProxy(ns("graph")) %>%
+      sigmajs::sg_force_kill_p()
 
   })
 
