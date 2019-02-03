@@ -3,8 +3,6 @@ networks_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    reactrend::reactrendOutput(ns("trend"), height = 200),
-    renderUI(ns("filter_date")),
     fluidRow(
       column(
         3,
@@ -46,16 +44,6 @@ networks_ui <- function(id){
 
 networks <- function(input, output, session, data){
 
-  output$trend <- reactrend::renderReactrend({
-    data() %>%
-      mutate(
-        created_at = format(created_at, "%Y-%m-%d %H:%M")
-      ) %>%
-      count(created_at) %>%
-      pull(n) %>%
-      reactrend::reactrend()
-  })
-
   output$graph <- sigmajs::renderSigmajs({
 
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
@@ -81,8 +69,7 @@ networks <- function(input, output, session, data){
     sigmajs::sigmajs() %>%
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(edges, id, source, target) %>%
-      sigmajs::sg_force_start() %>%
-      sigmajs::sg_force_stop(10000) %>%
+      sigmajs::sg_layout() %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill()
   })
