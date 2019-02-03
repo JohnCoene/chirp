@@ -72,6 +72,16 @@ chirp <- function(){
     palette <- settings[["style"]][["palette"]]
   }
 
+  if(!"edges_color" %in% names(settings[["style"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No edges_color set in _chirp.yml, setting to default.\n"
+    )
+
+    edge_color <- "#bababa"
+  } else {
+    edge_color <- settings[["style"]][["edges_color"]]
+  }
+
   font_name <- gsub("[[:space:]]", "+", font)
 
   inverse <- settings$style$inverse %||% FALSE
@@ -84,6 +94,14 @@ chirp <- function(){
     ),
     tags$style(
       paste0("*{font-family: '", font, "', sans-serif;}")
+    ),
+    tags$link(
+      href = "chirp-assets/pushbar.css",
+      rel="stylesheet",
+      type="text/css"
+    ),
+    tags$script(
+      src = "chirp-assets/pushbar.js"
     ),
     tags$script(
       src = "chirp-assets/custom.js"
@@ -113,7 +131,7 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
-  options(chirp_palette = palette)
+  options(chirp_palette = palette, chirp_edge_color = edge_color)
 
   ui <- navbarPage(
     title = div(
@@ -163,7 +181,7 @@ chirp <- function(){
         ),
         div(
           id = "options",
-          style = "display:none;border:1px;",
+          style = "display:none;",
           h3("Options"),
           fluidRow(
             column(

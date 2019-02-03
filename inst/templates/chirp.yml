@@ -17,6 +17,7 @@ style:
     - "#edd9a3"
   background: 'rgba(0,0,0,0)'   # background of network graph
   inverse: false                # Boostrap inverse navbar
+  edges_color: '#bababa'        # Color of edges
 
 tracking:
   ganalytics: "UA-74544116-1"

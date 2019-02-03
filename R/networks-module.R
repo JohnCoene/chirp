@@ -3,45 +3,12 @@ networks_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    div(
-      class = "container",
-      fluidRow(
-        column(
-          2,
-          selectInput(
-            ns("network"),
-            "NETWORK TYPE",
-            choices = c(
-              "Retweets" = "retweet_screen_name",
-              "Hashtags" = "hashtags",
-              "Conversations" = "mentions_screen_name"
-            )
-          )
-        ),
-        column(
-          2,
-          br(),
-          conditionalPanel(
-            "input['networks-network'] != 'retweet_screen_name'",
-            checkboxInput(
-              ns("comentions"),
-              "CO-MENTIONS",
-              width = "100%"
-            )
-          )
-        ),
-        column(
-          2, br(), checkboxInput(ns("delete_nodes"), "DELETE NODES", value = FALSE)
-        ),
-        column(
-          2, br(), actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram"))
-        ),
-        column(
-          2, br(), actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat"))
-        )
-      )
+    tags$a(
+      tags$i(class = "fas fa-cogs"),
+      onclick = "pushbar.open('save_pushbar');",
+      class = "btn btn-default",
+      style = "position:absolute;z-index:999;right:20px;"
     ),
-    hr(),
     fluidRow(
       column(
         10, sigmajs::sigmajsOutput(ns("graph"), height = "80vh")
@@ -49,12 +16,65 @@ networks_ui <- function(id){
       column(
         2, htmlOutput(ns("display"))
       )
+    ),
+    div(
+      `data-pushbar-id` = "save_pushbar",
+      class = "pushbar from_right",
+      style = "padding:25px;",
+      h4("Options"),
+      br(),
+      selectInput(
+        ns("network"),
+        "NETWORK TYPE",
+        choices = c(
+          "Retweets" = "retweet_screen_name",
+          "Hashtags" = "hashtags",
+          "Conversations" = "mentions_screen_name"
+        )
+      ),
+      conditionalPanel(
+        "input['networks-network'] != 'retweet_screen_name'",
+        checkboxInput(
+          ns("comentions"),
+          "CO-MENTIONS",
+          width = "100%"
+        )
+      ),
+      checkboxInput(ns("delete_nodes"), "DELETE NODES", value = FALSE),
+      actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram")),
+      br(),
+      br(),
+      actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat")),
+      br(),
+      br(),
+      actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image")),
+      br(),
+      br(),
+      actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"))
     )
   )
 
 }
 
 networks <- function(input, output, session, data){
+
+  shinyjs::hide("save_el")
+
+  observeEvent(input$save_opts, {
+    shinyjs::toggle("save_el")
+  })
+
+  observeEvent(input$save_img, {
+    ns <- session$ns
+    sigmajs::sigmajsProxy(ns("graph")) %>%
+      sigmajs::sg_export_img_p(file = "chirp.png")
+  })
+
+  observeEvent(input$save_svg, {
+    ns <- session$ns
+    sigmajs::sigmajsProxy(ns("graph")) %>%
+      sigmajs::sg_export_svg_p(file = "chirp.svg")
+  })
 
   graph <- reactive({
 
@@ -76,7 +96,8 @@ networks <- function(input, output, session, data){
           .get_pal(),
           domain = range(size)
         )(size),
-        size = scales::rescale(size, to = c(3, 15))
+        size = scales::rescale(size, to = c(3, 15)),
+        type = "arrow"
       )
 
     list(
@@ -89,11 +110,16 @@ networks <- function(input, output, session, data){
   output$graph <- sigmajs::renderSigmajs({
 
     sigmajs::sigmajs() %>%
-      sigmajs::sg_nodes(graph()$nodes, id, label, size, color) %>%
+      sigmajs::sg_nodes(graph()$nodes, id, label, size, color, type) %>%
       sigmajs::sg_edges(graph()$edges, id, source, target) %>%
       sigmajs::sg_layout() %>%
       sigmajs::sg_neighbours() %>%
-      sigmajs::sg_kill()
+      sigmajs::sg_kill() %>%
+      sigmajs::sg_settings(
+        batchEdgesDrawing = TRUE,
+        edgeColor = "default",
+        defaultEdgeColor = .get_edge_color()
+      )
 
   })
 
@@ -111,7 +137,7 @@ networks <- function(input, output, session, data){
         ) %>%
         tidyr::separate_rows(v2) %>%
         mutate(
-          v1 = tolower(v1),
+          screen_name = tolower(screen_name),
           v2 = tolower(v2)
         ) %>%
         filter(screen_name == user | v2 == user) %>%

@@ -4,10 +4,12 @@ globalVariables(
     "quoted_screen_name",
     "retweet_count",
     "screen_name",
+    "status_id",
     "target",
     "color",
     "label",
-    "size"
+    "size",
+    "v2"
   )
 )
 
@@ -18,6 +20,10 @@ globalVariables(
 .get_pal <- function(){
   x <- getOption("chirp_palette")
   rev(x)
+}
+
+.get_edge_color <- function(){
+  getOption("chirp_edge_color")
 }
 
 .get_tweet <- function(data){
