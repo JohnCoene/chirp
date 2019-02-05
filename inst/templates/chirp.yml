@@ -5,9 +5,10 @@ credentials:                    # twitter app credentials
   access_secret: null
 
 style:
-  theme: paper                  # from: https://rstudio.github.io/shinythemes
-  font: Raleway                 # google font
-  palette:                      # networks color palettes
+  theme: paper                          # from: https://rstudio.github.io/shinythemes
+  font: Raleway                         # google font
+  font_family: "'Raleway', sans-serif"  # font family
+  palette:                              # network color palettes
     - "#4b2991"
     - "#872ca2"
     - "#c0369d"
@@ -15,9 +16,9 @@ style:
     - "#fa7876"
     - "#f6a97a"
     - "#edd9a3"
-  background: 'rgba(0,0,0,0)'   # background of network graph
-  inverse: false                # Boostrap inverse navbar
-  edges_color: '#bababa'        # Color of edges
+  background: 'rgba(0,0,0,0)'           # background of network graph
+  inverse: false                        # Boostrap inverse navbar
+  edges_color: '#bababa'                # Color of edges
 
 tracking:
   ganalytics: "UA-74544116-1"

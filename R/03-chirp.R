@@ -58,8 +58,10 @@ chirp <- function(){
     )
 
     font <- "Raleway"
+    font_family <- "'Raleway', sans-serif"
   } else {
     font <- settings[["style"]][["font"]]
+    font_family <- settings[["style"]][["font_family"]]
   }
 
   if(!"palette" %in% names(settings[["style"]])){
@@ -131,7 +133,7 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
-  options(chirp_palette = palette, chirp_edge_color = edge_color)
+  options(chirp_palette = palette, chirp_edge_color = edge_color, chirp_font_family = font_family)
 
   ui <- navbarPage(
     title = div(
@@ -192,7 +194,7 @@ chirp <- function(){
                 min = 100,
                 max = 15000,
                 value = 1000,
-                step = 500,
+                step = 100,
                 width = "100%"
               )
             ),

@@ -4,8 +4,10 @@ globalVariables(
     "quoted_screen_name",
     "retweet_count",
     "screen_name",
+    "created_at",
     "status_id",
     "target",
+    "weight",
     "color",
     "label",
     "size",
@@ -27,6 +29,10 @@ globalVariables(
   getOption("chirp_edge_color")
 }
 
+.get_font <- function(){
+  getOption("chirp_font_family")
+}
+
 .get_tweet <- function(data){
 
   url <- URLencode(
@@ -37,7 +43,7 @@ globalVariables(
 
   response <- httr::GET(
     url = paste0("https://publish.twitter.com/oembed?url=", url,
-                 "&maxwidth=220&link_color=")
+                 "&maxwidth=300&link_color=")
   )
   content <- httr::content(response)
   content$html[1]

@@ -83,3 +83,9 @@ html.pushbar_locked .pushbar_overlay{
 .pushbar.opened{
    transform: translateX(0px) translateY(0px);
 }
+
+#pushbarLeft {
+  -webkit-box-shadow: -11px 0px 24px -6px rgba(112,112,112,1);
+  -moz-box-shadow: -11px 0px 24px -6px rgba(112,112,112,1);
+  box-shadow: -11px 0px 24px -6px rgba(112,112,112,1);
+}

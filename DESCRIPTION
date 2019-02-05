@@ -19,6 +19,7 @@ Imports:
 	crayon,
 	sigmajs,
 	shinyjs,
+	reactrend,
 	graphTweets,
 	shinythemes,
 	twinetverse
