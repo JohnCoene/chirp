@@ -2,13 +2,15 @@
 #'
 #' Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.
 #'
+#' @param edit Whether to open the file for edit.
+#'
 #' @import shiny
 #' @import dplyr
 #' @import graphTweets
 #' @importFrom utils URLencode
 #'
 #' @export
-build_nest <- function(){
+build_nest <- function(edit = interactive()){
 
   dir <- "www"
   config <- "_chirp.yml"
@@ -30,4 +32,10 @@ build_nest <- function(){
     )
   }
 
+  if(edit) fileEdit(config)
+}
+
+fileEdit <- function(file) {
+  fileEditFunc <- eval(parse(text = "file.edit"), envir = globalenv())
+  fileEditFunc(file)
 }

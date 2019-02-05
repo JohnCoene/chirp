@@ -11,10 +11,10 @@ networks_ui <- function(id){
     ),
     fluidRow(
       column(
-        10, sigmajs::sigmajsOutput(ns("graph"), height = "80vh")
+        2, htmlOutput(ns("display"))
       ),
       column(
-        2, htmlOutput(ns("display"))
+        10, sigmajs::sigmajsOutput(ns("graph"), height = "80vh")
       )
     ),
     div(

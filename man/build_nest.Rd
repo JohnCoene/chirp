@@ -4,7 +4,7 @@
 \alias{build_nest}
 \title{Initialise}
 \usage{
-build_nest()
+build_nest(edit = interactive())
 }
 \description{
 Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.

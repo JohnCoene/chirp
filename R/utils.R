@@ -9,6 +9,7 @@ globalVariables(
     "color",
     "label",
     "size",
+    "type",
     "v2"
   )
 )
