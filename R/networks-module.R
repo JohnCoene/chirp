@@ -341,3 +341,9 @@ networks <- function(input, output, session, data){
   })
 
 }
+
+ui <- fluidPage(
+  actionButton("create", "create"),
+  actionButton("destroy", "destroy"),
+  verbatimTextOutput("data")
+)

@@ -256,7 +256,9 @@ chirp <- function(){
       shinyjs::toggle("options")
     })
 
-    tweets <- eventReactive(input$submit, {
+    tweets <- reactiveVal(0)
+
+    observeEvent(input$submit, {
 
       geocode <- NULL
 
@@ -284,7 +286,8 @@ chirp <- function(){
           include_rts = input$include_rts,
           geocode = geocode,
           token = rtweet_token
-        )
+        ) %>% 
+          tweets()
       }
 
     })
