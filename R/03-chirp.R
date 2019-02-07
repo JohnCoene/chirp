@@ -102,6 +102,11 @@ chirp <- function(){
       rel="stylesheet",
       type="text/css"
     ),
+    tags$link(
+      href = "chirp-assets/custom.css",
+      rel="stylesheet",
+      type="text/css"
+    ),
     tags$script(
       src = "chirp-assets/pushbar.js"
     ),
@@ -237,27 +242,7 @@ chirp <- function(){
 		tabPanel(
 			"NETWORKS",
 			networks_ui("networks")
-		),
-    footer = tagList(
-      hr(),
-      div(
-        class = "container",
-        fluidRow(
-          column(
-            12,
-            "Developed with",
-            class = "pull-right",
-            tags$a(
-              href = "https://chirp.sh",
-              target = "_blank",
-              "chirp",
-              class = "text-info"
-            )
-          )
-        )
-      ),
-      br()
-    )
+		)
   )
 
   server <- function(input, output, session){

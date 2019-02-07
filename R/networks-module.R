@@ -8,17 +8,94 @@ networks_ui <- function(id){
       onclick = "pushbar.open('save_pushbar');",
       class = "btn btn-primary",
       `data-pushbar-target` = "save_pushbar",
-      style = "position:absolute;z-index:999;right:20px;"
+      id = "opts"
     ),
-    fluidRow(
-      htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;"),
-      sigmajs::sigmajsOutput(ns("graph"), height = "80vh")
+    tags$a(
+      icon("search", class = "fa-lg"),
+      onclick = "pushbar.open('search_pushbar');",
+      class = "btn btn-primary",
+      `data-pushbar-target` = "search_pushbar",
+      id = "search"
     ),
+    div(
+      id = "pushbarTop",
+      `data-pushbar-id` = "search_pushbar",
+      class = "pushbar from_left",
+      br(),
+      textInput(
+        ns("q"), 
+        "", 
+        width = "100%", 
+        placeholder = "Query."
+      ),
+      fluidRow(
+        column(
+          4,
+          actionButton(
+            ns("addOpts"), 
+            "", 
+            icon = icon("plus")
+          )
+        ),
+        column(
+          6, 
+          actionButton(
+            ns("submit"), 
+            "Search", 
+            icon = icon("search"), 
+            width = "100%", 
+            class = "btn btn-primary"
+          )
+        )
+      ),
+      br(),
+      div(
+        id = ns("searchOptions"),
+        style = "display:none;",
+        h3("Options"),
+        sliderInput(
+          ns("n"),
+          label = "Number of tweets",
+          min = 100,
+          max = 15000,
+          value = 1000,
+          step = 100,
+          width = "100%"
+        ),
+        br(),
+        selectInput(
+          ns("type"),
+          "Type",
+          choices = c(
+            "Recent" = "recent",
+            "Mixed" = "mixed",
+            "Popular" = "popular"
+          ),
+          selected = "recent",
+          width = "100%"
+        ),
+        checkboxInput(
+          ns("include_rts"),
+          "Include retweets",
+          TRUE,
+          width = "100%"
+        ),
+        textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
+        textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
+        textInput(ns("radius"), "Radius", value = "", width = "100%")
+      ),
+      tags$a(
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
+        style = "bottom:20px;left:20px;position:absolute;"
+      )
+    ),
+    shinyjs::useShinyjs(),
+    htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:50px;"),
+    sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
     div(
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
       class = "pushbar from_right",
-      style = "padding:25px;",
       h4("Options"),
       br(),
       selectInput(
@@ -46,7 +123,7 @@ networks_ui <- function(id){
       br(),
       br(),
       h4("Stats"),
-      p("trend"),
+      p("Trend"),
       reactrend::reactrendOutput(ns("trendline"), width = "100%"),
       uiOutput(ns("n_nodes")),
       uiOutput(ns("n_edges")),
@@ -57,7 +134,7 @@ networks_ui <- function(id){
       br(),
       actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5")),
       tags$a(
-        icon("times"), onclick = "pushbar.close();", class = "btn btn-default",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
         style = "bottom:20px;right:20px;position:absolute;"
       )
     )
@@ -254,6 +331,13 @@ networks <- function(input, output, session, data){
         type = "error"
       )
     }
+  })
+
+  shinyjs::hide("searchOptions")
+
+  observeEvent(input$addOpts, {
+    ns <- session$ns
+    shinyjs::toggle("searchOptions")
   })
 
 }

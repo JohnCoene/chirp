@@ -1,0 +1,22 @@
+#opts{
+  position:absolute;
+  z-index:999;
+  right:20px;
+  top:20px;
+}
+
+#search{
+  position:absolute;
+  z-index:999;
+  left:20px;
+  top:20px;
+}
+
+nav{
+  display: none;
+}
+
+#pushbarLeft, #pushbarTop{
+  padding:25px;
+}
+
