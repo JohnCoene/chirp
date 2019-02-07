@@ -26,7 +26,7 @@ networks_ui <- function(id){
         ns("q"), 
         "", 
         width = "100%", 
-        placeholder = "Query."
+        placeholder = "Query"
       ),
       fluidRow(
         column(
@@ -38,7 +38,7 @@ networks_ui <- function(id){
           )
         ),
         column(
-          6, 
+          8, 
           actionButton(
             ns("submit"), 
             "Search", 
