@@ -21,6 +21,7 @@ networks_ui <- function(id){
       id = "pushbarTop",
       `data-pushbar-id` = "search_pushbar",
       class = "pushbar from_left",
+      h4("Options"),
       br(),
       textInput(
         ns("q"), 
@@ -52,7 +53,6 @@ networks_ui <- function(id){
       div(
         id = ns("searchOptions"),
         style = "display:none;",
-        h3("Options"),
         sliderInput(
           ns("n"),
           label = "Number of tweets",
@@ -62,7 +62,6 @@ networks_ui <- function(id){
           step = 100,
           width = "100%"
         ),
-        br(),
         selectInput(
           ns("type"),
           "Type",
@@ -123,7 +122,7 @@ networks_ui <- function(id){
       br(),
       br(),
       h4("Stats"),
-      p("Trend"),
+      uiOutput(ns("trend_text")),
       reactrend::reactrendOutput(ns("trendline"), width = "100%"),
       uiOutput(ns("n_nodes")),
       uiOutput(ns("n_edges")),
@@ -142,7 +141,42 @@ networks_ui <- function(id){
 
 }
 
-networks <- function(input, output, session, data){
+networks <- function(input, output, session, tweets){
+
+  tweets <- reactiveVal(tweets)
+
+  observeEvent(input$submit, {
+    geocode <- NULL
+
+    if(input$longitude != "" && input$latitude != "" && input$radius != "")
+      geocode <- paste0(input$longitude, input$latitude, input$radius)
+
+    if(input$q == ""){
+      showModal(modalDialog(
+        title = "No search entered!",
+        "Enter a search\nCan include boolean operators such as 'OR' and 'AND'.",
+        easyClose = TRUE,
+        footer = NULL
+      ))
+    }
+
+    progress <- shiny::Progress$new()
+    on.exit(progress$close())
+    progress$set(message = "Fetching tweets", value = sample(seq(.1, .9, by = .1), 1))
+
+    if(input$q != ""){
+      tw <- rtweet::search_tweets(
+        input$q,
+        n = input$n,
+        type = input$type,
+        include_rts = input$include_rts,
+        geocode = geocode,
+        token = .get_token()
+      ) 
+      tweets(tw)
+    }
+
+  })
 
   shinyjs::hide("save_el")
 
@@ -165,9 +199,9 @@ networks <- function(input, output, session, data){
   graph <- reactive({
 
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
-      edges <- data() %>% gt_co_edges(!!sym(input$network))
+      edges <- tweets() %>% gt_co_edges(!!sym(input$network))
     else
-      edges <- data() %>% gt_edges(screen_name, !!sym(input$network))
+      edges <- tweets() %>% gt_edges(screen_name, !!sym(input$network))
 
     graph <- edges %>%
       gt_nodes() %>%
@@ -205,6 +239,7 @@ networks <- function(input, output, session, data){
       sigmajs::sg_force(slowDown = 5) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
+      sigmajs::sg_drag_nodes() %>% 
       sigmajs::sg_force_stop(2500) %>%
       sigmajs::sg_settings(
         batchEdgesDrawing = TRUE,
@@ -216,11 +251,12 @@ networks <- function(input, output, session, data){
   })
 
   output$display <- renderText({
+
     user <- input$graph_click_node$label
     user <- gsub("#", "", user)
 
     if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
-      data() %>%
+      tweets() %>%
         select(
           status_id,
           screen_name,
@@ -240,14 +276,18 @@ networks <- function(input, output, session, data){
 
   })
 
-  output$trendline <- reactrend::renderReactrend({
-    .get_trend <- function(x = "%Y-%m-%d"){
-      data() %>%
+  trend <- reactive({
+   .get_trend <- function(x = "%Y-%m-%d"){
+      tweets() %>%
         mutate(
           created_at = format(created_at, x)
         ) %>%
         count(created_at) %>%
-        pull(n)
+        pull(n) %>% 
+        list(
+          trend = .,
+          format = x
+        )
     }
 
     trend <- .get_trend()
@@ -261,7 +301,16 @@ networks <- function(input, output, session, data){
     if(length(trend) <= 1)
       trend <- .get_trend("%Y-%m-%d %H:%M:%S")
 
-    trend %>%
+    return(trend)
+  })
+
+  output$trend_text <- renderUI({
+    p(strong("Trend"), .get_time_scale(trend()$format))
+  })
+
+  output$trendline <- reactrend::renderReactrend({
+
+    trend()$trend %>%
       reactrend::reactrend(
         draw = TRUE,
         gradient = .get_pal(),

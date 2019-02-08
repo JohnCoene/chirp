@@ -138,7 +138,12 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
-  options(chirp_palette = palette, chirp_edge_color = edge_color, chirp_font_family = font_family)
+  options(
+    chirp_palette = palette, 
+    chirp_edge_color = edge_color, 
+    chirp_font_family = font_family,
+    rtweet_token = rtweet_token
+  )
 
   ui <- navbarPage(
     title = div(
@@ -183,7 +188,7 @@ chirp <- function(){
             9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
           ),
           column(
-            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-info")
+            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
           )
         ),
         div(
@@ -256,8 +261,6 @@ chirp <- function(){
       shinyjs::toggle("options")
     })
 
-    tweets <- reactiveVal(0)
-
     observeEvent(input$submit, {
 
       geocode <- NULL
@@ -279,25 +282,20 @@ chirp <- function(){
       progress$set(message = "Fetching tweets", value = sample(seq(.1, .9, by = .1), 1))
 
       if(input$q != ""){
-        rtweet::search_tweets(
+        tweets <- rtweet::search_tweets(
           input$q,
           n = input$n,
           type = input$type,
           include_rts = input$include_rts,
           geocode = geocode,
-          token = rtweet_token
-        ) %>% 
-          tweets()
-      }
+          token = .get_token()
+        ) 
 
-    })
-
-    observeEvent(input$submit, {
-      if(input$q != ""){
         showTab(inputId = "tabs", target = "NETWORKS")
         updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
-        callModule(networks, "networks", tweets)
+        callModule(networks, "networks", tweets = tweets)
       }
+
     })
 
   }

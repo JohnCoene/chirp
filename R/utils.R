@@ -3,16 +3,19 @@ globalVariables(
     "mentions_screen_name",
     "quoted_screen_name",
     "retweet_count",
+    "rtweet_token",
     "screen_name",
     "created_at",
     "status_id",
     "target",
+    "tweets",
     "weight",
     "color",
     "label",
     "size",
     "type",
-    "v2"
+    "v2",
+    "."
   )
 )
 
@@ -33,6 +36,10 @@ globalVariables(
   getOption("chirp_font_family")
 }
 
+.get_token <- function(){
+  getOption("rtweet_token")
+}
+
 .get_tweet <- function(data){
 
   url <- URLencode(
@@ -42,8 +49,10 @@ globalVariables(
   )
 
   response <- httr::GET(
-    url = paste0("https://publish.twitter.com/oembed?url=", url,
-                 "&maxwidth=300&link_color=")
+    url = paste0(
+      "https://publish.twitter.com/oembed?url=", url,
+      "&maxwidth=300&link_color="
+    )
   )
   content <- httr::content(response)
   content$html[1]
@@ -54,4 +63,11 @@ globalVariables(
   x <-  (x - min(x)) / (max(x) - min(x))
   x <- x * t
   return(x)
+}
+
+.get_time_scale <- function(x){
+  if(x == "%Y-%m-%d") return("daily")
+  if(x == "%Y-%m-%d %H") return("hourly")
+  if(x == "%Y-%m-%d %H:%M") return("minute by minute")
+  if(x == "%Y-%m-%d %H:%M:%S") return("second by second")
 }
