@@ -56,7 +56,7 @@ networks_ui <- function(id){
         sliderInput(
           ns("n"),
           label = "Number of tweets",
-          min = 100,
+          min = 500,
           max = 15000,
           value = 1000,
           step = 100,
@@ -95,15 +95,23 @@ networks_ui <- function(id){
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
       class = "pushbar from_right",
-      h4("Options"),
+      h3("Options"),
       br(),
-      selectInput(
-        ns("network"),
-        "NETWORK TYPE",
-        choices = c(
-          "Retweets" = "retweet_screen_name",
-          "Hashtags" = "hashtags",
-          "Conversations" = "mentions_screen_name"
+      fluidRow(
+        column(
+          6,
+          selectInput(
+            ns("network"),
+            "NETWORK TYPE",
+            choices = c(
+              "Retweets" = "retweet_screen_name",
+              "Hashtags" = "hashtags",
+              "Conversations" = "mentions_screen_name"
+            )
+          )
+        ),
+        column(
+          6, uiOutput(ns("color"))
         )
       ),
       conditionalPanel(
@@ -115,11 +123,14 @@ networks_ui <- function(id){
         )
       ),
       checkboxInput(ns("delete_nodes"), "DELETE NODES", value = FALSE),
-      actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram")),
-      br(),
-      br(),
-      actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat")),
-      br(),
+      fluidRow(
+        column(
+          6, actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram"))
+        ),
+        column(
+          6, actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat"))
+        )
+      ),
       br(),
       h4("Stats"),
       uiOutput(ns("trend_text")),
@@ -127,11 +138,14 @@ networks_ui <- function(id){
       uiOutput(ns("n_nodes")),
       uiOutput(ns("n_edges")),
       br(),
-      br(),
-      actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image")),
-      br(),
-      br(),
-      actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5")),
+      fluidRow(
+        column(
+          6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
+        ),
+        column(
+          6, actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"))
+        )
+      ),
       tags$a(
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
         style = "bottom:20px;right:20px;position:absolute;"
@@ -162,7 +176,7 @@ networks <- function(input, output, session, tweets){
 
     progress <- shiny::Progress$new()
     on.exit(progress$close())
-    progress$set(message = "Fetching tweets", value = sample(seq(.1, .9, by = .1), 1))
+    progress$set(message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), value = sample(seq(.1, .9, by = .1), 1))
 
     if(input$q != ""){
       tw <- rtweet::search_tweets(
@@ -217,10 +231,6 @@ networks <- function(input, output, session, tweets){
 
     nodes <- nodes %>%
       mutate(
-        color = scales::col_numeric(
-          .get_pal(),
-          domain = range(size)
-        )(size),
         size = scales::rescale(size, to = c(1, 15))
       )
 
@@ -231,10 +241,24 @@ networks <- function(input, output, session, tweets){
 
   })
 
+  output$color <- renderUI({
+    ns <- session$ns
+    
+    choices <- colnames(graph()$nodes)
+    choices <- choices[!choices %in% c("id", "label")]
+
+    selectInput(ns("colour"), "Colour", choices = choices, selected = "size")
+  })
+
   output$graph <- sigmajs::renderSigmajs({
 
+    req(input$colour, input$type, input$comentions)
+
+    nodes <- graph()$nodes
+    nodes <- .color_nodes(nodes , input$colour)
+
     sigmajs::sigmajs() %>%
-      sigmajs::sg_nodes(graph()$nodes, id, label, size, color) %>%
+      sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(graph()$edges, id, source, target, type, weight) %>%
       sigmajs::sg_force(slowDown = 5) %>%
       sigmajs::sg_neighbours() %>%

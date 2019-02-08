@@ -24,8 +24,7 @@ globalVariables(
 }
 
 .get_pal <- function(){
-  x <- getOption("chirp_palette")
-  rev(x)
+  getOption("chirp_palette")
 }
 
 .get_edge_color <- function(){
@@ -70,4 +69,24 @@ globalVariables(
   if(x == "%Y-%m-%d %H") return("hourly")
   if(x == "%Y-%m-%d %H:%M") return("minute by minute")
   if(x == "%Y-%m-%d %H:%M:%S") return("second by second")
+}
+
+.color_nodes <- function(nodes, x){
+  var = pull(nodes, x)
+  
+  if(inherits(var, "factor") || inherits(var, "character")){
+    var_unique <- unique(var)
+    colors <- scales::col_factor(
+      .get_pal(), 
+      var_unique
+    )(var)
+  } else {
+    colors <- scales::col_numeric(
+      .get_pal(), domain = NULL
+    )(var)
+  }
+
+  nodes$color <- colors
+
+  return(nodes)
 }

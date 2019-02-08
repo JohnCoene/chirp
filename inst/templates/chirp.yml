@@ -9,13 +9,16 @@ style:
   font: Raleway                         # google font
   font_family: "'Raleway', sans-serif"  # font family
   palette:                              # network color palettes
-    - "#4b2991"
-    - "#872ca2"
-    - "#c0369d"
-    - "#ea4f88"
-    - "#fa7876"
-    - "#f6a97a"
-    - "#edd9a3"
+    - "#E3F2FDFF"
+    - "#BADEFAFF"
+    - "#90CAF8FF"
+    - "#64B4F6FF"
+    - "#41A5F4FF"
+    - "#2096F2FF"
+    - "#1E87E5FF"
+    - "#1976D2FF"
+    - "#1465BFFF" 
+    - "#0C46A0FF"
   background: 'rgba(0,0,0,0)'           # background of network graph
   inverse: false                        # Boostrap inverse navbar
   edges_color: '#bababa'                # Color of edges

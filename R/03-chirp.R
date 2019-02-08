@@ -118,7 +118,7 @@ chirp <- function(){
   # add google analytics if present
   if("ganalytics" %in% names(settings$tracking)){
 
-    ga_id <- settings$tracking$ganalytics
+    ga_id <- settings$tracking$ganalytics %||% ""
 
     ga_tag <- tagList(
       tags$script(
@@ -170,10 +170,9 @@ chirp <- function(){
         br(),
         br(),
         img(
-          width = "20%",
+          width = "10%",
           src = "chirp-assets/logo.png",
-          alt = "chirp",
-          align = "right"
+          alt = "chirp"
         ),
         br(),
         br(),
@@ -201,7 +200,7 @@ chirp <- function(){
               sliderInput(
                 "n",
                 label = "Number of tweets",
-                min = 100,
+                min = 500,
                 max = 15000,
                 value = 1000,
                 step = 100,
@@ -279,7 +278,7 @@ chirp <- function(){
 
       progress <- shiny::Progress$new()
       on.exit(progress$close())
-      progress$set(message = "Fetching tweets", value = sample(seq(.1, .9, by = .1), 1))
+      progress$set(message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), value = sample(seq(.1, .9, by = .1), 1))
 
       if(input$q != ""){
         tweets <- rtweet::search_tweets(
