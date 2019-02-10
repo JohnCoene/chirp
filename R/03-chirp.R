@@ -162,20 +162,14 @@ chirp <- function(){
     tabPanel(
       "HOME",
       shinyjs::useShinyjs(),
-      br(),
-      br(),
       div(
         class = "container",
         style = "min-height:90vh;",
-        br(),
-        br(),
-        img(
-          width = "10%",
-          src = "chirp-assets/logo.png",
-          alt = "chirp"
-        ),
-        br(),
-        br(),
+        # img(
+        #   width = "10%",
+        #   src = "chirp-assets/logo.png",
+        #   alt = "chirp"
+        # ),
         h2("Free, Open-Source Twitter Network Explorer."),
         br(),
         br(),
@@ -191,7 +185,9 @@ chirp <- function(){
                 9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
               ),
               column(
-                2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
+                2,
+                br(),
+                actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
               )
             ),
             div(
@@ -293,7 +289,10 @@ chirp <- function(){
 
       progress <- shiny::Progress$new()
       on.exit(progress$close())
-      progress$set(message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), value = sample(seq(.1, .9, by = .1), 1))
+      progress$set(
+        message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"),
+        value = sample(seq(.1, .9, by = .1), 1)
+      )
 
       if(input$q != ""){
 
