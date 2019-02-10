@@ -21,67 +21,85 @@ networks_ui <- function(id){
       id = "pushbarTop",
       `data-pushbar-id` = "search_pushbar",
       class = "pushbar from_left",
-      h4("Options"),
-      br(),
-      textInput(
-        ns("q"), 
-        "", 
-        width = "100%", 
-        placeholder = "Query"
-      ),
-      fluidRow(
-        column(
-          4,
-          actionButton(
-            ns("addOpts"), 
-            "", 
-            icon = icon("plus")
+      h4("DATA"),
+      tabsetPanel(
+        type = "tabs",
+        tabPanel(
+          "SEARCH",
+          br(),
+          textInput(
+            ns("q"),
+            "",
+            width = "100%",
+            placeholder = "Query"
+          ),
+          fluidRow(
+            column(
+              4,
+              actionButton(
+                ns("addOpts"),
+                "",
+                icon = icon("plus")
+              )
+            ),
+            column(
+              8,
+              actionButton(
+                ns("submit"),
+                "Search",
+                icon = icon("search"),
+                width = "100%",
+                class = "btn btn-primary"
+              )
+            )
+          ),
+          br(),
+          div(
+            id = ns("searchOptions"),
+            style = "display:none;",
+            sliderInput(
+              ns("n"),
+              label = "Number of tweets",
+              min = 500,
+              max = 15000,
+              value = 1000,
+              step = 100,
+              width = "100%"
+            ),
+            selectInput(
+              ns("type"),
+              "Type",
+              choices = c(
+                "Recent" = "recent",
+                "Mixed" = "mixed",
+                "Popular" = "popular"
+              ),
+              selected = "recent",
+              width = "100%"
+            ),
+            checkboxInput(
+              ns("include_rts"),
+              "Include retweets",
+              TRUE,
+              width = "100%"
+            ),
+            textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
+            textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
+            textInput(ns("radius"), "Radius", value = "", width = "100%")
           )
         ),
-        column(
-          8, 
-          actionButton(
-            ns("submit"), 
-            "Search", 
-            icon = icon("search"), 
-            width = "100%", 
-            class = "btn btn-primary"
+        tabPanel(
+          "LOAD",
+          br(),
+          br(),
+          fileInput(
+            ns("file"),
+            label = "Choose file",
+            accept = ".RData",
+            placeholder = " No file selected",
+            width = "100%"
           )
         )
-      ),
-      br(),
-      div(
-        id = ns("searchOptions"),
-        style = "display:none;",
-        sliderInput(
-          ns("n"),
-          label = "Number of tweets",
-          min = 500,
-          max = 15000,
-          value = 1000,
-          step = 100,
-          width = "100%"
-        ),
-        selectInput(
-          ns("type"),
-          "Type",
-          choices = c(
-            "Recent" = "recent",
-            "Mixed" = "mixed",
-            "Popular" = "popular"
-          ),
-          selected = "recent",
-          width = "100%"
-        ),
-        checkboxInput(
-          ns("include_rts"),
-          "Include retweets",
-          TRUE,
-          width = "100%"
-        ),
-        textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
-        textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
-        textInput(ns("radius"), "Radius", value = "", width = "100%")
       ),
       tags$a(
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
@@ -138,6 +156,7 @@ networks_ui <- function(id){
       uiOutput(ns("n_nodes")),
       uiOutput(ns("n_edges")),
       br(),
+      h4("Export"),
       fluidRow(
         column(
           6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
@@ -146,6 +165,8 @@ networks_ui <- function(id){
           6, actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"))
         )
       ),
+      br(),
+      downloadButton(ns("downloadData"), "DOWNLOAD DATA", width = "100%"),
       tags$a(
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
         style = "bottom:20px;right:20px;position:absolute;"
@@ -186,10 +207,15 @@ networks <- function(input, output, session, tweets){
         include_rts = input$include_rts,
         geocode = geocode,
         token = .get_token()
-      ) 
+      )
       tweets(tw)
     }
 
+  })
+
+  observeEvent(input$file, {
+    tw <- get(load(input$file$datapath))
+    tweets(tw)
   })
 
   shinyjs::hide("save_el")
@@ -243,7 +269,7 @@ networks <- function(input, output, session, tweets){
 
   output$color <- renderUI({
     ns <- session$ns
-    
+
     choices <- colnames(graph()$nodes)
     choices <- choices[!choices %in% c("id", "label")]
 
@@ -252,7 +278,7 @@ networks <- function(input, output, session, tweets){
 
   output$graph <- sigmajs::renderSigmajs({
 
-    req(input$colour, input$type, input$comentions)
+    req(input$colour)
 
     nodes <- graph()$nodes
     nodes <- .color_nodes(nodes , input$colour)
@@ -263,7 +289,7 @@ networks <- function(input, output, session, tweets){
       sigmajs::sg_force(slowDown = 5) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
-      sigmajs::sg_drag_nodes() %>% 
+      sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
       sigmajs::sg_settings(
         batchEdgesDrawing = TRUE,
@@ -301,13 +327,14 @@ networks <- function(input, output, session, tweets){
   })
 
   trend <- reactive({
+
    .get_trend <- function(x = "%Y-%m-%d"){
       tweets() %>%
         mutate(
           created_at = format(created_at, x)
         ) %>%
         count(created_at) %>%
-        pull(n) %>% 
+        pull(n) %>%
         list(
           trend = .,
           format = x
@@ -316,13 +343,13 @@ networks <- function(input, output, session, tweets){
 
     trend <- .get_trend()
 
-    if(length(trend) <= 4)
+    if(length(trend$trend) < 4)
       trend <- .get_trend("%Y-%m-%d %H")
 
-    if(length(trend) <= 1)
+    if(length(trend$trend) < 3)
       trend <- .get_trend("%Y-%m-%d %H:%M")
 
-    if(length(trend) <= 1)
+    if(length(trend$trend) < 2)
       trend <- .get_trend("%Y-%m-%d %H:%M:%S")
 
     return(trend)
@@ -413,10 +440,13 @@ networks <- function(input, output, session, tweets){
     shinyjs::toggle("searchOptions")
   })
 
-}
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste('chirp-', Sys.Date(), '.RData', sep='')
+    },
+    content = function(file) {
+      save(tweets, file = file)
+    }
+  )
 
-ui <- fluidPage(
-  actionButton("create", "create"),
-  actionButton("destroy", "destroy"),
-  verbatimTextOutput("data")
-)
+}

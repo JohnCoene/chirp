@@ -139,8 +139,8 @@ chirp <- function(){
   }
 
   options(
-    chirp_palette = palette, 
-    chirp_edge_color = edge_color, 
+    chirp_palette = palette,
+    chirp_edge_color = edge_color,
     chirp_font_family = font_family,
     rtweet_token = rtweet_token
   )
@@ -179,65 +179,80 @@ chirp <- function(){
         h2("Free, Open-Source Twitter Network Explorer."),
         br(),
         br(),
-        fluidRow(
-          column(
-            1, br(), actionButton("opts", "", icon = icon("plus"))
-          ),
-          column(
-            9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
-          ),
-          column(
-            2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
-          )
-        ),
-        div(
-          id = "options",
-          style = "display:none;",
-          h3("Options"),
-          fluidRow(
-            column(
-              4,
-              sliderInput(
-                "n",
-                label = "Number of tweets",
-                min = 500,
-                max = 15000,
-                value = 1000,
-                step = 100,
-                width = "100%"
+        tabsetPanel(
+          type = "tabs",
+          tabPanel(
+            "SEARCH",
+            fluidRow(
+              column(
+                1, br(), actionButton("opts", "", icon = icon("plus"))
+              ),
+              column(
+                9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
+              ),
+              column(
+                2, br(), actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
               )
             ),
-            column(
-              4, selectInput(
-                "type",
-                "Type",
-                choices = c(
-                  "Recent" = "recent",
-                  "Mixed" = "mixed",
-                  "Popular" = "popular"
+            div(
+              id = "options",
+              style = "display:none;",
+              h3("Options"),
+              fluidRow(
+                column(
+                  4,
+                  sliderInput(
+                    "n",
+                    label = "Number of tweets",
+                    min = 500,
+                    max = 15000,
+                    value = 1000,
+                    step = 100,
+                    width = "100%"
+                  )
                 ),
-                selected = "recent",
-                width = "100%"
-              )
-            ),
-            column(
-              4, checkboxInput(
-                "include_rts",
-                "Include retweets",
-                TRUE,
-                width = "100%"
+                column(
+                  4, selectInput(
+                    "type",
+                    "Type",
+                    choices = c(
+                      "Recent" = "recent",
+                      "Mixed" = "mixed",
+                      "Popular" = "popular"
+                    ),
+                    selected = "recent",
+                    width = "100%"
+                  )
+                ),
+                column(
+                  4, checkboxInput(
+                    "include_rts",
+                    "Include retweets",
+                    TRUE,
+                    width = "100%"
+                  )
+                )
+              ),
+              fluidRow(
+                column(
+                  4, textInput("longitude", "Longitude", value = "", width = "100%")
+                ),
+                column(
+                  4, textInput("latitude", "Latitude", value = "", width = "100%")
+                ),
+                column(
+                  4, textInput("radius", "Radius", value = "", width = "100%")
+                )
               )
             )
           ),
-          fluidRow(
-            column(
-              4, textInput("longitude", "Longitude", value = "", width = "100%")
-            ),
-            column(
-              4, textInput("latitude", "Latitude", value = "", width = "100%")
-            ),
-            column(
-              4, textInput("radius", "Radius", value = "", width = "100%")
+          tabPanel(
+            "LOAD",
+            fileInput(
+              "file",
+              label = "Choose file",
+              accept = ".RData",
+              placeholder = " No file selected"
             )
           )
         )
@@ -281,6 +296,7 @@ chirp <- function(){
       progress$set(message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), value = sample(seq(.1, .9, by = .1), 1))
 
       if(input$q != ""){
+
         tweets <- rtweet::search_tweets(
           input$q,
           n = input$n,
@@ -288,14 +304,22 @@ chirp <- function(){
           include_rts = input$include_rts,
           geocode = geocode,
           token = .get_token()
-        ) 
+        )
 
         showTab(inputId = "tabs", target = "NETWORKS")
         updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
-        callModule(networks, "networks", tweets = tweets)
       }
 
     })
+
+    observeEvent(input$file, {
+      tweets <- get(load(input$file$datapath))
+
+      showTab(inputId = "tabs", target = "NETWORKS")
+      updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+    })
+
+    callModule(networks, "networks", tweets = tweets)
 
   }
 
