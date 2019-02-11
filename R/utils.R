@@ -29,6 +29,10 @@ globalVariables(
   getOption("chirp_palette")
 }
 
+.get_discrete <- function(){
+  getOption("chirp_discrete")
+}
+
 .get_edge_color <- function(){
   getOption("chirp_edge_color")
 }
@@ -79,7 +83,7 @@ globalVariables(
   if(inherits(var, "factor") || inherits(var, "character")){
     var_unique <- unique(var)
     colors <- scales::col_factor(
-      .get_pal(), 
+      .get_discrete(), 
       var_unique
     )(var)
   } else {

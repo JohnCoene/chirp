@@ -74,6 +74,17 @@ chirp <- function(){
     palette <- settings[["style"]][["palette"]]
   }
 
+  if(!"discrete" %in% names(settings[["style"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No discrete palette set in _chirp.yml, setting to default discrete palette.\n"
+    )
+
+    discrete <- c("#E58606", "#5D69B1", "#52BCA3", "#99C945", "#CC61B0", "#24796C", "#DAA51B",
+                  "#2F8AC4", "#764E9F", "#ED645A", "#CC3A8E", "#A5AA99")
+  } else {
+    discrete <- settings[["style"]][["discrete"]]
+  }
+
   if(!"edges_color" %in% names(settings[["style"]])){
     cat(
       crayon::yellow(cli::symbol$warning), "No edges_color set in _chirp.yml, setting to default.\n"
@@ -147,6 +158,7 @@ chirp <- function(){
   }
 
   options(
+    chirp_discrete = discrete,
     chirp_palette = palette,
     chirp_edge_color = edge_color,
     chirp_font_family = font_family,

@@ -22,7 +22,8 @@ Imports:
 	reactrend,
 	graphTweets,
 	shinythemes,
-	twinetverse
+	twinetverse,
+	shinycustomloader
 Remotes: 
   JohnCoene/twinetverse,
   JohnCoene/graphTweets,

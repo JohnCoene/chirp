@@ -107,8 +107,12 @@ networks_ui <- function(id){
       )
     ),
     shinyjs::useShinyjs(),
-    htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:50px;"),
-    sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
+    htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
+    shinycustomloader::withLoader(
+      sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
+      type = "html",
+      loader = "loader9"
+    ),
     div(
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
@@ -117,7 +121,7 @@ networks_ui <- function(id){
       br(),
       fluidRow(
         column(
-          6,
+          7,
           selectInput(
             ns("network"),
             "NETWORK TYPE",
@@ -129,7 +133,13 @@ networks_ui <- function(id){
           )
         ),
         column(
-          6, selectInput(ns("colour"), "Colour", choices = c("cluster", "size"), selected = "cluster")
+          5, 
+          selectInput(
+            ns("colour"), 
+            "Colour", 
+            choices = c("Cluster" = "cluster", "Size" = "size"), 
+            selected = "cluster"
+          )
         )
       ),
       conditionalPanel(
@@ -151,7 +161,8 @@ networks_ui <- function(id){
           4,
           conditionalPanel(
             "input['networks-network'] != 'retweet_screen_name'",
-            checkboxInput(ns("include_retweets"), 
+            checkboxInput(
+              ns("include_retweets"), 
               "RTs",
               value = TRUE
             )
@@ -326,9 +337,10 @@ networks <- function(input, output, session, dat){
     sigmajs::sigmajs() %>%
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(edges, id, source, target, type, weight) %>%
-      sigmajs::sg_force(slowDown = 5) %>%
+      sigmajs::sg_force(slowDown = 4) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
+      sigmajs::sg_layout() %>% 
       sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
       sigmajs::sg_settings(
