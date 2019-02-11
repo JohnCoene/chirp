@@ -183,6 +183,7 @@ networks_ui <- function(id){
 networks <- function(input, output, session, dat){
 
   tweets <- reactiveVal(dat)
+  session$sendCustomMessage("done", "")
 
   observeEvent(input$submit, {
     geocode <- NULL

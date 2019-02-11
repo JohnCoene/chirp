@@ -104,11 +104,19 @@ chirp <- function(){
     ),
     tags$link(
       href = "chirp-assets/custom.css",
-      rel="stylesheet",
-      type="text/css"
+      rel = "stylesheet",
+      type = "text/css"
     ),
     tags$script(
       src = "chirp-assets/pushbar.js"
+    ),
+    tags$link(
+      href = "chirp-assets/please-wait.css",
+      rel = "stylesheet",
+      type = "text/css"
+    ),
+    tags$script(
+      src = "chirp-assets/please-wait.min.js"
     ),
     tags$script(
       src = "chirp-assets/custom.js"
@@ -296,14 +304,11 @@ chirp <- function(){
         ))
       }
 
-      progress <- shiny::Progress$new()
-      on.exit(progress$close())
-      progress$set(
-        message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"),
-        value = sample(seq(.1, .9, by = .1), 1)
-      )
-
       if(input$q != ""){
+        session$sendCustomMessage(
+          "loading", 
+          paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
+        )
 
         tweets <- rtweet::search_tweets(
           input$q,
@@ -326,6 +331,7 @@ chirp <- function(){
       file <- input$file
 
       if (!is.null(file)){
+        session$sendCustomMessage("loading", "Loading file...")
         tweets <- get(load(file$datapath))
 
         showTab(inputId = "tabs", target = "NETWORKS")
