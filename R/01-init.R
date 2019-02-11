@@ -1,6 +1,6 @@
 #' Initialise
 #'
-#' Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.
+#' Create a \code{_chirp.yml} file in the current working directory.
 #'
 #' @param edit Whether to open the file for edit.
 #'
@@ -12,12 +12,11 @@
 #' @export
 build_nest <- function(edit = interactive()){
 
-  dir <- "www"
   config <- "_chirp.yml"
 
   if(file.exists(config)){
     cat(
-      crayon::red(cli::symbol$cross), " The configuration file,", crayon::underline(config), " already exists.\n",
+      crayon::red(cli::symbol$cross), " The configuration file,", config, " already exists.\n",
       sep = ""
     )
 

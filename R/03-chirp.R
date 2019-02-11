@@ -281,7 +281,9 @@ chirp <- function(){
       if(input$q == ""){
         showModal(modalDialog(
           title = "No search entered!",
-          "Enter a search\nCan include boolean operators such as 'OR' and 'AND',",
+          "Enter a search",
+          br(),
+          "Can include boolean operators such as 'OR' and 'AND',",
           "visit the", 
           tags$a(
             "official documentation",

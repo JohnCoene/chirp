@@ -3,6 +3,7 @@
 export(build_nest)
 export(check_nest)
 export(chirp)
+export(fly)
 import(dplyr)
 import(graphTweets)
 import(shiny)

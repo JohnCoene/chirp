@@ -10,5 +10,5 @@ build_nest(edit = interactive())
 \item{edit}{Whether to open the file for edit.}
 }
 \description{
-Create a \code{_chirp.yml} file as well as \code{www} folder in the current working directory.
+Create a \code{_chirp.yml} file in the current working directory.
 }

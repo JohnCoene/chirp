@@ -153,9 +153,13 @@ networks_ui <- function(id){
       h4("Stats"),
       uiOutput(ns("trend_text")),
       reactrend::reactrendOutput(ns("trendline"), width = "100%"),
-      uiOutput(ns("n_nodes")),
-      uiOutput(ns("n_edges")),
-      br(),
+      fluidRow(
+        column(6, uiOutput(ns("n_nodes"))),
+        column(6, uiOutput(ns("n_edges")))
+      ),
+      fluidRow(
+        column(6, uiOutput(ns("n_tweets")))
+      ),
       h4("Export"),
       fluidRow(
         column(
@@ -189,7 +193,9 @@ networks <- function(input, output, session, dat){
     if(input$q == ""){
       showModal(modalDialog(
         title = "No search entered!",
-        "Enter a search\nCan include boolean operators such as 'OR' and 'AND',",
+        "Enter a search",
+        br(),
+        "Can include boolean operators such as 'OR' and 'AND',",
         "visit the", 
         tags$a(
           "official documentation",
@@ -396,6 +402,16 @@ networks <- function(input, output, session, dat){
       strong("Edges:"),
       prettyNum(
         nrow(graph()$edges),
+        big.mark = ","
+      )
+    )
+  })
+
+  output$n_tweets <- renderUI({
+    p(
+      strong("Tweets:"),
+      prettyNum(
+        nrow(tweets()),
         big.mark = ","
       )
     )
