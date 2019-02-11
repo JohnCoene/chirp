@@ -129,7 +129,7 @@ networks_ui <- function(id){
           )
         ),
         column(
-          6, uiOutput(ns("color"))
+          6, selectInput(ns("colour"), "Colour", choices = c("cluster", "size"), selected = "cluster")
         )
       ),
       conditionalPanel(
@@ -140,7 +140,24 @@ networks_ui <- function(id){
           width = "100%"
         )
       ),
-      checkboxInput(ns("delete_nodes"), "DELETE NODES", value = FALSE),
+      fluidRow(
+        column(
+          8,
+          checkboxInput(ns("delete_nodes"), 
+          "DELETE NODES", value = FALSE
+          )
+        ),
+        column(
+          4,
+          conditionalPanel(
+            "input['networks-network'] != 'retweet_screen_name'",
+            checkboxInput(ns("include_retweets"), 
+              "RTs",
+              value = TRUE
+            )
+          )
+        )
+      ),
       fluidRow(
         column(
           6, actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram"))
@@ -257,10 +274,13 @@ networks <- function(input, output, session, dat){
 
   graph <- reactive({
 
+    tw <- tweets()  %>% 
+      filter(is_retweet %in% c(FALSE, input$include_retweets))
+
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
-      edges <- tweets() %>% gt_co_edges(!!sym(input$network))
+      edges <- tw %>% gt_co_edges(!!sym(input$network))
     else
-      edges <- tweets() %>% gt_edges(screen_name, !!sym(input$network))
+      edges <- tw %>% gt_edges(screen_name, !!sym(input$network))
 
     graph <- edges %>%
       gt_nodes() %>%
@@ -279,6 +299,13 @@ networks <- function(input, output, session, dat){
         size = scales::rescale(size, to = c(1, 15))
       )
 
+    nodes <- sigmajs::sg_get_cluster(nodes, edges) %>%
+      mutate(
+        cluster = grp
+      ) %>%  
+      select(-grp) %>% 
+      select(-color)
+
     session$sendCustomMessage("unload", "") # stop loading
 
     list(
@@ -288,25 +315,17 @@ networks <- function(input, output, session, dat){
 
   })
 
-  output$color <- renderUI({
-    ns <- session$ns
-
-    choices <- colnames(graph()$nodes)
-    choices <- choices[!choices %in% c("id", "label")]
-
-    selectInput(ns("colour"), "Colour", choices = choices, selected = "size")
-  })
-
   output$graph <- sigmajs::renderSigmajs({
 
-    req(input$colour)
+    g <- graph()
 
-    nodes <- graph()$nodes
+    nodes <- g$nodes
     nodes <- .color_nodes(nodes , input$colour)
+    edges <- g$edges
 
     sigmajs::sigmajs() %>%
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
-      sigmajs::sg_edges(graph()$edges, id, source, target, type, weight) %>%
+      sigmajs::sg_edges(edges, id, source, target, type, weight) %>%
       sigmajs::sg_force(slowDown = 5) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
@@ -328,6 +347,7 @@ networks <- function(input, output, session, dat){
 
     if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
       tweets() %>%
+        filter(is_retweet %in% c(FALSE, input$include_retweets)) %>% 
         select(
           status_id,
           screen_name,
@@ -351,6 +371,7 @@ networks <- function(input, output, session, dat){
 
    .get_trend <- function(x = "%Y-%m-%d"){
       tweets() %>%
+        filter(is_retweet %in% c(FALSE, input$include_retweets)) %>% 
         mutate(
           created_at = format(created_at, x)
         ) %>%
@@ -416,7 +437,7 @@ networks <- function(input, output, session, dat){
     p(
       strong("Tweets:"),
       prettyNum(
-        nrow(tweets()),
+        nrow(tweets() %>% filter(is_retweet %in% c(FALSE, input$include_retweets))),
         big.mark = ","
       )
     )
@@ -454,13 +475,18 @@ networks <- function(input, output, session, dat){
 
   })
 
+  notification <- NULL
   observeEvent(input$delete_nodes, {
     if(isTRUE(input$delete_nodes)){
-      showNotification(
+      notification <<- showNotification(
         "Click a node to delete it.",
         duration = NULL,
-        type = "error"
+        type = "error",
+        closeButton = FALSE
       )
+    } else {
+      if (!is.null(notification)) removeNotification(notification)
+      notification <<- NULL
     }
   })
 
@@ -476,7 +502,7 @@ networks <- function(input, output, session, dat){
       paste('chirp-', Sys.Date(), '.RData', sep='')
     },
     content = function(file) {
-      tw <- tweets()
+      tw <- tweets() 
       save(tw, file = file)
     }
   )

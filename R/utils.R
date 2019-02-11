@@ -6,6 +6,7 @@ globalVariables(
     "rtweet_token",
     "screen_name",
     "created_at",
+    "is_retweet",
     "status_id",
     "target",
     "tweets",
@@ -14,6 +15,7 @@ globalVariables(
     "label",
     "size",
     "type",
+    "grp",
     "v2",
     "."
   )
