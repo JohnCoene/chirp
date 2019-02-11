@@ -195,7 +195,13 @@ chirp <- function(){
               column(
                 2,
                 br(),
-                actionButton("submit", "Search", icon = icon("search"), width = "100%", class = "btn btn-primary")
+                actionButton(
+                  "submit", 
+                  "Search", 
+                  icon = icon("search"), 
+                  width = "100%", 
+                  class = "btn btn-primary"
+                )
               )
             ),
             div(
@@ -306,7 +312,7 @@ chirp <- function(){
 
       if(input$q != ""){
         session$sendCustomMessage(
-          "loading", 
+          "load", 
           paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
         )
 
@@ -331,7 +337,10 @@ chirp <- function(){
       file <- input$file
 
       if (!is.null(file)){
-        session$sendCustomMessage("loading", "Loading file...")
+        session$sendCustomMessage(
+          "load", 
+          "Loading file..."
+        )
         tweets <- get(load(file$datapath))
 
         showTab(inputId = "tabs", target = "NETWORKS")

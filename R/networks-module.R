@@ -183,7 +183,6 @@ networks_ui <- function(id){
 networks <- function(input, output, session, dat){
 
   tweets <- reactiveVal(dat)
-  session$sendCustomMessage("done", "")
 
   observeEvent(input$submit, {
     geocode <- NULL
@@ -209,14 +208,13 @@ networks <- function(input, output, session, dat){
       ))
     }
 
-    progress <- shiny::Progress$new()
-    on.exit(progress$close())
-    progress$set(
-      message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), 
-      value = sample(seq(.1, .9, by = .1), 1)
-    )
-
     if(input$q != ""){
+
+      session$sendCustomMessage(
+        "load", 
+        paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
+      )
+
       tw <- rtweet::search_tweets(
         input$q,
         n = input$n,
@@ -231,6 +229,10 @@ networks <- function(input, output, session, dat){
   })
 
   observeEvent(input$file, {
+    session$sendCustomMessage(
+      "load", 
+      "Loading file..."
+    )
     tw <- get(load(input$file$datapath))
     tweets(tw)
   })
@@ -276,6 +278,8 @@ networks <- function(input, output, session, dat){
       mutate(
         size = scales::rescale(size, to = c(1, 15))
       )
+
+    session$sendCustomMessage("unload", "") # stop loading
 
     list(
       nodes = nodes,
