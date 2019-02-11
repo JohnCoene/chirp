@@ -281,7 +281,14 @@ chirp <- function(){
       if(input$q == ""){
         showModal(modalDialog(
           title = "No search entered!",
-          "Enter a search\nCan include boolean operators such as 'OR' and 'AND'.",
+          "Enter a search\nCan include boolean operators such as 'OR' and 'AND',",
+          "visit the", 
+          tags$a(
+            "official documentation",
+            href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
+            target = "_blank"
+          ),
+          "for more details.",
           easyClose = TRUE,
           footer = NULL
         ))
@@ -307,18 +314,24 @@ chirp <- function(){
 
         showTab(inputId = "tabs", target = "NETWORKS")
         updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+        callModule(networks, "networks", dat = tweets)
       }
 
     })
 
     observeEvent(input$file, {
-      tweets <- get(load(input$file$datapath))
 
-      showTab(inputId = "tabs", target = "NETWORKS")
-      updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+      file <- input$file
+
+      if (!is.null(file)){
+        tweets <- get(load(file$datapath))
+
+        showTab(inputId = "tabs", target = "NETWORKS")
+        updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+        callModule(networks, "networks", dat = tweets)
+      }
+
     })
-
-    callModule(networks, "networks", tweets = tweets)
 
   }
 

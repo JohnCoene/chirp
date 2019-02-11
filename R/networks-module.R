@@ -176,9 +176,9 @@ networks_ui <- function(id){
 
 }
 
-networks <- function(input, output, session, tweets){
+networks <- function(input, output, session, dat){
 
-  tweets <- reactiveVal(tweets)
+  tweets <- reactiveVal(dat)
 
   observeEvent(input$submit, {
     geocode <- NULL
@@ -189,7 +189,14 @@ networks <- function(input, output, session, tweets){
     if(input$q == ""){
       showModal(modalDialog(
         title = "No search entered!",
-        "Enter a search\nCan include boolean operators such as 'OR' and 'AND'.",
+        "Enter a search\nCan include boolean operators such as 'OR' and 'AND',",
+        "visit the", 
+        tags$a(
+          "official documentation",
+          href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
+          target = "_blank"
+        ),
+        "for more details.",
         easyClose = TRUE,
         footer = NULL
       ))
@@ -197,7 +204,10 @@ networks <- function(input, output, session, tweets){
 
     progress <- shiny::Progress$new()
     on.exit(progress$close())
-    progress$set(message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), value = sample(seq(.1, .9, by = .1), 1))
+    progress$set(
+      message = paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets"), 
+      value = sample(seq(.1, .9, by = .1), 1)
+    )
 
     if(input$q != ""){
       tw <- rtweet::search_tweets(
@@ -445,7 +455,8 @@ networks <- function(input, output, session, tweets){
       paste('chirp-', Sys.Date(), '.RData', sep='')
     },
     content = function(file) {
-      save(tweets, file = file)
+      tw <- tweets()
+      save(tw, file = file)
     }
   )
 
