@@ -4,6 +4,7 @@
 #'
 #' @param edit Whether to open the file for edit.
 #'
+#' @import tippy
 #' @import shiny
 #' @import dplyr
 #' @import graphTweets

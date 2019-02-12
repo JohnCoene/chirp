@@ -199,10 +199,15 @@ chirp <- function(){
             "SEARCH",
             fluidRow(
               column(
-                1, br(), actionButton("opts", "", icon = icon("plus"))
+                1, 
+								br(), 
+								actionButton("opts", "", icon = icon("plus")),
+								tippy_this("opts", "More options")
               ),
               column(
-                9, textInput("q", "", width = "100%", placeholder = "Enter your search query here.")
+                9, 
+								textInput("q", "", width = "100%", placeholder = "Enter your search query here."),
+								tippy_this("q", "Your search query")
               ),
               column(
                 2,
@@ -231,10 +236,12 @@ chirp <- function(){
                     value = 1000,
                     step = 100,
                     width = "100%"
-                  )
+                  ),
+									tippy_this("n", "Number of tweets to fetch")
                 ),
                 column(
-                  4, selectInput(
+                  4, 
+									selectInput(
                     "type",
                     "Type",
                     choices = c(
@@ -244,15 +251,18 @@ chirp <- function(){
                     ),
                     selected = "recent",
                     width = "100%"
-                  )
+                  ),
+									tippy_this("type", "Type of tweets to fetch")
                 ),
                 column(
-                  4, checkboxInput(
+                  4, 
+									checkboxInput(
                     "include_rts",
                     "Include retweets",
                     TRUE,
                     width = "100%"
-                  )
+                  ),
+									tippy_this("include_rts", "Whether to include retweets")
                 )
               ),
               fluidRow(

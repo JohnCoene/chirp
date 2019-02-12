@@ -8,7 +8,7 @@ networks_ui <- function(id){
       onclick = "pushbar.open('save_pushbar');",
       class = "btn btn-primary",
       `data-pushbar-target` = "save_pushbar",
-      id = "opts"
+      id = "optsBtn"
     ),
     tags$a(
       icon("search", class = "fa-lg"),
@@ -33,6 +33,7 @@ networks_ui <- function(id){
             width = "100%",
             placeholder = "Query"
           ),
+					tippy_this(ns("q"), "Your search query"),
           fluidRow(
             column(
               4,
@@ -117,7 +118,7 @@ networks_ui <- function(id){
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
       class = "pushbar from_right",
-      h3("Options"),
+      h3("OPTIONS"),
       br(),
       fluidRow(
         column(
@@ -136,7 +137,7 @@ networks_ui <- function(id){
           5, 
           selectInput(
             ns("colour"), 
-            "Colour", 
+            "COLOUR", 
             choices = c("Cluster" = "cluster", "Size" = "size"), 
             selected = "cluster"
           )
@@ -150,6 +151,7 @@ networks_ui <- function(id){
           width = "100%"
         )
       ),
+			h4("FILTER"),
       fluidRow(
         column(
           8,
@@ -169,16 +171,17 @@ networks_ui <- function(id){
           )
         )
       ),
+			uiOutput(ns("filterNodes")),
+			h4("LAYOUT"),
       fluidRow(
         column(
-          6, actionButton(ns("start_layout"), "START LAYOUT", icon = icon("project-diagram"))
+          6, actionButton(ns("start_layout"), "START", icon = icon("project-diagram"))
         ),
         column(
-          6, actionButton(ns("kill_layout"), "STOP LAYOUT", icon = icon("heartbeat"))
+          6, actionButton(ns("kill_layout"), "STOP", icon = icon("heartbeat"))
         )
       ),
-      br(),
-      h4("Stats"),
+      h4("STATS"),
       uiOutput(ns("trend_text")),
       reactrend::reactrendOutput(ns("trendline"), width = "100%"),
       fluidRow(
@@ -188,7 +191,7 @@ networks_ui <- function(id){
       fluidRow(
         column(6, uiOutput(ns("n_tweets")))
       ),
-      h4("Export"),
+      h4("EXPORT"),
       fluidRow(
         column(
           6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
@@ -252,6 +255,7 @@ networks <- function(input, output, session, dat){
         token = .get_token()
       )
       tweets(tw)
+			session$sendCustomMessage("unload", "") # stop loading
     }
 
   })
@@ -263,6 +267,7 @@ networks <- function(input, output, session, dat){
     )
     tw <- get(load(input$file$datapath))
     tweets(tw)
+		session$sendCustomMessage("unload", "") # stop loading
   })
 
   shinyjs::hide("save_el")
@@ -317,7 +322,7 @@ networks <- function(input, output, session, dat){
       select(-grp) %>% 
       select(-color)
 
-    session$sendCustomMessage("unload", "") # stop loading
+		session$sendCustomMessage("unload", "") # stop loading
 
     list(
       nodes = nodes,
@@ -518,5 +523,27 @@ networks <- function(input, output, session, dat){
       save(tw, file = file)
     }
   )
+
+	output$filterNodes <- renderUI({
+
+		ns <- session$ns
+
+		sliderInput(
+			ns("filterNodesOut"), 
+			"Filter nodes by size", 
+			value = 0, 
+			min = min(graph()$nodes$size) - 1, 
+			max = max(graph()$nodes$size)
+		)
+
+	})
+
+  observeEvent(input$filterNodesOut, {
+
+		ns <- session$ns
+
+    sigmajs::sigmajsProxy(ns("graph")) %>% 
+      sigmajs::sg_filter_gt_p(input$filterNodesOut, "size")
+  })
 
 }
