@@ -324,7 +324,7 @@ networks <- function(input, output, session, dat){
     edges <- twinetverse::edges2sg(graph$edges) %>%
       mutate(
         type = "arrow",
-        weight = size
+        size = scales::rescale(size, to = c(2, 20))
       )
 
     nodes <- twinetverse::nodes2sg(graph$nodes)
@@ -360,7 +360,7 @@ networks <- function(input, output, session, dat){
 
     sigmajs::sigmajs() %>%
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
-      sigmajs::sg_edges(edges, id, source, target, type, weight) %>%
+      sigmajs::sg_edges(edges, id, source, target, type, size) %>%
       sigmajs::sg_force(slowDown = 4) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%

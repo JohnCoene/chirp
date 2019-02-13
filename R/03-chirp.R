@@ -190,7 +190,8 @@ chirp <- function(){
         #   src = "chirp-assets/logo.png",
         #   alt = "chirp"
         # ),
-        h2("Free, Open-Source Twitter Network Explorer."),
+        h1("/tʃɜː(r)p/", class = "center"),
+        h3("Free, Open-Source Twitter Network Explorer.", class = "center"),
         br(),
         br(),
         tabsetPanel(
