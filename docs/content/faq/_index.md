@@ -6,13 +6,13 @@ description = "Asked and Answered"
 
 ## Why Chirp?
 
-Social Media is a data gold mine, however analytics platform of the latter tend to be rather poor. They usually take an inadequate approach and 
+Social Media is a data gold mine, however analytics platform of the latter tend to be rather poor. They usually take an inadequate approach to understanding social networks. Moreover most such services are not free.
+
+While most services look at how your own timeline "performs" by presenting you with various aggregate metrics, Chirp shows you how user interact when discussing a particular topic or how information spreads throughout the social network.
 
 ## Why use networks?
 
-With over 15 years of web development experience under the belt, we can assure you that Nav Bars and all other sorts of navigational elements are always faster and easier to build for a project from scratch than to modify, customize and rebuild an existing solution.
-
-Each and every project has its unique navigational needs and often requires more of a custom approach. Vast experience shows that writing code for navigation from ground up is less time-consuming and more efficient, than tweaking and creating the navigation based on a boilerplate solution.
+Because Twitter is a network; information on the network is much more insightful when represented as such.
 
 ## What are the network type?
 

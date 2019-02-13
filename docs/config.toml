@@ -4,6 +4,10 @@ title = "/tʃɜː(r)p/"
 theme = "kube"
 description = "/tʃɜː(r)p/ (chirp) is a free, open-source Twitter network collection and visualisation tool"
 Paginate = 4
+
+pygmentsCodeFences = true
+pygmentsStyle = "friendly"
+
 [Params]
   RSSLink = "/index.xml"
   author = "John Coene" # add your company name
