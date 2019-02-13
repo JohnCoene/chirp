@@ -29,6 +29,16 @@ body.pg-loaded > .inner {
   display: block;
 }
 
+#closeOpts{
+  right:-50px;
+  position:relative;
+}
+
+#closeSearch{
+  bottom:20px;
+  left:20px;
+  position:absolute;
+}
 /* Loading */
 
 .sk-chasing-dots {

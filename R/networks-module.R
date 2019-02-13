@@ -67,6 +67,7 @@ networks_ui <- function(id){
               step = 100,
               width = "100%"
             ),
+            tippy_this(ns("n"), "Number of tweets to fetch"),
             selectInput(
               ns("type"),
               "Type",
@@ -78,12 +79,14 @@ networks_ui <- function(id){
               selected = "recent",
               width = "100%"
             ),
+            tippy_this(ns("type"), "Type of tweets to fetch"),
             checkboxInput(
               ns("include_rts"),
               "Include retweets",
               TRUE,
               width = "100%"
             ),
+            tippy_this(ns("include_rts"), "Whether to include retweets"),
             textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
             textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
             textInput(ns("radius"), "Radius", value = "", width = "100%")
@@ -95,16 +98,16 @@ networks_ui <- function(id){
           br(),
           fileInput(
             ns("file"),
-            label = "Choose file",
-            accept = ".RData",
+            label = "Choose an .RData file",
+            accept = c(".RData", ".rdata"),
             placeholder = " No file selected",
             width = "100%"
           )
         )
       ),
       tags$a(
-        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
-        style = "bottom:20px;left:20px;position:absolute;"
+        id = "closeSearch",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
       )
     ),
     shinyjs::useShinyjs(),
@@ -118,7 +121,7 @@ networks_ui <- function(id){
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
       class = "pushbar from_right",
-      h3("OPTIONS"),
+      h4("OPTIONS"),
       br(),
       fluidRow(
         column(
@@ -131,7 +134,8 @@ networks_ui <- function(id){
               "Hashtags" = "hashtags",
               "Conversations" = "mentions_screen_name"
             )
-          )
+          ),
+          tippy_this(ns("network"), "Type of network to draw")
         ),
         column(
           5, 
@@ -140,7 +144,8 @@ networks_ui <- function(id){
             "COLOUR", 
             choices = c("Cluster" = "cluster", "Size" = "size"), 
             selected = "cluster"
-          )
+          ),
+          tippy_this(ns("colour"), "Variable to colour nodes")
         )
       ),
       conditionalPanel(
@@ -151,13 +156,15 @@ networks_ui <- function(id){
           width = "100%"
         )
       ),
-			h4("FILTER"),
+			h5("FILTER"),
       fluidRow(
         column(
           8,
-          checkboxInput(ns("delete_nodes"), 
+          checkboxInput(
+            ns("delete_nodes"), 
           "DELETE NODES", value = FALSE
-          )
+          ),
+          tippy_this(ns("delete_nodes"), "Tick and click on nodes to delete them")
         ),
         column(
           4,
@@ -172,16 +179,28 @@ networks_ui <- function(id){
         )
       ),
 			uiOutput(ns("filterNodes")),
-			h4("LAYOUT"),
+			h5("LAYOUT"),
       fluidRow(
         column(
-          6, actionButton(ns("start_layout"), "START", icon = icon("project-diagram"))
+          6, 
+          actionButton(
+            ns("start_layout"), 
+            "START", 
+            icon = icon("play"),
+            width = "100%"
+          )
         ),
         column(
-          6, actionButton(ns("kill_layout"), "STOP", icon = icon("heartbeat"))
+          6, 
+          actionButton(
+            ns("kill_layout"), "
+            STOP", 
+            icon = icon("stop"),
+            width = "100%"
+          )
         )
       ),
-      h4("STATS"),
+      h5("STATS"),
       uiOutput(ns("trend_text")),
       reactrend::reactrendOutput(ns("trendline"), width = "100%"),
       fluidRow(
@@ -191,7 +210,7 @@ networks_ui <- function(id){
       fluidRow(
         column(6, uiOutput(ns("n_tweets")))
       ),
-      h4("EXPORT"),
+      h5("EXPORT"),
       fluidRow(
         column(
           6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
@@ -203,8 +222,8 @@ networks_ui <- function(id){
       br(),
       downloadButton(ns("downloadData"), "DOWNLOAD DATA", width = "100%"),
       tags$a(
-        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger",
-        style = "bottom:20px;right:20px;position:absolute;"
+        id = "closeOpts",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
       )
     )
   )

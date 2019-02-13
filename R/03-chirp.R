@@ -282,8 +282,8 @@ chirp <- function(){
             "LOAD",
             fileInput(
               "file",
-              label = "Choose file",
-              accept = ".RData",
+              label = "Choose an .RData file",
+              accept = c(".RData", ".rdata"),
               placeholder = " No file selected"
             )
           )
