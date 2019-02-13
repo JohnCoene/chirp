@@ -49,7 +49,7 @@ Now that Chirp is installed you can work on setting up the platform. It's very e
 
 1. `build_nest` - Initialise Chirp.
 2. `check_nest` - Check that everything is OK.
-3. `chirp` - Launch Chirp
+3. `chirp` - Launch Chirp.
 4. `fly` - Convenience function for deployment.
 
 <h3 class="section-head" id="init"><a href="#init">Initialise</a></h3>
