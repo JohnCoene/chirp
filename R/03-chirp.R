@@ -157,10 +157,6 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
-  particles_json <- jsonlite::fromJSON(
-    system.file("assets/particles.json", package = "chirp")
-  )
-
   options(
     chirp_discrete = discrete,
     chirp_palette = palette,
@@ -170,6 +166,13 @@ chirp <- function(){
   )
 
   ui <- navbarPage(
+    title = div(
+      img(
+        src = "chirp-assets/logo.png",
+        height="28",
+        style = "margin-right: 25px;"
+      )
+    ),
     fluid = TRUE,
     inverse = inverse,
     windowTitle = "chirp",
@@ -179,120 +182,110 @@ chirp <- function(){
     tabPanel(
       "HOME",
       shinyjs::useShinyjs(),
-      shinyparticles::particles(config = particles_json, target_id = "particles-target", element_id = "particles"),
       div(
-        style = "position:relative;width:100%;height: 100vh;",
-        div(
-          id = "particles-target",
-          style = "position:absolute;top:0;bottom:0;right:0;left:0;z-index:-1;"
-        ),
-        div(
-          class = "container",
-          style = "z-index:99",
-          # img(
-          #   width = "10%",
-          #   src = "chirp-assets/logo.png",
-          #   alt = "chirp"
-          # ),
-          br(),
-          br(),
-          h1("/tʃɜː(r)p/", class = "center"),
-          h4("Free, Open-Source Twitter Network Explorer.", class = "center"),
-          br(),
-          br(),
-          tabsetPanel(
-            type = "tabs",
-            tabPanel(
-              "SEARCH",
-              fluidRow(
-                column(
-                  1, 
-                  br(), 
-                  actionButton("opts", "", icon = icon("plus")),
-                  tippy_this("opts", "More options")
-                ),
-                column(
-                  9, 
-                  textInput("q", "", width = "100%", placeholder = "Enter your search query here."),
-                  tippy_this("q", "Your search query")
-                ),
-                column(
-                  2,
-                  br(),
-                  actionButton(
-                    "submit", 
-                    "Search", 
-                    icon = icon("search"), 
-                    width = "100%", 
-                    class = "btn btn-primary"
-                  )
-                )
+        class = "container",
+        style = "min-height:90vh;",
+        # img(
+        #   width = "10%",
+        #   src = "chirp-assets/logo.png",
+        #   alt = "chirp"
+        # ),
+        h1("/tʃɜː(r)p/", class = "center"),
+        h3("Free, Open-Source Twitter Network Explorer.", class = "center"),
+        br(),
+        br(),
+        tabsetPanel(
+          type = "tabs",
+          tabPanel(
+            "SEARCH",
+            fluidRow(
+              column(
+                1, 
+								br(), 
+								actionButton("opts", "", icon = icon("plus")),
+								tippy_this("opts", "More options")
               ),
-              div(
-                id = "options",
-                style = "display:none;background-color:rgba(255,255,255,0.5);",
-                h3("Options"),
-                fluidRow(
-                  column(
-                    4,
-                    sliderInput(
-                      "n",
-                      label = "Number of tweets",
-                      min = 500,
-                      max = 15000,
-                      value = 1000,
-                      step = 100,
-                      width = "100%"
-                    ),
-                    tippy_this("n", "Number of tweets to fetch")
-                  ),
-                  column(
-                    4, 
-                    selectInput(
-                      "type",
-                      "Type",
-                      choices = c(
-                        "Recent" = "recent",
-                        "Mixed" = "mixed",
-                        "Popular" = "popular"
-                      ),
-                      selected = "recent",
-                      width = "100%"
-                    ),
-                    tippy_this("type", "Type of tweets to fetch")
-                  ),
-                  column(
-                    4, 
-                    checkboxInput(
-                      "include_rts",
-                      "Include retweets",
-                      TRUE,
-                      width = "100%"
-                    ),
-                    tippy_this("include_rts", "Whether to include retweets")
-                  )
-                ),
-                fluidRow(
-                  column(
-                    4, textInput("longitude", "Longitude", value = "", width = "100%")
-                  ),
-                  column(
-                    4, textInput("latitude", "Latitude", value = "", width = "100%")
-                  ),
-                  column(
-                    4, textInput("radius", "Radius", value = "", width = "100%")
-                  )
+              column(
+                9, 
+								textInput("q", "", width = "100%", placeholder = "Enter your search query here."),
+								tippy_this("q", "Your search query")
+              ),
+              column(
+                2,
+                br(),
+                actionButton(
+                  "submit", 
+                  "Search", 
+                  icon = icon("search"), 
+                  width = "100%", 
+                  class = "btn btn-primary"
                 )
               )
             ),
-            tabPanel(
-              "LOAD",
-              fileInput(
-                "file",
-                label = "Choose an .RData file",
-                accept = c(".RData", ".rdata"),
-                placeholder = " No file selected"
+            div(
+              id = "options",
+              style = "display:none;",
+              h3("Options"),
+              fluidRow(
+                column(
+                  4,
+                  sliderInput(
+                    "n",
+                    label = "Number of tweets",
+                    min = 500,
+                    max = 15000,
+                    value = 1000,
+                    step = 100,
+                    width = "100%"
+                  ),
+									tippy_this("n", "Number of tweets to fetch")
+                ),
+                column(
+                  4, 
+									selectInput(
+                    "type",
+                    "Type",
+                    choices = c(
+                      "Recent" = "recent",
+                      "Mixed" = "mixed",
+                      "Popular" = "popular"
+                    ),
+                    selected = "recent",
+                    width = "100%"
+                  ),
+									tippy_this("type", "Type of tweets to fetch")
+                ),
+                column(
+                  4, 
+									checkboxInput(
+                    "include_rts",
+                    "Include retweets",
+                    TRUE,
+                    width = "100%"
+                  ),
+									tippy_this("include_rts", "Whether to include retweets")
+                )
+              ),
+              fluidRow(
+                column(
+                  4, textInput("longitude", "Longitude", value = "", width = "100%")
+                ),
+                column(
+                  4, textInput("latitude", "Latitude", value = "", width = "100%")
+                ),
+                column(
+                  4, textInput("radius", "Radius", value = "", width = "100%")
+                )
               )
+            )
+          ),
+          tabPanel(
+            "LOAD",
+            fileInput(
+              "file",
+              label = "Choose an .RData file",
+              accept = c(".RData", ".rdata"),
+              placeholder = " No file selected"
             )
           )
         )

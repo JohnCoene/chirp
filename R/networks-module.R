@@ -213,10 +213,10 @@ networks_ui <- function(id){
       h5("EXPORT"),
       fluidRow(
         column(
-          6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"), width = "100%")
+          6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
         ),
         column(
-          6, actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"), width = "100%")
+          6, actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"))
         )
       ),
       br(),

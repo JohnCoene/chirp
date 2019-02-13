@@ -20,15 +20,12 @@ Imports:
 	crayon,
 	sigmajs,
 	shinyjs,
-	jsonlite,
 	reactrend,
 	graphTweets,
 	shinythemes,
 	twinetverse,
-	shinyparticles,
 	shinycustomloader
 Remotes: 
-	JohnCoene/reactrend,
   JohnCoene/twinetverse,
   JohnCoene/graphTweets,
-	dreamRs/shinyparticles
+  JohnCoene/reactrend
