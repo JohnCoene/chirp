@@ -358,7 +358,7 @@ networks <- function(input, output, session, dat){
     nodes <- .color_nodes(nodes , input$colour)
     edges <- g$edges
 
-    sigmajs::sigmajs() %>%
+    sigmajs::sigmajs(type = "webgl") %>%
       sigmajs::sg_nodes(nodes, id, label, size, color) %>%
       sigmajs::sg_edges(edges, id, source, target, type, size) %>%
       sigmajs::sg_force(slowDown = 4) %>%

@@ -17,10 +17,21 @@ chirp <- function(){
   settings <- yaml::read_yaml(file)
 
   if(length(settings$credentials) == 0){
-    cat(
-      crayon::red(cli::symbol$cross), "No credentials in", file, "\n"
-    )
-    return(NULL)
+
+    rtweet_token <- tryCatch(rtweet::get_token(), error = function(e) NULL)
+
+    if(!is.null(rtweet_token)){
+      cat(
+        crayon::yellow(cli::symbol$warning), "No credentials in", file, 
+        ". Using stored credentials found on machine.\n"
+      )
+    } else {
+      cat(
+        crayon::red(cli::symbol$cross), "No credentials in", file, "\n"
+      )
+      return(NULL)  
+    }
+
   }
 
   rtweet_token <- tryCatch(
@@ -157,6 +168,10 @@ chirp <- function(){
     head <- tagAppendChild(head, ga_tag)
   }
 
+  particles_json <- jsonlite::fromJSON(
+    system.file("assets/particles.json", package = "chirp")
+  )
+
   options(
     chirp_discrete = discrete,
     chirp_palette = palette,
@@ -182,6 +197,7 @@ chirp <- function(){
     tabPanel(
       "HOME",
       shinyjs::useShinyjs(),
+      shinyparticles::particles(particles_json),
       div(
         class = "container",
         style = "min-height:90vh;",
@@ -190,6 +206,8 @@ chirp <- function(){
         #   src = "chirp-assets/logo.png",
         #   alt = "chirp"
         # ),
+        br(),
+        br(),
         h1("/tʃɜː(r)p/", class = "center"),
         h3("Free, Open-Source Twitter Network Explorer.", class = "center"),
         br(),
@@ -224,7 +242,7 @@ chirp <- function(){
             ),
             div(
               id = "options",
-              style = "display:none;",
+              style = "display:none;background:rgba(255,255,255,.6);",
               h3("Options"),
               fluidRow(
                 column(

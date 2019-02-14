@@ -24,8 +24,10 @@ Imports:
 	graphTweets,
 	shinythemes,
 	twinetverse,
+	shinyparticles,
 	shinycustomloader
 Remotes: 
+	JohnCoene/reactrend,
   JohnCoene/twinetverse,
   JohnCoene/graphTweets,
-  JohnCoene/reactrend
+	dreamRs/shinyparticles

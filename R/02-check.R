@@ -16,12 +16,23 @@ check_nest <- function(){
 
 	config <- yaml::read_yaml(file)
 
-	if(length(config$credentials) == 0){
-		cat(
-			crayon::red(cli::symbol$cross), "No credentials in", file, "\n"
-		)
-		return(NULL)
-	}
+  if(length(config$credentials) == 0){
+
+    rtweet_token <- tryCatch(rtweet::get_token(), error = function(e) NULL)
+
+    if(!is.null(rtweet_token)){
+      cat(
+        crayon::yellow(cli::symbol$warning), "No credentials in", file, 
+        ". Using stored credentials found on machine.\n"
+      )
+    } else {
+      cat(
+        crayon::red(cli::symbol$cross), "No credentials in", file, "\n"
+      )
+      return(NULL)  
+    }
+
+  }
 
 	if(length(unlist(config$credentials)) != 4){
 		cat(
