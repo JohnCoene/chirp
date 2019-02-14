@@ -19,42 +19,33 @@ Chirp is written in <a href="https://www.r-project.org/" target="_blank">R</a>, 
 
 Once <a href="https://www.r-project.org/" target="_blank">R</a> installed simply open an R console and install Chirp from <a href="https://github.com/JohnCoene/chirp">Github</a> with the <mark>remotes</mark> package. 
 
-<button data-component="toggleme" data-target="#togglebox-remotes-installed" data-text="It's installed!">
-    I have it installed already
-</button>
-<button data-component="toggleme" data-target="#togglebox-remotes-not-installed" data-text="It's installed!">
-    I _do not_ have it installed already
-</button>
+<nav class="tabs" data-component="tabs">
+    <ul>
+        <li class="active"><a href="#tab1">I <i>don't</i> have it installed already</a></li>
+        <li><a href="#tab2">I have it <i>already</i> installed</a></li>
+    </ul>
+</nav>
 
-<div id="togglebox-remotes-installed" class="hide">
-    If you <i>do not</i> have <mark>remotes</mark> installed yet, run the following:
-    {{< highlight r >}}
-    remotes::install_github("JohnCoene/chirp")
-    {{< / highlight >}}
-</div>
-
-<div id="togglebox-remotes-not-installed" class="hide">
-    If you <i>do</i> have <mark>remotes</mark> installed, run the following:
+<div id="tab1">
+    Install <code>remotes</code> first then Chirp with the following.
     {{< highlight r >}}
     install.packages("remotes")
     remotes::install_github("JohnCoene/chirp")
     {{< / highlight >}}
 </div>
 
+<div id="tab2">
+    Install Chirp using remotes.
+    {{< highlight r >}}
+    remotes::install_github("JohnCoene/chirp")
+    {{< / highlight >}}
+</div>
+
 The above will install Chirp and all of its dependencies. 
-
-<h3 class="section-head" id="functions"><a href="#functions">Functions</a></h3>
-
-Now that Chirp is installed you can work on setting up the platform. It's very easy, Chirp only comes with four functions.
-
-1. `build_nest` - Initialise Chirp.
-2. `check_nest` - Check that everything is OK.
-3. `chirp` - Launch Chirp.
-4. `fly` - Convenience function for deployment.
 
 <h3 class="section-head" id="init"><a href="#init">Initialise</a></h3>
 
-We can initialise Chirp with `build_nest`.
+Once installed we can initialise Chirp with `build_nest`.
 
 ```r
 chirp::build_nest()

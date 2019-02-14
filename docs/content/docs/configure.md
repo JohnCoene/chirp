@@ -21,21 +21,28 @@ This will copy the `_chirp.yml` to the working directory and open it in your edi
 
 <h3 class="section-head" id="credentials"><a href="#credentials">Credentials</a></h3>
 
-<div class="message focus">
-    <p class="inverted">You can skip setting up credentials if you already have used <mark>rtweet</mark>, Chirp will use your internal credentials.</p>
-</div>
+<nav class="tabs" data-component="tabs">
+    <ul>
+        <li class="active">
+          <a href="#tab1">I have <i>never</i> used `rtweet`</a>
+        </li>
+        <li><a href="#tab2">I have <i>already</i> used `rtweet`</a></li>
+    </ul>
+</nav>
 
-The credentials section of `_chirp.yml` is the only necessary to fill in. The default file has all the credentials set to `null`.
 
-```yaml
+<div id="tab1">
+The credentials section of <code>_chirp.yml</code> is the only necessary to fill in. The default file has all the credentials set to <code>null</code>.
+
+{{< highlight yaml >}}
 credentials:
   consumer_key: null
   consumer_secret: null
   access_token: null
   access_secret: null
-```
+{{< / highlight >}}
 
-You will need to replace all `null`s with your own credentials. These credentials are <i>keys and tokens</i> that can be obtained from Twitter. Head to <a href="https://apps.twitter.com" target="_blank">apps.twitter.com</a> and create a new app.
+You will need to replace all <code>null</code>s with your own credentials. These credentials are <i>keys and tokens</i> that can be obtained from Twitter. Head to <a href="https://apps.twitter.com" target="_blank">apps.twitter.com</a> and create a new app.
 
 <div class="message warning">
     <p class="inverted">Under <strong>Callback URL</strong> put <samp>http://127.0.0.1:1410</samp>.</p>
@@ -46,15 +53,24 @@ You will need to replace all `null`s with your own credentials. These credential
   <figcaption>Twitter application creation process</figcaption>
 </figure>
 
-Once the app created, go to the <i>Key and tokens</i> tab and place the given credentials in your `_chirp.yml`. To obtain something similar to:
+Once the app created, go to the <i>Key and tokens</i> tab and place the given credentials in your <code>_chirp.yml</code>. To obtain something similar to:
 
-```yaml
+{{< highlight yaml >}}
 credentials:
   consumer_key: "f91vXbxLkxXxxzxSx8Pxqjxo"
   consumer_secret: "oXXxLX8CV7xxwxXGx7w9sX3xxYzx2XxiixNAxXGxx7xzxxxXeV"
   access_token: "123456789-0hmCXnxRxg10mM4XxXvmxxtXC1WXXTxM9xxXX6sJ"
   access_secret: "XXxZxxXEx2kXeMuxkoX8txn5XLxuXTx1pNvgdV3Xix12x"
-```
+{{< / highlight >}}
+
+</div>
+<div id="tab2">
+  <strong>Great!</strong>
+  You can skip this step, Chirp will use your itnernally stored credentials.
+  <div class="message warning">
+      <p>Keep that in mind when deploying, the credentials should also be stored in your server.</p>
+  </div>
+</div>
 
 <h3 class="section-head" id="style"><a href="#style">Style</a></h3>
 
