@@ -4,7 +4,7 @@ description = "About _chirp.yml"
 weight = 2
 draft = false
 toc = true
-bref = "All you need to know about configuring Chirp."
+bref = "All you need to know about configuring Chirp"
 +++
 
 <h3 class="section-head" id="intro"><a href="#intro">Introduction</a></h3>
@@ -124,3 +124,6 @@ style:
   background: 'rgba(0,0,0,0)'   
   edges_color: '#bababa'        
 ```
+
+<h3 class="section-head" id="ga"><a href="#ga">Tracking</a></h3>
+
