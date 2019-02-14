@@ -16,7 +16,7 @@ chirp <- function(){
 
   settings <- yaml::read_yaml(file)
 
-  if(length(settings$credentials) == 0){
+  if(length(settings$credentials) == 0 || length(unlist(settings$credentials)) == 0){
 
     rtweet_token <- tryCatch(rtweet::get_token(), error = function(e) NULL)
 
@@ -32,24 +32,24 @@ chirp <- function(){
       return(NULL)  
     }
 
-  }
-
-  rtweet_token <- tryCatch(
-    rtweet::create_token(
-      app = "chirp",
-      consumer_key = settings$credentials$consumer_key,
-      consumer_secret = settings$credentials$consumer_secret,
-      access_token = settings$credentials$access_token,
-      access_secret = settings$credentials$access_secret
-    ),
-    error = function(e) e
-  )
-
-  if(inherits(rtweet_token, "error")){
-    cat(
-      crayon::red(cli::symbol$cross), "Invalid credentials in", file, "\n"
+  } else {
+    rtweet_token <- tryCatch(
+      rtweet::create_token(
+        app = "chirp",
+        consumer_key = settings$credentials$consumer_key,
+        consumer_secret = settings$credentials$consumer_secret,
+        access_token = settings$credentials$access_token,
+        access_secret = settings$credentials$access_secret
+      ),
+      error = function(e) e
     )
-    return(NULL)
+
+    if(inherits(rtweet_token, "error")){
+      cat(
+        crayon::red(cli::symbol$cross), "Invalid credentials in", file, "\n"
+      )
+      return(NULL)
+    }
   }
 
   if(!"theme" %in% names(settings[["style"]])){
@@ -75,14 +75,14 @@ chirp <- function(){
     font_family <- settings[["style"]][["font_family"]]
   }
 
-  if(!"palette" %in% names(settings[["style"]])){
+  if(!"continuous" %in% names(settings[["style"]])){
     cat(
-      crayon::yellow(cli::symbol$warning), "No palette set in _chirp.yml, setting to default palette.\n"
+      crayon::yellow(cli::symbol$warning), "No continuous palette set in _chirp.yml, setting to default.\n"
     )
 
     palette <- c("#4b2991", "#872ca2", "#c0369d", "#ea4f88", "#fa7876", "#f6a97a", "#edd9a3")
   } else {
-    palette <- settings[["style"]][["palette"]]
+    palette <- settings[["style"]][["continuous"]]
   }
 
   if(!"discrete" %in% names(settings[["style"]])){

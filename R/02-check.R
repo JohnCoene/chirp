@@ -16,7 +16,7 @@ check_nest <- function(){
 
 	config <- yaml::read_yaml(file)
 
-  if(length(config$credentials) == 0){
+  if(length(config$credentials) == 0 || length(unlist(config$credentials)) == 0){
 
     rtweet_token <- tryCatch(rtweet::get_token(), error = function(e) NULL)
 
@@ -32,31 +32,24 @@ check_nest <- function(){
       return(NULL)  
     }
 
-  }
-
-	if(length(unlist(config$credentials)) != 4){
-		cat(
-			crayon::red(cli::symbol$cross), "Missing credentials in", file, "\n"
+  } else {
+		rtweet_token <- tryCatch(
+			rtweet::create_token(
+				app = "chirp",
+				consumer_key = config$credentials$consumer_key,
+				consumer_secret = config$credentials$consumer_secret,
+				access_token = config$credentials$access_token,
+				access_secret = config$credentials$access_secret
+			),
+			error = function(e) e
 		)
-		return(NULL)
-	}
 
-	rtweet_token <- tryCatch(
-		rtweet::create_token(
-			app = "chirp",
-			consumer_key = config$credentials$consumer_key,
-			consumer_secret = config$credentials$consumer_secret,
-			access_token = config$credentials$access_token,
-			access_secret = config$credentials$access_secret
-		),
-		error = function(e) e
-	)
-
-	if(inherits(rtweet_token, "error")){
-		cat(
-			crayon::red(cli::symbol$cross), "Invalid credentials in", file, "\n"
-		)
-		return(NULL)
+		if(inherits(rtweet_token, "error")){
+			cat(
+				crayon::red(cli::symbol$cross), "Invalid credentials in", file, "\n"
+			)
+			return(NULL)
+		}
 	}
 
 	cat(

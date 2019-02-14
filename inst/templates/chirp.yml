@@ -8,7 +8,7 @@ style:
   theme: paper                          # from: https://rstudio.github.io/shinythemes
   font: Raleway                         # google font
   font_family: "'Raleway', sans-serif"  # font family
-  palette:                              # network color palettes for continuous variable
+  continuous:                           # network color palettes for continuous variable
     - "#E3F2FDFF"
     - "#BADEFAFF"
     - "#90CAF8FF"
@@ -33,7 +33,6 @@ style:
     - "#CC3A8E"
     - "#A5AA99"
   background: 'rgba(0,0,0,0)'           # background of network graph
-  inverse: false                        # Boostrap inverse navbar
   edges_color: '#bababa'                # Color of edges
 
 tracking:

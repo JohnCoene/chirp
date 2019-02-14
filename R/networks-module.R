@@ -142,7 +142,7 @@ networks_ui <- function(id){
           selectInput(
             ns("colour"), 
             "COLOUR", 
-            choices = c("Cluster" = "cluster", "Size" = "size"), 
+            choices = c("Cluster" = "cluster", "Size" = "size", "Type" = "type"), 
             selected = "cluster"
           ),
           tippy_this(ns("colour"), "Variable to colour nodes")

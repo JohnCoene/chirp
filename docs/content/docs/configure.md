@@ -21,8 +21,8 @@ This will copy the `_chirp.yml` to the working directory and open it in your edi
 
 <h3 class="section-head" id="credentials"><a href="#credentials">Credentials</a></h3>
 
-<div class="message warning">
-    <p class="inverted">Under <strong>Callback URL</strong> put <samp>http://127.0.0.1:1410</samp>.</p>
+<div class="message focus">
+    <p class="inverted">You can skip setting up credentials if you already have used <mark>rtweet</mark>, Chirp will use your internal credentials.</p>
 </div>
 
 The credentials section of `_chirp.yml` is the only necessary to fill in. The default file has all the credentials set to `null`.
@@ -41,7 +41,10 @@ You will need to replace all `null`s with your own credentials. These credential
     <p class="inverted">Under <strong>Callback URL</strong> put <samp>http://127.0.0.1:1410</samp>.</p>
 </div>
 
-<img src="/twitter-app.png"/>
+<figure>
+  <img src="/twitter-app.png"/>
+  <figcaption>Twitter application creation process</figcaption>
+</figure>
 
 Once the app created, go to the <i>Key and tokens</i> tab and place the given credentials in your `_chirp.yml`. To obtain something similar to:
 
@@ -52,3 +55,21 @@ credentials:
   access_token: "123456789-0hmCXnxRxg10mM4XxXvmxxtXC1WXXTxM9xxXX6sJ"
   access_secret: "XXxZxxXEx2kXeMuxkoX8txn5XLxuXTx1pNvgdV3Xix12x"
 ```
+
+<h3 class="section-head" id="style"><a href="#style">Style</a></h3>
+
+This set of options will let you customise the appearance of Chirp.
+
+<strong>Theme</strong>
+
+Under theme specify a theme from <a href="https://rstudio.github.io/shinythemes" target="_blank">shinythemes</a> by name.
+
+<strong>Font</strong>
+
+Replace the font and font family (`font_family`) with any <a href="https://fonts.google.com/" target="_blank">Google Font</a> of your choice.
+
+<strong>Colours</strong>
+
+You can customise the colors used on the network visualisation by customising, `continuous`, `discrete`, `background`, and `edges_color`.
+
+Chirp uses two different colour palettes depending on the variable used to color the nodes, 1) `continuous` when colouring nodes by size and 2) `discrete` when coloring by cluster.
