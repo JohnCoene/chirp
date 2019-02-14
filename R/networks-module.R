@@ -178,7 +178,6 @@ networks_ui <- function(id){
           )
         )
       ),
-			uiOutput(ns("filterNodes")),
 			h5("LAYOUT"),
       fluidRow(
         column(
@@ -213,10 +212,22 @@ networks_ui <- function(id){
       h5("EXPORT"),
       fluidRow(
         column(
-          6, actionButton(ns("save_img"), "SAVE IMAGE", icon = icon("image"))
+          6, 
+          actionButton(
+            ns("save_img"), 
+            "SAVE IMAGE", 
+            icon = icon("image"),
+            width = "100%"
+          )
         ),
         column(
-          6, actionButton(ns("save_svg"), "SAVE SVG", icon = icon("html5"))
+          6, 
+          actionButton(
+            ns("save_svg"), 
+            "SAVE SVG",
+            icon = icon("html5"),
+            width = "100%"
+          )
         )
       ),
       br(),
@@ -542,27 +553,5 @@ networks <- function(input, output, session, dat){
       save(tw, file = file)
     }
   )
-
-	output$filterNodes <- renderUI({
-
-		ns <- session$ns
-
-		sliderInput(
-			ns("filterNodesOut"), 
-			"Filter nodes by size", 
-			value = 0, 
-			min = min(graph()$nodes$size) - 1, 
-			max = max(graph()$nodes$size)
-		)
-
-	})
-
-  observeEvent(input$filterNodesOut, {
-
-		ns <- session$ns
-
-    sigmajs::sigmajsProxy(ns("graph")) %>% 
-      sigmajs::sg_filter_gt_p(input$filterNodesOut, "size")
-  })
 
 }

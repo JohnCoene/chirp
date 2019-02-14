@@ -1,8 +1,8 @@
 baseURL = "/"
 languageCode = "en-us"
-title = "/tʃɜː(r)p/"
+title = "|tʃəːp|"
 theme = "kube"
-description = "/tʃɜː(r)p/ (chirp) is a free, open-source Twitter network collection and visualisation tool"
+description = "|tʃəːp|(chirp) is a free, open-source Twitter network collection and visualisation tool"
 Paginate = 4
 
 pygmentsCodeFences = true

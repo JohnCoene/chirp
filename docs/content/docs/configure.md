@@ -88,4 +88,39 @@ Replace the font and font family (`font_family`) with any <a href="https://fonts
 
 You can customise the colors used on the network visualisation by customising, `continuous`, `discrete`, `background`, and `edges_color`.
 
-Chirp uses two different colour palettes depending on the variable used to color the nodes, 1) `continuous` when colouring nodes by size and 2) `discrete` when coloring by cluster.
+Chirp uses two different colour palettes depending on the variable used to color the nodes, 1) `continuous` when colouring nodes by size and 2) `discrete` when coloring by cluster. `background` is the background color of the network visualisation, it defaults to transparent. Finally `edges_color` will let you change the color of the edges (lines connecting nodes).
+
+The default configuration of the style is below, which as you will find it after running `chirp::build_nest()`
+
+```yaml
+style:
+  theme: paper                  
+  font: Raleway                       
+  font_family: "'Raleway', sans-serif"
+  continuous:                     
+    - "#E3F2FDFF"
+    - "#BADEFAFF"
+    - "#90CAF8FF"
+    - "#64B4F6FF"
+    - "#41A5F4FF"
+    - "#2096F2FF"
+    - "#1E87E5FF"
+    - "#1976D2FF"
+    - "#1465BFFF" 
+    - "#0C46A0FF"
+  discrete:                            
+    - "#E58606" 
+    - "#5D69B1" 
+    - "#52BCA3"
+    - "#99C945"
+    - "#CC61B0"
+    - "#24796C" 
+    - "#DAA51B"
+    - "#2F8AC4"
+    - "#764E9F"
+    - "#ED645A"
+    - "#CC3A8E"
+    - "#A5AA99"
+  background: 'rgba(0,0,0,0)'   
+  edges_color: '#bababa'        
+```
