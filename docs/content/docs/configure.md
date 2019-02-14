@@ -21,7 +21,11 @@ This will copy the `_chirp.yml` to the working directory and open it in your edi
 
 <h3 class="section-head" id="credentials"><a href="#credentials">Credentials</a></h3>
 
-The credentials section of `_chirp.yml` is the only necessary to fill in. The default file has all the credentials set to `null`
+<div class="message warning">
+    <p class="inverted">Under <strong>Callback URL</strong> put <samp>http://127.0.0.1:1410</samp>.</p>
+</div>
+
+The credentials section of `_chirp.yml` is the only necessary to fill in. The default file has all the credentials set to `null`.
 
 ```yaml
 credentials:
