@@ -310,6 +310,21 @@ chirp <- function(){
               placeholder = " No file selected"
             )
           )
+        ),
+        br(),
+        br(),
+        div(
+          style = "position:fixed;bottom:20px;right:43%;",
+          p(
+            class = "center",
+            "Visit", 
+            a(
+              "chrip.sh",
+              href = "https://chirp.sh",
+              target = "_blank"
+            ),
+            "for more information."
+          )
         )
       )
     ),

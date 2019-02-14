@@ -127,3 +127,4 @@ style:
 
 <h3 class="section-head" id="ga"><a href="#ga">Tracking</a></h3>
 
+The final item in the configuration file allows you to track the usage of the platform using <a href="https://analytics.google.com" target="_blank">Google Analytics</a> by passing the tracking id to `ganalytics`. Note that this is only relevant is deploying the Chirp.

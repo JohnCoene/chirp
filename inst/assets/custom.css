@@ -40,6 +40,12 @@ body.pg-loaded > .inner {
   position:absolute;
 }
 
+#leftLink{
+  bottom:20px;
+  right:20px;
+  position:absolute;
+}
+
 .center{
   text-align: center;
 }

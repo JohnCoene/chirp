@@ -105,6 +105,12 @@ networks_ui <- function(id){
           )
         )
       ),
+      a(
+        "chrip.sh",
+        id = "leftLink",
+        href = "https://chirp.sh",
+        target = "_blank"
+      ),
       tags$a(
         id = "closeSearch",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
