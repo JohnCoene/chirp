@@ -1,6 +1,3 @@
-[build]
-publish = "public"
-
 baseURL = "/"
 languageCode = "en-us"
 title = "/tʃɜː(r)p/"
