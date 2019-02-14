@@ -11,7 +11,7 @@ networks_ui <- function(id){
       id = "optsBtn"
     ),
     tags$a(
-      icon("search", class = "fa-lg"),
+      icon("searchengin", class = "fa-lg"),
       onclick = "pushbar.open('search_pushbar');",
       class = "btn btn-primary",
       `data-pushbar-target` = "search_pushbar",
@@ -394,6 +394,8 @@ networks <- function(input, output, session, dat){
   })
 
   output$display <- renderText({
+
+    input$graph_click_node
 
     user <- input$graph_click_node$label
     user <- gsub("#", "", user)

@@ -1,7 +1,7 @@
 +++
 title = "Network Types"
 description = "Chirp networks explained"
-weight = 2
+weight = 4
 draft = false
 toc = true
 bref = "Explanation of all five network types available under Chirp."

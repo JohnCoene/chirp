@@ -7,31 +7,32 @@ toc = true
 bref = "All you need to know about configuring Chirp"
 +++
 
-<h3 class="section-head" id="intro"><a href="#intro">Introduction</a></h3>
-
-All the configuration for Chirp lives in one place: `chirp_yml`. It includes some settings necessary to making Chirp run but also let you customise, amongst other things, its appearance.
+<h3 class="section-head" id="intro"><a href="#introduction">Introduction</a></h3>
+<p>
+All the configuration for Chirp lives in one place: <code>chirp_yml</code>. It includes some settings necessary to making Chirp run but also let you customise, amongst other things, its appearance.
+</p>
 
 You can obtain the configuration file by running:
 
-```r
+{{< highlight r >}}
 chirp::build_nest()
-```
+{{< / highlight >}}
 
-This will copy the `_chirp.yml` to the working directory and open it in your editor, <a href="https://www.rstudio.com/products/rstudio/" target="_blank">RStudio</a> or other.
+This will copy the <code>_chirp.yml</code> to the working directory and open it in your editor, <a href="https://www.rstudio.com/products/rstudio/" target="_blank">RStudio</a> or other.
 
-<h3 class="section-head" id="credentials"><a href="#credentials">Credentials</a></h3>
+<h3 class="section-head" id="creds"><a href="#credentials">Credentials</a></h3>
 
 <nav class="tabs" data-component="tabs">
     <ul>
         <li class="active">
-          <a href="#tab1">I have <i>never</i> used `rtweet`</a>
+          <a href="#rtweet-installed">I have <i>never</i> used <code>rtweet</code></a>
         </li>
-        <li><a href="#tab2">I have <i>already</i> used `rtweet`</a></li>
+        <li><a href="#rtweet-not-installed">I have <i>already</i> used <code>rtweet</code></a></li>
     </ul>
 </nav>
 
 
-<div id="tab1">
+<div id="rtweet-installed">
 The credentials section of <code>_chirp.yml</code> is the only necessary to fill in. The default file has all the credentials set to <code>null</code>.
 
 {{< highlight yaml >}}
@@ -64,7 +65,7 @@ credentials:
 {{< / highlight >}}
 
 </div>
-<div id="tab2">
+<div id="rtweet-not-installed">
   <strong>Great!</strong>
   You can skip this step, Chirp will use your itnernally stored credentials.
   <div class="message warning">
@@ -72,7 +73,7 @@ credentials:
   </div>
 </div>
 
-<h3 class="section-head" id="style"><a href="#style">Style</a></h3>
+<h3 class="section-head" id="customise"><a href="#style">Style</a></h3>
 
 This set of options will let you customise the appearance of Chirp.
 
@@ -125,6 +126,6 @@ style:
   edges_color: '#bababa'        
 ```
 
-<h3 class="section-head" id="ga"><a href="#ga">Tracking</a></h3>
+<h3 class="section-head" id="ga"><a href="#google-analytics">Tracking</a></h3>
 
 The final item in the configuration file allows you to track the usage of the platform using <a href="https://analytics.google.com" target="_blank">Google Analytics</a> by passing the tracking id to `ganalytics`. Note that this is only relevant is deploying the Chirp.
