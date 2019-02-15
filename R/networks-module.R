@@ -400,8 +400,10 @@ networks <- function(input, output, session, dat){
     user <- input$graph_click_node$label
     user <- gsub("#", "", user)
 
+    tw <- ""
+
     if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
-      tweets() %>%
+      tw <- tweets() %>%
         filter(is_retweet %in% c(FALSE, input$include_retweets)) %>% 
         select(
           status_id,
@@ -419,6 +421,11 @@ networks <- function(input, output, session, dat){
         slice(1) %>%
         .get_tweet()
     }
+
+    if(inherits(tw, "error"))
+      tw <- ""
+
+    return(tw)
 
   })
 

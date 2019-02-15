@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "Free, open-source, Twitter network visualisation platform",
     "docs": {
+      "deploy": {
+        "title": "Deploy",
+        "sidebar_label": "Deploy (almost) anywhere"
+      },
       "doc3": {
         "title": "This is document number 3"
       },
@@ -14,17 +18,14 @@
       "doc5": {
         "title": "Fifth Document"
       },
-      "features": {
-        "title": "Features",
-        "sidebar_label": "Awesome Chirp"
-      },
       "quick-start": {
-        "title": "Quick Start"
+        "title": "Quick Start",
+        "sidebar_label": "Up and running in a minute"
       }
     },
     "links": {
       "Docs": "Docs",
-      "API": "API",
+      "Deploy": "Deploy",
       "Reference": "Reference",
       "Blog": "Blog"
     },

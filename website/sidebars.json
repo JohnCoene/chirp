@@ -1,6 +1,7 @@
 {
   "docs": {
     "Quick Start": ["quick-start"],
+    "Configure": ["configure"],
     "Features": ["features"],
     "Second Category": ["doc3"]
   },

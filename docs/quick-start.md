@@ -1,13 +1,14 @@
 ---
 id: quick-start
 title: Quick Start
+sidebar_label: Up and running in a minute
 ---
 
 Check the [demo](https://shiny.john-coene/chirp) to see Chirp in action.
 
 ## Install
 
-Chirp is written in [R](https://www.r-project.org/), therefore the programming language must be installed on your machine.  Once it is installed follow the instructions below to setup Chirp on your local machine.
+Chirp is written in [R](https://www.r-project.org/), the programming language must thus be installed on your machine. Once installed follow the instructions below to setup a working Chirp platform on your local machine.
 
 First, create an empty directory where to host the Chirp.
 
@@ -16,7 +17,7 @@ mkdir chirp
 cd ./chirp
 ```
 
-Chirp is hosted on [Github](https://github.com/JohnCoene/chirp) and therefore requires the `remotes` package installed, if you do not have `remotes` installed yet you can do so from the R console itself or send it to the latter from the terminal.
+Chirp is hosted on [Github](https://github.com/JohnCoene/chirp) and can be installed using the `remotes` package. The command below will install Chirp on your platform.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--R-->
@@ -31,11 +32,9 @@ R -e "install.packages('remotes', repos = 'https://cran.rstudio.com');\remotes::
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-This will install Chirp and all its dependencies.
-
 ## Initialise
 
-Now we can initialise Chirp. Then again make sure you are running the from root of the directory where you want the application hosted. The command below will create a configuration file called `_chirp.yml` in your working directory and open it in your terminal or [RStudio IDE](https://www.rstudio.com/products/rstudio/).
+Now we can initialise Chirp. Then again make sure you are running the from _root of the directory_ where you want the application hosted. The command below will create a default configuration file called `_chirp.yml` in your working directory and open it in your terminal or [RStudio IDE](https://www.rstudio.com/products/rstudio/).
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--R-->
@@ -53,10 +52,10 @@ R -e "chirp::build_nest()"
 
 The configuration file (`_chirp.yml`) allows you to customise Chirp and hold your credentials. The credentials are somewhat particular, either:
 
-1. You have already used the `rtweet` package in which case Chirp will use your saved credentials: you can thus jump straight to the [Check section](#check).
+1. You have already used the `rtweet` package in which case Chirp will use your internally saved credentials: you can thus jump straight to the [Check section](#check).
 2. You have never use `rtweet` on your machine, in which case you simply follow along to get setup.
 
-There probably is a third option, the above confuses you as you are not familiar with R, if that is the case, keep reading.
+There is probably a third option, the above confuses you as you are not familiar with R or `rtweet`, in which case keep reading.
 
 Chirp comes integrated with the [Twitter Search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html), the credentials discussed above will enable Chirp to fetch tweets. Therefore, having either `credentials` specified in `_chirp.yml` or having an `rtweet` token saved internally. Note that this is the _only_ required option in Chirp.
 
@@ -74,7 +73,7 @@ credentials:
 
 ## Check
 
-Before we launch Chirp we can make sure that Chirp can run with the following. It will print messages useful to fix any issue there may be in the configuration file.
+Before we launch Chirp we can make sure that Chirp can run. The function below will print helpful messages to the console in case there are issues.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--R-->

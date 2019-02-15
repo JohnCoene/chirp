@@ -181,13 +181,7 @@ chirp <- function(){
   )
 
   ui <- navbarPage(
-    title = div(
-      img(
-        src = "chirp-assets/logo.png",
-        height="28",
-        style = "margin-right: 25px;"
-      )
-    ),
+    title = "|tʃəːp|",
     fluid = TRUE,
     inverse = inverse,
     windowTitle = "chirp",
@@ -209,7 +203,7 @@ chirp <- function(){
           div(
             br(),
             br(),
-            h1("/tʃɜː(r)p/", class = "center"),
+            h1("|tʃəːp|", class = "center"),
             h3("Free, Open-Source Twitter Network Explorer.", class = "center")
           )
         ),

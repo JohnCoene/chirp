@@ -66,7 +66,6 @@ class HomeSplash extends React.Component {
           <PromoSection>
             <Button href="https://shiny.john-coene/chirp">Demo</Button>
             <Button href={docUrl('quick-start.html')}>Quick Start</Button>
-            <Button href={docUrl('features.html')}>Features</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -96,7 +95,7 @@ class Index extends React.Component {
       <div
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
-        <h2>Feature Callout</h2>
+        <h2>Features</h2>
         <MarkdownBlock>These are features of this project</MarkdownBlock>
       </div>
     );

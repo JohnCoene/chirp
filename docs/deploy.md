@@ -1,7 +1,7 @@
 ---
-id: features
-title: Features
-sidebar_label: Awesome Chirp
+id: deploy
+title: Deploy
+sidebar_label: Deploy (almost) anywhere
 ---
 
 This is a link to [another document.](doc3.md)  
