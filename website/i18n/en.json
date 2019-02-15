@@ -19,14 +19,13 @@
         "sidebar_label": "Awesome Chirp"
       },
       "quick-start": {
-        "title": "Quick Start",
-        "sidebar_label": "Example Page"
+        "title": "Quick Start"
       }
     },
     "links": {
       "Docs": "Docs",
       "API": "API",
-      "FAQ": "FAQ",
+      "Reference": "Reference",
       "Blog": "Blog"
     },
     "categories": {
