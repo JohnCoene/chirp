@@ -46,6 +46,8 @@ networks_ui <- function(id){
 			),
 			br(),
 			uiOutput(ns("selected_node")),
+			strong("Degree"), uiOutput(ns("node_degree")),
+			strong("Closeness"), uiOutput(ns("node_closeness")),
       tags$a(
         id = "closeStats",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
@@ -393,12 +395,20 @@ networks <- function(input, output, session, dat){
 		session$sendCustomMessage("unload", "") # stop loading
 
 		is_directed <- ifelse(isTRUE(input$comentions), FALSE, TRUE)
-		igraph <- igraph::graph_from_data_frame(edges, directed = is_directed)
+		igraph <- igraph::graph_from_data_frame(edges, directed = is_directed, vertices = nodes)
+
+		degrees <- igraph::degree(igraph) %>% 
+			as.data.frame() 
+
+		degrees$name <- rownames(degrees) 
+		
+		names(degrees) <- c("degree", "name")
 
     list(
       nodes = nodes,
       edges = edges,
-			igraph = igraph
+			igraph = igraph,
+			degree = degrees
     )
 
   })
@@ -658,4 +668,32 @@ networks <- function(input, output, session, dat){
 		)
 	})
 
+	output$node_degree <- renderUI({
+
+		span(
+			graph()$degree %>% 
+				filter(name == input$graph_click_node$label) %>% 
+				pull(degree) %>% 
+				round(.3)
+		)
+	})
+
+	output$node_closeness <- renderUI({
+		.val_sel(input$graph_click_node)
+
+		span(
+			igraph::closeness(
+				graph()$igraph, 
+				igraph::V(graph()$igraph)[igraph::V(graph()$igraph)$label == input$graph_click_node$label] %>% 
+					round(.3)
+			)
+		)
+	})
+
+}
+
+.val_sel <- function(x){
+	need(
+		!is.null(x) || x != "", ""
+	)
 }
