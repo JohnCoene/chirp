@@ -420,6 +420,8 @@ networks <- function(input, output, session, dat){
         arrange(-retweet_count) %>%
         slice(1) %>%
         .get_tweet()
+
+				session$sendCustomMessage("close", "")
     }
 
     if(inherits(tw, "error"))

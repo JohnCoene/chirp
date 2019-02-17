@@ -17,3 +17,7 @@ Shiny.addCustomMessageHandler('load', function(msg) {
 Shiny.addCustomMessageHandler('unload', function(msg) {
   loading_screen.finish();
 });
+
+Shiny.addCustomMessageHandler('close', function(msg) {
+  pushbar.close();
+});
