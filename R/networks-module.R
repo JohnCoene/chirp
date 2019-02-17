@@ -62,7 +62,7 @@ networks_ui <- function(id){
               ns("n"),
               label = "Number of tweets",
               min = 500,
-              max = 15000,
+              max = 18000,
               value = 1000,
               step = 100,
               width = "100%"
@@ -282,15 +282,23 @@ networks <- function(input, output, session, dat){
         paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
       )
 
-      tw <- rtweet::search_tweets(
-        input$q,
-        n = input$n,
-        type = input$type,
-        include_rts = input$include_rts,
-        geocode = geocode,
-        token = .get_token()
-      )
-      tweets(tw)
+			lim <- .check_rate_limit(.get_token())
+
+			if(lim$remaining == 0)
+				shinyjs::disable("submit")
+
+			if(lim$remaining != 0){
+				tw <- rtweet::search_tweets(
+					input$q,
+					n = input$n,
+					type = input$type,
+					include_rts = input$include_rts,
+					geocode = geocode,
+					token = .get_token()
+				)
+				tweets(tw)
+			}
+
 			session$sendCustomMessage("unload", "") # stop loading
     }
 
@@ -415,13 +423,24 @@ networks <- function(input, output, session, dat){
         mutate(
           screen_name = tolower(screen_name),
           v2 = tolower(v2)
-        ) %>%
-        filter(screen_name == user | v2 == user) %>%
-        arrange(-retweet_count) %>%
-        slice(1) %>%
-        .get_tweet()
+        ) 
+				
+			src <- tw %>%
+        filter(screen_name == user) %>%
+        arrange(-retweet_count) 
 
-				session$sendCustomMessage("close", "")
+			if(nrow(src) >= 1)
+				tw <- src %>%
+					slice(1) %>% 
+					.get_tweet()
+			else
+				tw <- tw %>%
+					filter(v2 == user) %>%
+					arrange(-retweet_count) %>%
+					slice(1) %>%
+					.get_tweet()
+
+			session$sendCustomMessage("close", "")
     }
 
     if(inherits(tw, "error"))

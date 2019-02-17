@@ -96,3 +96,8 @@ globalVariables(
 
   return(nodes)
 }
+
+.check_rate_limit <- function(token){
+	rtweet::rate_limit(token, "search_tweets") %>% 
+		select(remaining, reset_at)
+}

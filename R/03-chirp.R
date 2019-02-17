@@ -249,7 +249,7 @@ chirp <- function(){
                     "n",
                     label = "Number of tweets",
                     min = 500,
-                    max = 15000,
+                    max = 18000,
                     value = 1000,
                     step = 100,
                     width = "100%"
@@ -364,24 +364,32 @@ chirp <- function(){
         ))
       }
 
+			lim <- .check_rate_limit(.get_token())
+
+			if(lim$remaining == 0)
+				shinyjs::disable("submit")
+			
+
       if(input$q != ""){
         session$sendCustomMessage(
           "load", 
           paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
         )
 
-        tweets <- rtweet::search_tweets(
-          input$q,
-          n = input$n,
-          type = input$type,
-          include_rts = input$include_rts,
-          geocode = geocode,
-          token = .get_token()
-        )
+				if(lim$remaining != 0){
+					tweets <- rtweet::search_tweets(
+						input$q,
+						n = input$n,
+						type = input$type,
+						include_rts = input$include_rts,
+						geocode = geocode,
+						token = .get_token()
+					)
 
-        showTab(inputId = "tabs", target = "NETWORKS")
-        updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
-        callModule(networks, "networks", dat = tweets)
+					showTab(inputId = "tabs", target = "NETWORKS")
+					updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
+					callModule(networks, "networks", dat = tweets)
+				}
       }
 
     })
