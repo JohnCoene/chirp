@@ -47,6 +47,12 @@ body.pg-loaded > .inner {
   position:absolute;
 }
 
+#closeStats {
+  bottom:20px;
+  right:20px;
+  position:absolute;
+}
+
 #leftLink{
   bottom:20px;
   right:20px;

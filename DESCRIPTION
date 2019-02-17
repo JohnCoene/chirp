@@ -18,6 +18,7 @@ Imports:
 	scales,
 	rtweet,
 	crayon,
+	igraph,
 	sigmajs,
 	shinyjs,
 	jsonlite,

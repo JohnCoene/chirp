@@ -347,27 +347,38 @@ chirp <- function(){
         geocode <- paste0(input$longitude, input$latitude, input$radius)
 
       if(input$q == ""){
-        showModal(modalDialog(
-          title = "No search entered!",
-          "Enter a search",
-          br(),
-          "Can include boolean operators such as 'OR' and 'AND',",
-          "visit the", 
-          tags$a(
-            "official documentation",
-            href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
-            target = "_blank"
-          ),
-          "for more details.",
-          easyClose = TRUE,
-          footer = NULL
-        ))
+        showModal(
+					modalDialog(
+						title = "No search entered!",
+						"Enter a search",
+						br(),
+						"Can include boolean operators such as 'OR' and 'AND',",
+						"visit the", 
+						tags$a(
+							"official documentation",
+							href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
+							target = "_blank"
+						),
+						"for more details.",
+						easyClose = TRUE,
+						footer = NULL
+        	)
+				)
       }
 
-			lim <- .check_rate_limit(.get_token())
+			lim <- .check_rate_limit()
 
-			if(lim$remaining == 0)
+			if(lim$remaining == 0){
 				shinyjs::disable("submit")
+        showModal(
+					modalDialog(
+						title = "Rate limit hit!",
+						"You have hit the rate limit, wait until", lim$reset_at, "to make another search.",
+						easyClose = TRUE,
+						footer = NULL
+        	)
+				)
+			}
 			
 
       if(input$q != ""){

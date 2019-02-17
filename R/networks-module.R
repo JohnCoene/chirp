@@ -17,12 +17,13 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_pushbar",
       id = "search"
     ),
-    tags$a(
-      icon("brain", class = "fa-lg"),
-      onclick = "pushbar.open('stats_pushbar');",
-      class = "btn btn-primary",
-      id = "stats"
-    ),
+		actionButton(
+			"stats",
+			"",
+			icon("brain", class = "fa-lg"),
+			class = "btn-primary",
+			onclick = "pushbar.open('stats_pushbar');",
+		),
 		div(
       id = "pushbarBottom",
       `data-pushbar-id` = "stats_pushbar",
@@ -36,6 +37,18 @@ networks_ui <- function(id){
       ),
       fluidRow(
         column(6, uiOutput(ns("n_tweets")))
+      ),
+			h5("CENTRALITY"),
+			fluidRow(
+				column(4, strong("Node"), uiOutput(ns("node_centrality"))),
+				column(4, strong("Graph"), uiOutput(ns("graph_centrality"))),
+				column(4, strong("Max"), uiOutput(ns("centrality_max")))
+			),
+			br(),
+			uiOutput(ns("selected_node")),
+      tags$a(
+        id = "closeStats",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
       )
 		),
     div(
@@ -293,7 +306,7 @@ networks <- function(input, output, session, dat){
         paste("Fetching", prettyNum(input$n, big.mark = ","), "tweets")
       )
 
-			lim <- .check_rate_limit(.get_token())
+			lim <- .check_rate_limit()
 
 			if(lim$remaining == 0)
 				shinyjs::disable("submit")
@@ -379,9 +392,13 @@ networks <- function(input, output, session, dat){
 
 		session$sendCustomMessage("unload", "") # stop loading
 
+		is_directed <- ifelse(isTRUE(input$comentions), FALSE, TRUE)
+		igraph <- igraph::graph_from_data_frame(edges, directed = is_directed)
+
     list(
       nodes = nodes,
-      edges = edges
+      edges = edges,
+			igraph = igraph
     )
 
   })
@@ -450,8 +467,6 @@ networks <- function(input, output, session, dat){
 					arrange(-retweet_count) %>%
 					slice(1) %>%
 					.get_tweet()
-
-			session$sendCustomMessage("close", "")
     }
 
     if(inherits(tw, "error"))
@@ -460,6 +475,18 @@ networks <- function(input, output, session, dat){
     return(tw)
 
   })
+
+	output$selected_node <- renderUI({
+
+		if(is.null(input$graph_click_node))
+			p(
+				"Select a node to see its network metrics",
+				class = "text-warning"
+			)
+		else
+			h5(icon("user", class = "text-primary"), input$graph_click_node$label)
+
+	})
 
   trend <- reactive({
 
@@ -600,5 +627,35 @@ networks <- function(input, output, session, dat){
       save(tw, file = file)
     }
   )
+
+	# centrality
+	centrality <- reactive({
+
+		centrality <- igraph::centr_degree(graph()$igraph, mode = "all")
+
+		list(
+			node_centrality = round(centrality$res, 3),
+			graph_centrality = round(centrality$centralization, 3),
+			centrality_max = round(centrality$theoretical_max, 3)
+		)
+	})
+
+	output$node_centrality <- renderUI({
+		span(
+			centrality()$node_centrality
+		)
+	})
+
+	output$graph_centrality <- renderUI({
+		span(
+			centrality()$graph_centrality
+		)
+	})
+
+	output$centrality_max <- renderUI({
+		span(
+			centrality()$centrality_max
+		)
+	})
 
 }
