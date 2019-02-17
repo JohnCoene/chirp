@@ -4,7 +4,7 @@ networks_ui <- function(id){
 
   tagList(
     tags$a(
-      icon("brain", class = "fa-lg"),
+      icon("pencil-ruler", class = "fa-lg"),
       onclick = "pushbar.open('save_pushbar');",
       class = "btn btn-primary",
       `data-pushbar-target` = "save_pushbar",
@@ -17,6 +17,27 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_pushbar",
       id = "search"
     ),
+    tags$a(
+      icon("brain", class = "fa-lg"),
+      onclick = "pushbar.open('stats_pushbar');",
+      class = "btn btn-primary",
+      id = "stats"
+    ),
+		div(
+      id = "pushbarBottom",
+      `data-pushbar-id` = "stats_pushbar",
+      class = "pushbar from_right",
+			h4("STATS"),
+      uiOutput(ns("trend_text")),
+      reactrend::reactrendOutput(ns("trendline"), width = "100%"),
+      fluidRow(
+        column(6, uiOutput(ns("n_nodes"))),
+        column(6, uiOutput(ns("n_edges")))
+      ),
+      fluidRow(
+        column(6, uiOutput(ns("n_tweets")))
+      )
+		),
     div(
       id = "pushbarTop",
       `data-pushbar-id` = "search_pushbar",
@@ -204,16 +225,6 @@ networks_ui <- function(id){
             width = "100%"
           )
         )
-      ),
-      h5("STATS"),
-      uiOutput(ns("trend_text")),
-      reactrend::reactrendOutput(ns("trendline"), width = "100%"),
-      fluidRow(
-        column(6, uiOutput(ns("n_nodes"))),
-        column(6, uiOutput(ns("n_edges")))
-      ),
-      fluidRow(
-        column(6, uiOutput(ns("n_tweets")))
       ),
       h5("EXPORT"),
       fluidRow(

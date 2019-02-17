@@ -12,11 +12,18 @@
   top:20px;
 }
 
+#stats{
+  position:absolute;
+  z-index:999;
+  right:20px;
+  bottom:20px;
+}
+
 nav{
   display: none;
 }
 
-#pushbarLeft, #pushbarTop{
+#pushbarLeft, #pushbarTop, #pushbarBottom{
   padding:25px;
   width:320px;
 }
