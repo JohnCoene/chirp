@@ -702,7 +702,7 @@ networks <- function(input, output, session, dat){
 
 		if(is.null(sel))
 			p(
-				"Select a node to see its network metrics",
+				"Select nodes to see their network metrics",
 				class = "text-warning"
 			)
 		else

@@ -299,7 +299,7 @@ chirp <- function(){
             "LOAD",
             fileInput(
               "file",
-              label = "Choose an .RData file",
+              label = "Choose a previously downloaded Chirp file (.RData)",
               accept = c(".RData", ".rdata"),
               placeholder = " No file selected"
             )
