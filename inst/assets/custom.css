@@ -37,8 +37,9 @@ body.pg-loaded > .inner {
 }
 
 #closeOpts{
-  right:-50px;
-  position:relative;
+  bottom:20px;
+  right:20px;
+  position:absolute;
 }
 
 #closeSearch{

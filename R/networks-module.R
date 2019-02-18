@@ -45,9 +45,10 @@ networks_ui <- function(id){
 				column(4, strong("Max"), uiOutput(ns("centrality_max")))
 			),
 			br(),
-			uiOutput(ns("selected_node")),
-			strong("Degree"), uiOutput(ns("node_degree")),
-			strong("Closeness"), uiOutput(ns("node_closeness")),
+			uiOutput(ns("selected_source")),
+			uiOutput(ns("source_degree")),
+      uiOutput(ns("selected_target")),
+      uiOutput(ns("target_degree")),
       tags$a(
         id = "closeStats",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
@@ -418,7 +419,7 @@ networks <- function(input, output, session, dat){
     g <- graph()
 
     nodes <- g$nodes
-    nodes <- .color_nodes(nodes , input$colour)
+    nodes <- .color_nodes(nodes, input$colour)
     edges <- g$edges
 
     sigmajs::sigmajs(type = "webgl") %>%
@@ -485,18 +486,6 @@ networks <- function(input, output, session, dat){
     return(tw)
 
   })
-
-	output$selected_node <- renderUI({
-
-		if(is.null(input$graph_click_node))
-			p(
-				"Select a node to see its network metrics",
-				class = "text-warning"
-			)
-		else
-			h5(icon("user", class = "text-primary"), input$graph_click_node$label)
-
-	})
 
   trend <- reactive({
 
@@ -668,32 +657,78 @@ networks <- function(input, output, session, dat){
 		)
 	})
 
-	output$node_degree <- renderUI({
+  nodes <- data.frame()
+
+  nodes_clicked <- reactive({
+    if(!is.null(input$graph_click_nodes))
+      nodes <<- rbind.data.frame(input$graph_click_nodes, nodes)
+  })
+
+	output$source_degree <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+    if(is.null(sel))
+      return("")
 
 		span(
+      strong("Degree"),
 			graph()$degree %>% 
-				filter(name == input$graph_click_node$label) %>% 
+				filter(name == sel) %>% 
 				pull(degree) %>% 
 				round(.3)
 		)
 	})
 
-	output$node_closeness <- renderUI({
-		.val_sel(input$graph_click_node)
+	output$target_degree <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 2)
+
+    if(!length(sel))
+      return("")
 
 		span(
-			igraph::closeness(
-				graph()$igraph, 
-				igraph::V(graph()$igraph)[igraph::V(graph()$igraph)$label == input$graph_click_node$label] %>% 
-					round(.3)
-			)
+      strong("Degree"),
+			graph()$degree %>% 
+				filter(name == sel) %>% 
+				pull(degree) %>% 
+				round(.3)
 		)
+	})
+
+	output$selected_source <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+		if(is.null(sel))
+			p(
+				"Select a node to see its network metrics",
+				class = "text-warning"
+			)
+		else
+			h5(icon("angle-left", class = "text-primary"), sel)
+
+	})
+
+	output$selected_target <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 2)
+
+		if(!length(sel))
+			span("")
+		else
+			h5(icon("angle-right", class = "text-primary"), sel)
+
 	})
 
 }
 
-.val_sel <- function(x){
-	need(
-		!is.null(x) || x != "", ""
-	)
+.slice_node <- function(x, i){
+
+  if(is.null(x))
+    return(NULL)
+
+  x %>% 
+    slice(i) %>% 
+    pull(label)
 }

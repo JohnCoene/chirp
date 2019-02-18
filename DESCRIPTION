@@ -29,6 +29,7 @@ Imports:
 	shinyparticles,
 	shinycustomloader
 Remotes: 
+	JohnCoene/sigmajs,
 	JohnCoene/reactrend,
   JohnCoene/twinetverse,
 	dreamRs/shinyparticles
