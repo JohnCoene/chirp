@@ -108,7 +108,7 @@ globalVariables(
 
 .size_nodes <- function(nodes, x){
   var = pull(nodes, x)
-  var <- scales::rescale(var, to = c(1, 15))
+  var <- scales::rescale(var, to = c(3, 17))
   nodes$size <- var
   return(nodes)
 }

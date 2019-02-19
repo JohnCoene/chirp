@@ -250,7 +250,7 @@ chirp <- function(){
                     label = "Number of tweets",
                     min = 500,
                     max = 18000,
-                    value = 1000,
+                    value = 500,
                     step = 100,
                     width = "100%"
                   ),

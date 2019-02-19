@@ -38,17 +38,17 @@ networks_ui <- function(id){
       fluidRow(
         column(6, uiOutput(ns("n_tweets")))
       ),
-			h5("CENTRALITY"),
+      uiOutput(ns("selected_headline")),
+      uiOutput(ns("selected_source")),
 			fluidRow(
-				column(4, strong("Node"), uiOutput(ns("node_centrality"))),
-				column(4, strong("Graph"), uiOutput(ns("graph_centrality"))),
-				column(4, strong("Max"), uiOutput(ns("centrality_max")))
-			),
-			br(),
-			uiOutput(ns("selected_source")),
-			uiOutput(ns("source_degree")),
+        column(6, uiOutput(ns("source_indegree"))),
+        column(6, uiOutput(ns("source_outdegree")))
+      ),
       uiOutput(ns("selected_target")),
-      uiOutput(ns("target_degree")),
+      fluidRow(
+        column(6, uiOutput(ns("target_indegree"))),
+        column(6, uiOutput(ns("target_outdegree")))
+      ),
       tags$a(
         id = "closeStats",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
@@ -62,7 +62,7 @@ networks_ui <- function(id){
       tabsetPanel(
         type = "tabs",
         tabPanel(
-          "SEARCH",
+          "SEARCH ",
           br(),
           textInput(
             ns("q"),
@@ -143,6 +143,20 @@ networks_ui <- function(id){
           )
         )
       ),
+      h4("SEARCH"),
+      fluidRow(
+        column(9, uiOutput(ns("node_search_ui"))),
+        column(
+          3,
+          br(),
+          actionButton(
+            ns("search_node"),
+            "",
+            icon = icon("search-plus"),
+            width = "100%"
+          )
+        )
+      ),
       a(
         "chrip.sh",
         id = "leftLink",
@@ -185,9 +199,13 @@ networks_ui <- function(id){
             ns("size"), 
             "SIZE", 
             choices = c(
-              "Degree" = "degree",
+              "# tweets" = "n_tweets",
+              "In-degree" = "in_degree",
+              "Out-degree" = "out_degree",
+              "Closeness" = "closeness",
               "Pagerank" = "pagerank",
-              "Authority" = "authority"
+              "Authority" = "authority",
+              "Eigen" = "eigen"
             ),
             width = "100%"
           ),
@@ -200,10 +218,14 @@ networks_ui <- function(id){
             "COLOUR", 
             choices = c(
               "Cluster" = "group",
+              "# tweets" = "n_tweets",
               "Components" = "components", 
-              "Degree" = "degree",
+              "In-degree" = "in_degree",
+              "Out-degree" = "out_degree",
+              "Closeness" = "closeness",
               "Pagerank" = "pagerank",
               "Authority" = "authority",
+              "Eigen" = "eigen",
               "Type" = "type"
             ),
             width = "100%"
@@ -284,7 +306,7 @@ networks_ui <- function(id){
         )
       ),
       br(),
-      downloadButton(ns("downloadData"), "DOWNLOAD DATA", width = "100%"),
+      downloadButton(ns("downloadData"), "DOWNLOAD DATA", style = "width:100%;"),
       tags$a(
         id = "closeOpts",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
@@ -353,6 +375,8 @@ networks <- function(input, output, session, dat){
 
   observeEvent(input$file, {
 
+    file <- input$file
+
     s <- ""
     if(length(file$datapath))
       s <- "s"
@@ -410,9 +434,13 @@ networks <- function(input, output, session, dat){
         name = nodes,
         id = name,
         label = name,
-        degree = centrality_degree(),
+        n_tweets = n,
+        out_degree = centrality_degree(mode = "out"),
+        in_degree = centrality_degree(mode = "in"),
         authority = centrality_authority(),
         pagerank = centrality_pagerank(),
+        closeness = centrality_closeness(),
+        eigen = centrality_eigen(),
         components = group_components(type = "weak"),
         group = group_walktrap()
       ) %>% 
@@ -462,10 +490,12 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
       sigmajs::sg_settings(
+        minArrowSize = 1,
         batchEdgesDrawing = TRUE,
         edgeColor = "default",
         defaultEdgeColor = .get_edge_color(),
-        font = .get_font()
+        font = .get_font(),
+        labelThreshold = 9999
       )
 
   })
@@ -664,7 +694,7 @@ networks <- function(input, output, session, dat){
       nodes <<- rbind.data.frame(input$graph_click_nodes, nodes)
   })
 
-	output$source_degree <- renderUI({
+	output$source_indegree <- renderUI({
 
     sel <- .slice_node(nodes_clicked(), 1)
 
@@ -672,15 +702,31 @@ networks <- function(input, output, session, dat){
       return("")
 
 		span(
-      strong("Degree"),
+      strong("In-degree"),
 			graph()$nodes %>% 
 			  filter(label == sel) %>% 
-			  pull(degree) %>% 
+			  pull(in_degree) %>% 
 			  round(.3)
 		)
 	})
 
-	output$target_degree <- renderUI({
+	output$source_outdegree <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+    if(is.null(sel))
+      return("")
+
+		span(
+      strong("Out-degree"),
+			graph()$nodes %>% 
+			  filter(label == sel) %>% 
+			  pull(out_degree) %>% 
+			  round(.3)
+		)
+	})
+
+	output$target_indegree <- renderUI({
 
     sel <- .slice_node(nodes_clicked(), 2)
 
@@ -688,12 +734,39 @@ networks <- function(input, output, session, dat){
       return("")
 
 		span(
-      strong("Degree"),
+      strong("In-degree"),
       graph()$nodes %>% 
         filter(label == sel) %>% 
-        pull(degree) %>% 
+        pull(in_degree) %>% 
         round(.3)
 		)
+	})
+
+	output$target_outdegree <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 2)
+
+    if(!length(sel))
+      return("")
+
+		span(
+      strong("Out-degree"),
+      graph()$nodes %>% 
+        filter(label == sel) %>% 
+        pull(out_degree) %>% 
+        round(.3)
+		)
+	})
+
+	output$selected_headline <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+		if(!is.null(sel))
+			h5(
+				"SELECTED NODES"
+			)
+
 	})
 
 	output$selected_source <- renderUI({
@@ -738,6 +811,33 @@ networks <- function(input, output, session, dat){
       )
 
 	})
+
+  output$node_search_ui <- renderUI({
+    ns <- session$ns
+
+    ch <- graph()$nodes %>% 
+      pull(label)
+    
+    selectizeInput(
+      ns("node_searched"),
+      "Search for a node",
+      multiple = FALSE,
+      choices = ch,
+      width = "100%"
+    )
+  })
+
+  observeEvent(input$search_node, {
+    ns <- session$ns
+    
+    id <- graph()$nodes  %>% 
+      mutate(id = 1:n()) %>% 
+      filter(label == input$node_searched) %>% 
+      pull(id)
+
+    sigmajs::sigmajsProxy(ns("graph")) %>% 
+      sigmajs::sg_zoom_p(id, duration = 2500)
+  })
 
 }
 
