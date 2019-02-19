@@ -102,6 +102,13 @@ globalVariables(
   return(nodes)
 }
 
+.size_nodes <- function(nodes, x){
+  var = pull(nodes, x)
+  var <- scales::rescale(var, to = c(1, 15))
+  nodes$size <- var
+  return(nodes)
+}
+
 .check_rate_limit <- function(){
 	rtweet::rate_limit(.get_token(), "search_tweets") %>% 
 		select(remaining, reset_at)

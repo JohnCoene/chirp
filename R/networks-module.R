@@ -135,10 +135,11 @@ networks_ui <- function(id){
           br(),
           fileInput(
             ns("file"),
-            label = "Choose an .RData file",
+            label = "Choose one or more previously downloaded Chirp file(s) (.RData)",
             accept = c(".RData", ".rdata"),
             placeholder = " No file selected",
-            width = "100%"
+            width = "100%",
+            multiple = TRUE
           )
         )
       ),
@@ -166,27 +167,46 @@ networks_ui <- function(id){
       class = "pushbar from_right",
       h4("OPTIONS"),
       br(),
+      selectInput(
+        ns("network"),
+        "NETWORK TYPE",
+        choices = c(
+          "Retweets" = "retweet_screen_name",
+          "Hashtags" = "hashtags",
+          "Conversations" = "mentions_screen_name"
+        ),
+        width = "100%"
+      ),
+      tippy_this(ns("network"), "Type of network to draw"),
       fluidRow(
         column(
-          7,
+          6, 
           selectInput(
-            ns("network"),
-            "NETWORK TYPE",
+            ns("size"), 
+            "SIZE", 
             choices = c(
-              "Retweets" = "retweet_screen_name",
-              "Hashtags" = "hashtags",
-              "Conversations" = "mentions_screen_name"
-            )
+              "Degree" = "degree",
+              "Pagerank" = "pagerank",
+              "Authority" = "authority"
+            ),
+            width = "100%"
           ),
-          tippy_this(ns("network"), "Type of network to draw")
+          tippy_this(ns("colour"), "Variable to colour nodes")
         ),
         column(
-          5, 
+          6, 
           selectInput(
             ns("colour"), 
             "COLOUR", 
-            choices = c("Cluster" = "cluster", "Size" = "size", "Type" = "type"), 
-            selected = "cluster"
+            choices = c(
+              "Cluster" = "group",
+              "Components" = "components", 
+              "Degree" = "degree",
+              "Pagerank" = "pagerank",
+              "Authority" = "authority",
+              "Type" = "type"
+            ),
+            width = "100%"
           ),
           tippy_this(ns("colour"), "Variable to colour nodes")
         )
@@ -332,11 +352,19 @@ networks <- function(input, output, session, dat){
   })
 
   observeEvent(input$file, {
+
+    s <- ""
+    if(length(file$datapath))
+      s <- "s"
+
     session$sendCustomMessage(
       "load", 
-      "Loading file..."
+      paste0("Loading file", s, "...")
     )
-    tw <- get(load(input$file$datapath))
+    tw <- file$datapath %>% 
+      purrr::map_df(function(x){
+      get(load(x))
+    })
     tweets(tw)
 		session$sendCustomMessage("unload", "") # stop loading
   })
@@ -372,44 +400,46 @@ networks <- function(input, output, session, dat){
     graph <- edges %>%
       gt_nodes() %>%
       gt_collect()
-
-    edges <- twinetverse::edges2sg(graph$edges) %>%
+    
+    graph <- tbl_graph(
+      nodes = graph$nodes, 
+      edges = graph$edges
+    ) %>% 
+      activate(nodes) %>% 
       mutate(
-        type = "arrow",
-        size = scales::rescale(size, to = c(2, 20))
-      )
-
-    nodes <- twinetverse::nodes2sg(graph$nodes)
-
-    nodes <- nodes %>%
+        name = nodes,
+        id = name,
+        label = name,
+        degree = centrality_degree(),
+        authority = centrality_authority(),
+        pagerank = centrality_pagerank(),
+        components = group_components(type = "weak"),
+        group = group_walktrap()
+      ) %>% 
+      igraph::as_data_frame("both")
+    
+    edges <- graph$edges %>% 
       mutate(
-        size = scales::rescale(size, to = c(1, 15))
-      )
-
-    nodes <- sigmajs::sg_get_cluster(nodes, edges) %>%
+        id = 1:n(),
+        source = from,
+        target = to,
+        size = n,
+        type = "arrow"
+      ) %>% 
+      select(-one_of("to", "from"))
+    
+    nodes <- graph$vertices %>% 
       mutate(
-        cluster = grp
-      ) %>%  
-      select(-grp) %>% 
-      select(-color)
-
-		session$sendCustomMessage("unload", "") # stop loading
-
-		is_directed <- ifelse(isTRUE(input$comentions), FALSE, TRUE)
-		igraph <- igraph::graph_from_data_frame(edges, directed = is_directed, vertices = nodes)
-
-		degrees <- igraph::degree(igraph) %>% 
-			as.data.frame() 
-
-		degrees$name <- rownames(degrees) 
-		
-		names(degrees) <- c("degree", "name")
+        group = as.factor(group),
+        components = as.factor(components)
+      ) %>% 
+      select(-one_of("n", "nodes"))
+    
+    session$sendCustomMessage("unload", "") # stop loading
 
     list(
       nodes = nodes,
-      edges = edges,
-			igraph = igraph,
-			degree = degrees
+      edges = edges
     )
 
   })
@@ -420,6 +450,7 @@ networks <- function(input, output, session, dat){
 
     nodes <- g$nodes
     nodes <- .color_nodes(nodes, input$colour)
+    nodes <- .size_nodes(nodes, input$size)
     edges <- g$edges
 
     sigmajs::sigmajs(type = "webgl") %>%
@@ -428,7 +459,6 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_force(slowDown = 4) %>%
       sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
-      sigmajs::sg_layout() %>% 
       sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
       sigmajs::sg_settings(
@@ -627,36 +657,6 @@ networks <- function(input, output, session, dat){
     }
   )
 
-	# centrality
-	centrality <- reactive({
-
-		centrality <- igraph::centr_degree(graph()$igraph, mode = "all")
-
-		list(
-			node_centrality = round(centrality$res, 3),
-			graph_centrality = round(centrality$centralization, 3),
-			centrality_max = round(centrality$theoretical_max, 3)
-		)
-	})
-
-	output$node_centrality <- renderUI({
-		span(
-			centrality()$node_centrality
-		)
-	})
-
-	output$graph_centrality <- renderUI({
-		span(
-			centrality()$graph_centrality
-		)
-	})
-
-	output$centrality_max <- renderUI({
-		span(
-			centrality()$centrality_max
-		)
-	})
-
   nodes <- data.frame()
 
   nodes_clicked <- reactive({
@@ -673,10 +673,10 @@ networks <- function(input, output, session, dat){
 
 		span(
       strong("Degree"),
-			graph()$degree %>% 
-				filter(name == sel) %>% 
-				pull(degree) %>% 
-				round(.3)
+			graph()$nodes %>% 
+			  filter(label == sel) %>% 
+			  pull(degree) %>% 
+			  round(.3)
 		)
 	})
 
@@ -689,10 +689,10 @@ networks <- function(input, output, session, dat){
 
 		span(
       strong("Degree"),
-			graph()$degree %>% 
-				filter(name == sel) %>% 
-				pull(degree) %>% 
-				round(.3)
+      graph()$nodes %>% 
+        filter(label == sel) %>% 
+        pull(degree) %>% 
+        round(.3)
 		)
 	})
 
@@ -706,7 +706,16 @@ networks <- function(input, output, session, dat){
 				class = "text-warning"
 			)
 		else
-			h5(icon("angle-left", class = "text-primary"), sel)
+			h5(
+        icon("angle-left", class = "text-primary"), 
+        sel,
+        tags$a(
+          icon("external-link-alt"),
+          href = paste0("https://twitter.com/", sel),
+          target = "_blank",
+          style = "right:20px;position:absolute;"
+        )
+      )
 
 	})
 
@@ -717,7 +726,16 @@ networks <- function(input, output, session, dat){
 		if(!length(sel))
 			span("")
 		else
-			h5(icon("angle-right", class = "text-primary"), sel)
+			h5(
+        icon("angle-right", class = "text-primary"), 
+        sel,
+        tags$a(
+          icon("external-link-alt"),
+          href = paste0("https://twitter.com/", sel),
+          target = "_blank",
+          style = "right:20px;position:absolute;"
+        )
+      )
 
 	})
 

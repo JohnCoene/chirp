@@ -7,6 +7,7 @@
 #' @import tippy
 #' @import shiny
 #' @import dplyr
+#' @import tidygraph
 #' @import graphTweets
 #' @importFrom utils URLencode
 #'

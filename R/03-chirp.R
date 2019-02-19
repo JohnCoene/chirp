@@ -299,9 +299,11 @@ chirp <- function(){
             "LOAD",
             fileInput(
               "file",
-              label = "Choose a previously downloaded Chirp file (.RData)",
+              label = "Choose one or more previously downloaded Chirp file (.RData)",
               accept = c(".RData", ".rdata"),
-              placeholder = " No file selected"
+              placeholder = " No file selected",
+              multiple = TRUE,
+              width = "80%"
             )
           )
         ),
@@ -414,7 +416,11 @@ chirp <- function(){
           "load", 
           "Loading file..."
         )
-        tweets <- get(load(file$datapath))
+        
+        tweets <- file$datapath %>% 
+          purrr::map_df(function(x){
+          get(load(x))
+        })
 
         showTab(inputId = "tabs", target = "NETWORKS")
         updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
