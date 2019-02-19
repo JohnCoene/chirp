@@ -8,6 +8,7 @@ globalVariables(
     "screen_name",
     "created_at",
     "is_retweet",
+    "components",
 		"remaining",
     "status_id",
 		"reset_at",
@@ -15,13 +16,16 @@ globalVariables(
     "tweets",
     "weight",
 		"degree",
+    "group",
     "color",
     "label",
 		"name",
     "size",
     "type",
+    "from",
     "grp",
     "v2",
+    "to",
     "."
   )
 )
