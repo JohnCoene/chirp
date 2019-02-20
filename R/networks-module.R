@@ -169,7 +169,10 @@ networks_ui <- function(id){
             tippy_this(ns("include_rts"), "Whether to include retweets"),
             textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
             textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
-            textInput(ns("radius"), "Radius", value = "", width = "100%"),
+            fluidRow(
+							column(6,textInput(ns("radius"), "Radius", value = "", width = "100%")),
+							column(6, selectInput(ns("metric"), "Metric", choices = c("Kilometer" = "km", "Miles" = "mi")))
+						),
             checkboxInput(ns("append"), "Append")
           )
         ),
@@ -358,26 +361,8 @@ networks <- function(input, output, session, dat){
   observeEvent(input$submit, {
     geocode <- NULL
 
-    if(input$longitude != "" && input$latitude != "" && input$radius != "")
-      geocode <- paste0(input$longitude, input$latitude, input$radius)
-
-    if(input$q == ""){
-      showModal(modalDialog(
-        title = "No search entered!",
-        "Enter a search",
-        br(),
-        "Can include boolean operators such as 'OR' and 'AND',",
-        "visit the", 
-        tags$a(
-          "official documentation",
-          href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
-          target = "_blank"
-        ),
-        "for more details.",
-        easyClose = TRUE,
-        footer = NULL
-      ))
-    }
+		if(input$longitude != "" && input$latitude != "" && input$radius != "")
+			geocode <- paste(input$longitude, input$latitude, paste0(input$radius, input$metric), sep = ",")
 
     if(input$q != ""){
 
@@ -528,6 +513,7 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_kill() %>%
       sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
+			sigmajs::sg_layout() %>% 
       sigmajs::sg_settings(
         minArrowSize = 1,
         batchEdgesDrawing = TRUE,

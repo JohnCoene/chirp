@@ -1,10 +1,13 @@
 {
   "docs": {
-    "Guides": [
+    "Guide": [
       "quick-start",
       "configure",
       "deploy"
-    ]
+		],
+		"Usage": [
+			"data"
+		]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

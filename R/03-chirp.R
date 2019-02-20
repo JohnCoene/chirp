@@ -281,14 +281,17 @@ chirp <- function(){
               ),
               fluidRow(
                 column(
-                  4, textInput("longitude", "Longitude", value = "", width = "100%")
+                  3, textInput("longitude", "Longitude", value = "", width = "100%")
                 ),
                 column(
-                  4, textInput("latitude", "Latitude", value = "", width = "100%")
+                  3, textInput("latitude", "Latitude", value = "", width = "100%")
                 ),
                 column(
                   4, textInput("radius", "Radius", value = "", width = "100%")
-                )
+                ),
+								column(
+									2, selectInput("metric", "Metric", choices = c("Kilometer" = "km", "Miles" = "mi"))
+								)
               )
             )
           ),
@@ -343,27 +346,7 @@ chirp <- function(){
       geocode <- NULL
 
       if(input$longitude != "" && input$latitude != "" && input$radius != "")
-        geocode <- paste0(input$longitude, input$latitude, input$radius)
-
-      if(input$q == ""){
-        showModal(
-					modalDialog(
-						title = "No search entered!",
-						"Enter a search",
-						br(),
-						"Can include boolean operators such as 'OR' and 'AND',",
-						"visit the", 
-						tags$a(
-							"official documentation",
-							href = "https://developer.twitter.com/en/docs/tweets/search/guides/standard-operators.html",
-							target = "_blank"
-						),
-						"for more details.",
-						easyClose = TRUE,
-						footer = NULL
-        	)
-				)
-      }
+        geocode <- paste(input$longitude, input$latitude, paste0(input$radius, input$metric), sep = ",")
 
 			lim <- .check_rate_limit()
 
