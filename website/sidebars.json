@@ -1,9 +1,10 @@
 {
   "docs": {
-    "Quick Start": ["quick-start"],
-    "Configure": ["configure"],
-    "Features": ["features"],
-    "Second Category": ["doc3"]
+    "Guides": [
+      "quick-start",
+      "configure",
+      "deploy"
+    ]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

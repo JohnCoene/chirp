@@ -1,7 +1,7 @@
 ---
 id: quick-start
 title: Quick Start
-sidebar_label: Up and running in a minute
+sidebar_label: Quick Start
 ---
 
 Check the [demo](https://shiny.john-coene/chirp) to see Chirp in action.
@@ -55,7 +55,7 @@ The configuration file (`_chirp.yml`) allows you to customise Chirp and hold you
 1. You have already used the `rtweet` package in which case Chirp will use your internally saved credentials: you can thus jump straight to the [Check section](#check).
 2. You have never use `rtweet` on your machine, in which case you simply follow along to get setup.
 
-There is probably a third option, the above confuses you as you are not familiar with R or `rtweet`, in which case keep reading.
+There is probably a third possibility, the above confuses you as you are not familiar with R or `rtweet`, in which case keep reading.
 
 Chirp comes integrated with the [Twitter Search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html), the credentials discussed above will enable Chirp to fetch tweets. Therefore, having either `credentials` specified in `_chirp.yml` or having an `rtweet` token saved internally. Note that this is the _only_ required option in Chirp.
 
@@ -87,7 +87,7 @@ R -e "chirp::check_nest()"
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-## Rum
+## Run
 
 You can now run Chirp.
 
@@ -102,4 +102,15 @@ R -e "chirp::chirp()"
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
+
+## Recap
+
+The above can be compacted into the snippet below.
+
+```r
+devtools::install_github("JohnCoene/chirp") # install
+chirp::build_nest() # create config file
+chirp::check_nest() # check config file
+chirp::chirp() # launch
+```
 

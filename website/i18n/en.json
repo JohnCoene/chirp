@@ -5,12 +5,12 @@
     "previous": "Previous",
     "tagline": "Free, open-source, Twitter network visualisation platform",
     "docs": {
+      "configure": {
+        "title": "Configuration"
+      },
       "deploy": {
         "title": "Deploy",
-        "sidebar_label": "Deploy (almost) anywhere"
-      },
-      "doc3": {
-        "title": "This is document number 3"
+        "sidebar_label": "Deploy"
       },
       "doc4": {
         "title": "Other Document"
@@ -20,7 +20,7 @@
       },
       "quick-start": {
         "title": "Quick Start",
-        "sidebar_label": "Up and running in a minute"
+        "sidebar_label": "Quick Start"
       }
     },
     "links": {
@@ -30,9 +30,7 @@
       "Blog": "Blog"
     },
     "categories": {
-      "Quick Start": "Quick Start",
-      "Features": "Features",
-      "Second Category": "Second Category",
+      "Guides": "Guides",
       "First Category": "First Category"
     }
   },

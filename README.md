@@ -5,7 +5,7 @@ Chirp is an open-source Twitter network visualisation platform.
 ## Features
 
 - [Twitter Search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html) integrated
-- Setup in 5 lines
+- Setup in 4 lines
 - Intuitive
 - Free
 

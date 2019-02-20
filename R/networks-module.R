@@ -169,7 +169,8 @@ networks_ui <- function(id){
             tippy_this(ns("include_rts"), "Whether to include retweets"),
             textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
             textInput(ns("latitude"), "Latitude", value = "", width = "100%"),
-            textInput(ns("radius"), "Radius", value = "", width = "100%")
+            textInput(ns("radius"), "Radius", value = "", width = "100%"),
+            checkboxInput(ns("append"), "Append")
           )
         ),
         tabPanel(
@@ -399,7 +400,11 @@ networks <- function(input, output, session, dat){
 					geocode = geocode,
 					token = .get_token()
 				)
-				tweets(tw)
+        if(isTRUE(input$append))
+          rbind.data.frame(tweets(), tw) %>% 
+            tweets()
+        else
+				  tweets(tw)
 			}
 
 			session$sendCustomMessage("unload", "") # stop loading
