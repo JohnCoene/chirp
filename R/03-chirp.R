@@ -195,21 +195,18 @@ chirp <- function(){
         class = "container",
         style = "min-height:90vh;",
         div(
-          style = "width: 100%; height: 250px; position: relative;z-index:-9;",
+          style = "width: 100%; height: 300px; position: relative;z-index:-9;",
           div(
             id = "particles-target",
             style = "position: absolute; top: 0; bottom: 0; right: 0; left: 0;"
           ),
           div(
-            br(),
-            br(),
+            style = "padding-top:60px;",
             h1("|tʃəːp|", class = "center"),
             h3("Free, Open-Source Twitter Network Explorer.", class = "center")
           )
         ),
         shinyparticles::particles(particles_json, target_id = "particles-target", element_id = "particles"),
-        br(),
-        br(),
         tabsetPanel(
           type = "tabs",
           tabPanel(

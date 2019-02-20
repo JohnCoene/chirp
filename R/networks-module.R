@@ -143,7 +143,7 @@ networks_ui <- function(id){
               label = "Number of tweets",
               min = 500,
               max = 18000,
-              value = 1000,
+              value = 500,
               step = 100,
               width = "100%"
             ),
@@ -219,6 +219,14 @@ networks_ui <- function(id){
         width = "100%"
       ),
       tippy_this(ns("network"), "Type of network to draw"),
+      conditionalPanel(
+        "input['networks-network'] != 'retweet_screen_name'",
+        checkboxInput(
+          ns("comentions"),
+          "CO-MENTIONS",
+          width = "100%"
+        )
+      ),
       fluidRow(
         column(
           6, 
@@ -258,14 +266,6 @@ networks_ui <- function(id){
             width = "100%"
           ),
           tippy_this(ns("colour"), "Variable to colour nodes")
-        )
-      ),
-      conditionalPanel(
-        "input['networks-network'] != 'retweet_screen_name'",
-        checkboxInput(
-          ns("comentions"),
-          "CO-MENTIONS",
-          width = "100%"
         )
       ),
 			h5("FILTER"),
@@ -833,7 +833,7 @@ networks <- function(input, output, session, dat){
 		if(!length(sel))
       ""
     else
-      icon("chevron-down", class = "fa-lg center")
+      icon("chevron-down", class = "fa-lg center_arrow")
   })
 
 	output$selected_target <- renderUI({

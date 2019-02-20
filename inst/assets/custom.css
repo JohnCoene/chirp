@@ -35,6 +35,10 @@ nav{
   width:320px;
 }
 
+.center_arrow{
+  margin-left:45%;
+}
+
 body > .inner {
   display: none;
 }
