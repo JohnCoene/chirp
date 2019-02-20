@@ -12,6 +12,13 @@
   top:20px;
 }
 
+#searchNode{
+  position:absolute;
+  z-index:999;
+  left:20px;
+  bottom:20px;
+}
+
 #stats{
   position:absolute;
   z-index:999;
@@ -23,7 +30,7 @@ nav{
   display: none;
 }
 
-#pushbarLeft, #pushbarTop, #pushbarBottom{
+#pushbarLeft, #pushbarTop, #pushbarBottom, #pushbarSearchNode{
   padding:25px;
   width:320px;
 }
@@ -43,6 +50,12 @@ body.pg-loaded > .inner {
 }
 
 #closeSearch{
+  bottom:20px;
+  left:20px;
+  position:absolute;
+}
+
+#closeSearchNode{
   bottom:20px;
   left:20px;
   position:absolute;

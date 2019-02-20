@@ -11,11 +11,41 @@ networks_ui <- function(id){
       id = "optsBtn"
     ),
     tags$a(
-      icon("searchengin", class = "fa-lg"),
+      icon("database", class = "fa-lg"),
       onclick = "pushbar.open('search_pushbar');",
       class = "btn btn-primary",
       `data-pushbar-target` = "search_pushbar",
       id = "search"
+    ),
+    tags$a(
+      icon("searchengin", class = "fa-lg"),
+      onclick = "pushbar.open('search_node_pushbar');",
+      class = "btn btn-primary",
+      `data-pushbar-target` = "search_node_pushbar",
+      id = "searchNode"
+    ),
+    div(
+      id = "pushbarSearchNode",
+      `data-pushbar-id` = "search_node_pushbar",
+      class = "pushbar from_left",
+      h4("SEARCH"),
+      fluidRow(
+        column(9, uiOutput(ns("node_search_ui"))),
+        column(
+          3,
+          br(),
+          actionButton(
+            ns("search_node"),
+            "",
+            icon = icon("search-plus"),
+            width = "100%"
+          )
+        )
+      ),
+      tags$a(
+        id = "closeSearchNode",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
+      )
     ),
 		actionButton(
 			"stats",
@@ -63,7 +93,6 @@ networks_ui <- function(id){
         type = "tabs",
         tabPanel(
           "SEARCH ",
-          br(),
           textInput(
             ns("q"),
             "",
@@ -131,8 +160,6 @@ networks_ui <- function(id){
         ),
         tabPanel(
           "LOAD",
-          br(),
-          br(),
           fileInput(
             ns("file"),
             label = "Choose one or more previously downloaded Chirp file(s) (.RData)",
@@ -140,20 +167,6 @@ networks_ui <- function(id){
             placeholder = " No file selected",
             width = "100%",
             multiple = TRUE
-          )
-        )
-      ),
-      h4("SEARCH"),
-      fluidRow(
-        column(9, uiOutput(ns("node_search_ui"))),
-        column(
-          3,
-          br(),
-          actionButton(
-            ns("search_node"),
-            "",
-            icon = icon("search-plus"),
-            width = "100%"
           )
         )
       ),
@@ -283,6 +296,13 @@ networks_ui <- function(id){
             width = "100%"
           )
         )
+      ),
+      br(),
+      actionButton(
+        ns("noverlap"), 
+        "NO OVERLAP", 
+        icon = icon("magnet"),
+        width = "100%"
       ),
       h5("EXPORT"),
       fluidRow(
@@ -648,10 +668,13 @@ networks <- function(input, output, session, dat){
     sigmajs::sigmajsProxy(ns("graph")) %>%
       sigmajs::sg_force_kill_p()
 
-    Sys.sleep(.5)
+  })
+
+  observeEvent(input$noverlap, {
+    ns <- session$ns
 
     sigmajs::sigmajsProxy(ns("graph")) %>%
-      sigmajs::sg_noverlap_p()
+      sigmajs::sg_noverlap_p(nodeMargin = .05)
 
   })
 
@@ -836,7 +859,7 @@ networks <- function(input, output, session, dat){
       pull(id)
 
     sigmajs::sigmajsProxy(ns("graph")) %>% 
-      sigmajs::sg_zoom_p(id, duration = 2500)
+      sigmajs::sg_zoom_p(id - 1, duration = 1500, ratio = .1)
   })
 
 }
