@@ -117,3 +117,12 @@ globalVariables(
 	rtweet::rate_limit(.get_token(), "search_tweets") %>% 
 		select(remaining, reset_at)
 }
+
+.zoom <- function(x){
+  switch(
+    x,
+    low = .1,
+    medium = .05,
+    high = .01
+  )
+}

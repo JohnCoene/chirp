@@ -42,6 +42,18 @@ networks_ui <- function(id){
           )
         )
       ),
+      radioButtons(
+        ns("zoom"),
+        "Zoom level",
+        choices = c(
+          "High" = "high",
+          "Medium" = "medium",
+          "Low" = "low"
+        ),
+        inline = TRUE,
+        width = "100%",
+        selected = "medium"
+      ),
       tags$a(
         id = "closeSearchNode",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
@@ -852,6 +864,8 @@ networks <- function(input, output, session, dat){
 
   observeEvent(input$search_node, {
     ns <- session$ns
+
+    ratio <- .zoom(input$zoom)
     
     id <- graph()$nodes  %>% 
       mutate(id = 1:n()) %>% 
@@ -859,7 +873,7 @@ networks <- function(input, output, session, dat){
       pull(id)
 
     sigmajs::sigmajsProxy(ns("graph")) %>% 
-      sigmajs::sg_zoom_p(id - 1, duration = 1500, ratio = .1)
+      sigmajs::sg_zoom_p(id - 1, duration = 1500, ratio = ratio)
   })
 
 }
