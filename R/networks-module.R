@@ -87,11 +87,19 @@ networks_ui <- function(id){
         column(6, uiOutput(ns("source_indegree"))),
         column(6, uiOutput(ns("source_outdegree")))
       ),
+			fluidRow(
+        column(6, uiOutput(ns("source_pagerank"))),
+        column(6, uiOutput(ns("source_eigen")))
+      ),
       uiOutput(ns("arrow_down")),
       uiOutput(ns("selected_target")),
       fluidRow(
         column(6, uiOutput(ns("target_indegree"))),
         column(6, uiOutput(ns("target_outdegree")))
+      ),
+      fluidRow(
+        column(6, uiOutput(ns("target_pagerank"))),
+        column(6, uiOutput(ns("target_eigen")))
       ),
       tags$a(
         id = "closeStats",
@@ -185,7 +193,8 @@ networks_ui <- function(id){
             placeholder = " No file selected",
             width = "100%",
             multiple = TRUE
-          )
+          ),
+					checkboxInput(ns("append_file"), "Append")
         )
       ),
       a(
@@ -376,21 +385,19 @@ networks <- function(input, output, session, dat){
 			if(lim$remaining == 0)
 				shinyjs::disable("submit")
 
-			if(lim$remaining != 0){
-				tw <- rtweet::search_tweets(
-					input$q,
-					n = input$n,
-					type = input$type,
-					include_rts = input$include_rts,
-					geocode = geocode,
-					token = .get_token()
-				)
-        if(isTRUE(input$append))
-          rbind.data.frame(tweets(), tw) %>% 
-            tweets()
-        else
-				  tweets(tw)
-			}
+			tw <- rtweet::search_tweets(
+				input$q,
+				n = input$n,
+				type = input$type,
+				include_rts = input$include_rts,
+				geocode = geocode,
+				token = .get_token()
+			)
+			if(isTRUE(input$append))
+				rbind.data.frame(tweets(), tw) %>% 
+					tweets()
+			else
+				tweets(tw)
 
 			session$sendCustomMessage("unload", "") # stop loading
     }
@@ -413,7 +420,11 @@ networks <- function(input, output, session, dat){
       purrr::map_df(function(x){
       get(load(x))
     })
-    tweets(tw)
+		if(isTRUE(input$append_file))
+			rbind.data.frame(tweets(), tw) %>% 
+				tweets()
+		else
+			tweets(tw)
 		session$sendCustomMessage("unload", "") # stop loading
   })
 
@@ -754,6 +765,38 @@ networks <- function(input, output, session, dat){
 		)
 	})
 
+	output$source_pagerank <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+    if(is.null(sel))
+      return("")
+
+		span(
+      strong("Pagerank"),
+			graph()$nodes %>% 
+			  filter(label == sel) %>% 
+			  pull(pagerank) %>% 
+			  round(.3)
+		)
+	})
+
+	output$source_eigen <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 1)
+
+    if(is.null(sel))
+      return("")
+
+		span(
+      strong("Eigen"),
+			graph()$nodes %>% 
+			  filter(label == sel) %>% 
+			  pull(eigen) %>% 
+			  round(.3)
+		)
+	})
+
 	output$target_indegree <- renderUI({
 
     sel <- .slice_node(nodes_clicked(), 2)
@@ -782,6 +825,38 @@ networks <- function(input, output, session, dat){
       graph()$nodes %>% 
         filter(label == sel) %>% 
         pull(out_degree) %>% 
+        round(.3)
+		)
+	})
+
+	output$target_pagerank <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 2)
+
+    if(!length(sel))
+      return("")
+
+		span(
+      strong("Pagerank"),
+      graph()$nodes %>% 
+        filter(label == sel) %>% 
+        pull(pagerank) %>% 
+        round(.3)
+		)
+	})
+
+	output$target_eigen <- renderUI({
+
+    sel <- .slice_node(nodes_clicked(), 2)
+
+    if(!length(sel))
+      return("")
+
+		span(
+      strong("Eigen"),
+      graph()$nodes %>% 
+        filter(label == sel) %>% 
+        pull(eigen) %>% 
         round(.3)
 		)
 	})
