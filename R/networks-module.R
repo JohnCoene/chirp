@@ -236,8 +236,17 @@ networks_ui <- function(id){
         "input['networks-network'] != 'retweet_screen_name'",
         checkboxInput(
           ns("comentions"),
-          "CO-MENTIONS",
+          "Co-mentions",
           width = "100%"
+        )
+      ),
+      conditionalPanel(
+        "input['networks-network'] == 'retweet_screen_name'",
+        checkboxInput(
+          ns("quoted"),
+          "Include quoted",
+          width = "100%",
+					value = TRUE
         )
       ),
       fluidRow(
@@ -456,6 +465,10 @@ networks <- function(input, output, session, dat){
     else
       edges <- tw %>% gt_edges(screen_name, !!sym(input$network))
 
+		if(isTRUE(input$quoted) && input$network == "retweet_screen_name")
+			edges <- edges %>% 
+				gt_edges_bind(screen_name, quoted_screen_name) 
+
     graph <- edges %>%
       gt_nodes() %>%
       gt_collect()
@@ -565,7 +578,7 @@ networks <- function(input, output, session, dat){
         arrange(-retweet_count) 
 
 			if(nrow(src) >= 1)
-				tw <- src %>%
+				tw <- src %>%	
 					slice(1) %>% 
 					.get_tweet()
 			else
@@ -730,7 +743,8 @@ networks <- function(input, output, session, dat){
 
   nodes_clicked <- reactive({
     if(!is.null(input$graph_click_nodes))
-      nodes <<- rbind.data.frame(input$graph_click_nodes, nodes)
+      nodes <<- rbind.data.frame(input$graph_click_nodes, nodes) %>% 
+				slice(1:2)
   })
 
 	output$source_indegree <- renderUI({

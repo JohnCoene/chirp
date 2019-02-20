@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Free, open-source, Twitter network visualisation platform",
+    "tagline": "Twitter network visualisation platform",
     "docs": {
       "configure": {
         "title": "Configuration"

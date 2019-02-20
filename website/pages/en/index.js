@@ -144,19 +144,19 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'content',
+            content: 'Clean UI to easily explore networks',
             image: `${baseUrl}img/docusaurus.svg`,
             imageAlign: 'top',
             title: 'Intuitive',
           },
           {
-            content: 'content',
+            content: 'Tons of insights packed in simple platform',
             image: `${baseUrl}img/docusaurus.svg`,
             imageAlign: 'top',
             title: 'Insightful',
 					},
           {
-            content: 'content',
+            content: 'Customize all the appearance',
             image: `${baseUrl}img/docusaurus.svg`,
             imageAlign: 'top',
             title: 'Customizable',
