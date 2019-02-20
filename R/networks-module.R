@@ -38,7 +38,8 @@ networks_ui <- function(id){
             ns("search_node"),
             "",
             icon = icon("search-plus"),
-            width = "100%"
+            width = "100%",
+            class = "btn-primary"
           )
         )
       ),
@@ -86,6 +87,7 @@ networks_ui <- function(id){
         column(6, uiOutput(ns("source_indegree"))),
         column(6, uiOutput(ns("source_outdegree")))
       ),
+      uiOutput(ns("arrow_down")),
       uiOutput(ns("selected_target")),
       fluidRow(
         column(6, uiOutput(ns("target_indegree"))),
@@ -610,7 +612,7 @@ networks <- function(input, output, session, dat){
   })
 
   output$trend_text <- renderUI({
-    p(strong("Trend"), .get_time_scale(trend()$format))
+    p(strong("Tweets"), .get_time_scale(trend()$format))
   })
 
   output$trendline <- reactrend::renderReactrend({
@@ -815,17 +817,24 @@ networks <- function(input, output, session, dat){
 			)
 		else
 			h5(
-        icon("angle-left", class = "text-primary"), 
-        sel,
         tags$a(
-          icon("external-link-alt"),
+          .get_random_icon(),
           href = paste0("https://twitter.com/", sel),
-          target = "_blank",
-          style = "right:20px;position:absolute;"
-        )
+          target = "_blank"
+        ),
+        sel
       )
 
 	})
+
+  output$arrow_down <- renderUI({
+   sel <- .slice_node(nodes_clicked(), 2)
+
+		if(!length(sel))
+      ""
+    else
+      icon("chevron-down", class = "fa-lg center")
+  })
 
 	output$selected_target <- renderUI({
 
@@ -835,14 +844,12 @@ networks <- function(input, output, session, dat){
 			span("")
 		else
 			h5(
-        icon("angle-right", class = "text-primary"), 
-        sel,
         tags$a(
-          icon("external-link-alt"),
+          .get_random_icon(),
           href = paste0("https://twitter.com/", sel),
-          target = "_blank",
-          style = "right:20px;position:absolute;"
-        )
+          target = "_blank"
+        ),
+        sel
       )
 
 	})

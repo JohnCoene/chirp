@@ -126,3 +126,16 @@ globalVariables(
     high = .01
   )
 }
+
+.get_random_icon <- function(){
+  x <- c(
+    "user-tie",
+    "user-secret",
+    "user-ninja",
+    "user-md",
+    "user-graduate",
+    "user-astronaut"
+  )
+  icn <- sample(x, 1)
+  icon(icn, class = "text-primary")
+}
