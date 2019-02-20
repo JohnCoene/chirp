@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: '|tʃəːp|', // Title for your website.
-  tagline: 'Free, open-source, Twitter network visualisation platform',
+  tagline: 'Twitter network visualisation platform',
   url: 'https://chirp.sh', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
@@ -48,9 +48,9 @@ const siteConfig = {
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/docusaurus.svg',
-  footerIcon: 'img/docusaurus.svg',
-  favicon: 'img/favicon.png',
+  headerIcon: '',
+  footerIcon: 'img/chirp.svg',
+  favicon: 'img/chirp_favicon.png',
 
   /* Colors for website */
   colors: {
@@ -89,7 +89,8 @@ const siteConfig = {
   ],
   stylesheets: [
 		'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
-		'/css/code-block-buttons.css'
+		'/css/code-block-buttons.css',
+		'/css/custom.css'
 	],
 
   // On page navigation for the current documentation page.

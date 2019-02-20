@@ -1,16 +1,9 @@
-/* your custom css */
+@import url('https://fonts.googleapis.com/css?family=Raleway|Ubuntu+Mono');
 
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+body{
+	font-family: 'Raleway', sans-serif;
 }
 
-@media only screen and (min-width: 1024px) {
-}
-
-@media only screen and (max-width: 1023px) {
-}
-
-@media only screen and (min-width: 1400px) {
-}
-
-@media only screen and (min-width: 1500px) {
+code{
+	font-family: 'Ubuntu Mono', monospace;
 }

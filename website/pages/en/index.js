@@ -144,16 +144,22 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'This is the content of my feature',
+            content: 'content',
             image: `${baseUrl}img/docusaurus.svg`,
             imageAlign: 'top',
-            title: 'Feature One',
+            title: 'Intuitive',
           },
           {
-            content: 'The content of my second feature',
+            content: 'content',
             image: `${baseUrl}img/docusaurus.svg`,
             imageAlign: 'top',
-            title: 'Feature Two',
+            title: 'Insightful',
+					},
+          {
+            content: 'content',
+            image: `${baseUrl}img/docusaurus.svg`,
+            imageAlign: 'top',
+            title: 'Customizable',
           },
         ]}
       </Block>

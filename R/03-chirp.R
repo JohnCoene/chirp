@@ -203,7 +203,7 @@ chirp <- function(){
           div(
             style = "padding-top:60px;",
             h1("|tʃəːp|", class = "center"),
-            h3("Free, Open-Source Twitter Network Explorer.", class = "center")
+            h3("Twitter Network Explorer.", class = "center")
           )
         ),
         shinyparticles::particles(particles_json, target_id = "particles-target", element_id = "particles"),
