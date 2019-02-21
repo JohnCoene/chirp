@@ -40,6 +40,6 @@ Hashtags networks tell you more about the nature of the Twitter discussions. You
 
 ### Conversations
 
-The _conversations_ network displays how users communicate with each other: each node is a user, they are connected by an edge when one @tagged the other in a tweet.
+The _conversations_ network displays how users communicate with each other: each node is a user, they are connected by an edge when one @tagged the other in a tweet. A sub-type of this network also enables you to plot co-mentions of users in tweets.
 
 <img src="/img/brexit_conversations.svg" />
