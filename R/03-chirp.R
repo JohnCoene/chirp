@@ -332,9 +332,6 @@ chirp <- function(){
 
   server <- function(input, output, session){
 
-    # tab initialy hidden
-		hideTab(inputId = "tabs", target = "NETWORKS")
-
     shinyjs::hide("options")
 
     observeEvent(input$opts, {
@@ -376,8 +373,7 @@ chirp <- function(){
 					geocode = geocode,
 					token = .get_token()
 				)
-
-				showTab(inputId = "tabs", target = "NETWORKS")
+        
 				updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
 				callModule(networks, "networks", dat = tweets)
 			}

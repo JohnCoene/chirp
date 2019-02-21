@@ -1,4 +1,15 @@
 #' Dynamic Plugin
+#'
+#' @examples
+ui <- fluidPage(
+  dynamic_ui("time")
+)
+
+server <- function(input, output, session){
+  callModule(dynamic, "time", tweet = tweets)
+}
+
+if(interactive()) shinyApp(ui, server)
 #' 
 #' @export
 dynamic_ui <- function(id){
@@ -97,6 +108,8 @@ dynamic <- function(input, output, session, tweets) {
 
   observeEvent(input$time, {
 
+    ns <- session$ns
+
     should_be_on_graph <- on_graph_react()[[1]]
 
     # compute
@@ -116,29 +129,27 @@ dynamic <- function(input, output, session, tweets) {
       drop_edges <- should_be_on_graph$edges_not %>% 
         anti_join(already_on_graph$edges_not, by = "id")
 
-      sigmajsProxy("sg") %>% 
+      sigmajsProxy(ns("sg")) %>% 
         sg_add_nodes_p(add_nodes, id, label, x, y, size, refresh = FALSE) %>% 
         sg_add_edges_p(add_edges, id, source, target, refresh = FALSE) %>% 
         sg_drop_nodes_p(drop_nodes, id, refresh = TRUE) %>% 
         sg_drop_edges_p(drop_edges, id, refresh = TRUE) 
       
     } else {
-      sigmajsProxy("sg") %>% 
+      sigmajsProxy(ns("sg")) %>% 
         sg_add_nodes_p(should_be_on_graph$nodes, id, label, size) %>% 
         sg_add_edges_p(should_be_on_graph$edges, id, source, target)
     }
 
-    sigmajsProxy("sg") %>% 
+    sigmajsProxy(ns("sg")) %>% 
       sg_refresh_p()
   })
-
-  shinyApp(ui, server)
 }
 
 dynamic_home_ui <- function(id){
   actionButton("dyn", "dyn")
 }
 
-dynamic_home <- function(input, output, function){
+dynamic_home <- function(input, output, session){
   ns <- session$ns
 }
