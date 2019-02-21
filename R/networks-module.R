@@ -462,7 +462,7 @@ networks <- function(input, output, session, dat){
 
   graph <- reactive({
 
-    tw <- tweets()  %>% 
+    tw <- tweets() %>% 
       filter(is_retweet %in% c(FALSE, input$include_retweets))
 
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))

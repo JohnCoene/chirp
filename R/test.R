@@ -1,4 +1,29 @@
-test <- function() {
+#' Dynamic Plugin
+#' 
+#' @export
+dynamic_ui <- function(id){
+  ns <- NS(id)
+  tagList(
+    sliderInput(
+      ns("time"), 
+      "",
+      min = 0, 
+      max = 10000, 
+      value = 0, 
+      step = 1000, 
+      animate = animationOptions(
+        interval = 1000, 
+        loop = FALSE, 
+        playButton = icon("play"),
+        pauseButton = icon("kill")
+      )
+    ),
+    sigmajsOutput(ns("sg"))
+  )
+}
+
+dynamic <- function(input, output, session, tweets) {
+
   net <- tweets %>% 
     gt_edges(screen_name, mentions_screen_name, created_at) %>% 
     gt_nodes() %>% 
@@ -40,83 +65,80 @@ test <- function() {
   nodes$id <- as.character(nodes$id)
   edges$id <- as.character(edges$id)
 
-  ui <- fluidPage(
-    sliderInput("time", "time", min = 0, max = 10000, value = 0, step = 1000, animate = animationOptions(interval = 1000, loop = FALSE, playButton = icon("play"),
-  pauseButton = icon("kill"))),
-    sigmajsOutput("sg")
-  )
+  dat <- eventReactive(input$time, {
+    n <- nodes %>% 
+      filter(start < input$time) 
 
-  server <- function(input, output, session){
+    e <- edges %>% 
+      filter(created_at < input$time)
 
-    dat <- eventReactive(input$time, {
-      n <- nodes %>% 
-        filter(start < input$time) 
+    n_rm <- nodes %>% 
+      filter(start >= input$time) 
 
-      e <- edges %>% 
-        filter(created_at < input$time)
+    e_rm <- edges %>% 
+      filter(created_at >= input$time)
 
-      n_rm <- nodes %>% 
-        filter(start >= input$time) 
-
-      e_rm <- edges %>% 
-        filter(created_at >= input$time)
-
-      list(
-        nodes = n,
-        edges = e,
-        nodes_not = n_rm,
-        edges_not = e_rm
-      )
-    })
+    list(
+      nodes = n,
+      edges = e,
+      nodes_not = n_rm,
+      edges_not = e_rm
+    )
+  })
 
   on_graph <- list()
   on_graph_react <- reactive({
     on_graph <<- append(list(dat()), on_graph)
   })
 
-    output$sg <- renderSigmajs({
-      sigmajs()
-    })
+  output$sg <- renderSigmajs({
+    sigmajs()
+  })
 
-    observeEvent(input$time, {
+  observeEvent(input$time, {
 
-      should_be_on_graph <- on_graph_react()[[1]]
+    should_be_on_graph <- on_graph_react()[[1]]
 
-      # compute
-      if(length(on_graph_react()) >= 3){
-        
-        already_on_graph <- on_graph_react()[[2]]
+    # compute
+    if(length(on_graph_react()) >= 3){
+      
+      already_on_graph <- on_graph_react()[[2]]
 
-        add_nodes <- should_be_on_graph$nodes %>% 
-          anti_join(already_on_graph$nodes, by = "id")
+      add_nodes <- should_be_on_graph$nodes %>% 
+        anti_join(already_on_graph$nodes, by = "id")
 
-        drop_nodes <- should_be_on_graph$nodes_not %>% 
-          anti_join(already_on_graph$nodes_not, by = "id")
+      drop_nodes <- should_be_on_graph$nodes_not %>% 
+        anti_join(already_on_graph$nodes_not, by = "id")
 
-        add_edges <- should_be_on_graph$edges %>% 
-          anti_join(already_on_graph$edges, by = "id")
+      add_edges <- should_be_on_graph$edges %>% 
+        anti_join(already_on_graph$edges, by = "id")
 
-        drop_edges <- should_be_on_graph$edges_not %>% 
-          anti_join(already_on_graph$edges_not, by = "id")
-
-        sigmajsProxy("sg") %>% 
-          sg_add_nodes_p(add_nodes, id, label, x, y, size, refresh = FALSE) %>% 
-          sg_add_edges_p(add_edges, id, source, target, refresh = FALSE) %>% 
-          sg_drop_nodes_p(drop_nodes, id, refresh = TRUE) %>% 
-          sg_drop_edges_p(drop_edges, id, refresh = TRUE) 
-        
-      } else {
-        sigmajsProxy("sg") %>% 
-          sg_add_nodes_p(should_be_on_graph$nodes, id, label, size) %>% 
-          sg_add_edges_p(should_be_on_graph$edges, id, source, target)
-      }
+      drop_edges <- should_be_on_graph$edges_not %>% 
+        anti_join(already_on_graph$edges_not, by = "id")
 
       sigmajsProxy("sg") %>% 
-        sg_refresh_p()
-    })
+        sg_add_nodes_p(add_nodes, id, label, x, y, size, refresh = FALSE) %>% 
+        sg_add_edges_p(add_edges, id, source, target, refresh = FALSE) %>% 
+        sg_drop_nodes_p(drop_nodes, id, refresh = TRUE) %>% 
+        sg_drop_edges_p(drop_edges, id, refresh = TRUE) 
+      
+    } else {
+      sigmajsProxy("sg") %>% 
+        sg_add_nodes_p(should_be_on_graph$nodes, id, label, size) %>% 
+        sg_add_edges_p(should_be_on_graph$edges, id, source, target)
+    }
 
-  }
+    sigmajsProxy("sg") %>% 
+      sg_refresh_p()
+  })
 
   shinyApp(ui, server)
 }
 
+dynamic_home_ui <- function(id){
+  actionButton("dyn", "dyn")
+}
+
+dynamic_home <- function(input, output, function){
+  ns <- session$ns
+}
