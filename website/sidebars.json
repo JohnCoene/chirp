@@ -6,7 +6,8 @@
       "deploy"
 		],
 		"Usage": [
-			"data"
+      "data",
+      "networks"
 		]
   },
   "docs-other": {

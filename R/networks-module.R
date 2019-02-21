@@ -168,11 +168,17 @@ networks_ui <- function(id){
               width = "100%"
             ),
             tippy_this(ns("type"), "Type of tweets to fetch"),
-            checkboxInput(
-              ns("include_rts"),
-              "Include retweets",
-              TRUE,
-              width = "100%"
+            fluidRow(
+              column(
+                7,
+                checkboxInput(
+                  ns("include_rts"),
+                  "Include retweets",
+                  TRUE,
+                  width = "100%"
+                )
+              ),
+              column(5, checkboxInput(ns("append"), "Append"))
             ),
             tippy_this(ns("include_rts"), "Whether to include retweets"),
             textInput(ns("longitude"), "Longitude", value = "", width = "100%"),
@@ -180,8 +186,7 @@ networks_ui <- function(id){
             fluidRow(
 							column(6,textInput(ns("radius"), "Radius", value = "", width = "100%")),
 							column(6, selectInput(ns("metric"), "Metric", choices = c("Kilometer" = "km", "Miles" = "mi")))
-						),
-            checkboxInput(ns("append"), "Append")
+						)
           )
         ),
         tabPanel(
