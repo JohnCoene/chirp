@@ -21,4 +21,25 @@ You can build different kinds of networks, you will see three options under "net
 
 ### Retweets
 
-_Retweets_ is selected by default, it is, to the best of my knowledge, the most widespread form of Twitter network. It allows you to analyse how information spreads throughout the network as it displays a network connecting the user tweeting the original idea to users who retweet it.
+_Retweets_ is selected by default, it is, to the best of my knowledge, the most widespread form of Twitter network. It displays users as nodes, these users are connected when one retweeted the other. This essentially lets you visualise how the information spread throughout the Twitter network; where the original tweet originates and who shared it.
+
+Note that Twitter differentiates between retweets: 
+
+1. The bare retweet
+2. The quoted retweet
+
+The latter is a retweet with a comment while the former is a bare retweet without comment. When selecting the retweet type of network a checkbox appears underneath that enables including or excluding quoted tweets, they are included by default.
+
+This actually does have a great impact on the meaning of the resulting network. Below we plot a _retweet_ network of 1,000 tweets including the term "brexit". 
+
+<img src="/img/brexit_retweet_quotes.svg" />
+
+### Hashtags
+
+Hashtags networks tell you more about the nature of the Twitter discussions. You can either connect users to the hashtags they use in their tweets or connect co-occurences of hashtags in tweets.
+
+### Conversations
+
+The _conversations_ network displays how users communicate with each other: each node is a user, they are connected by an edge when one @tagged the other in a tweet.
+
+<img src="/img/brexit_conversations.svg" />
