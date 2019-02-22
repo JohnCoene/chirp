@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: '|tʃəːp|', // Title for your website.
-  tagline: 'Twitter network visualisation platform',
+  tagline: 'Visualise Twitter Interactions',
   url: 'https://chirp.sh', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:

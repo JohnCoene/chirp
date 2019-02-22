@@ -148,5 +148,6 @@ globalVariables(
 }
 
 .clean_input <- function(x){
+	x <- tolower(x)
 	gsub("#", "", x)
 }
