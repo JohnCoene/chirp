@@ -24,6 +24,13 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_node_pushbar",
       id = "searchNode"
     ),
+    tags$a(
+      icon("layer-group", class = "fa-lg"),
+      onclick = "pushbar.open('legend_pushbar');",
+      class = "btn btn-primary",
+      `data-pushbar-target` = "legend_pushbar",
+      id = "legendBottom"
+    ),
     div(
       id = "pushbarSearchNode",
       `data-pushbar-id` = "search_node_pushbar",
@@ -220,7 +227,17 @@ networks_ui <- function(id){
       type = "html",
       loader = "loader9"
     ),
-    uiOutput(ns("legend"), class = "center"),
+    div(
+      `data-pushbar-id` = "legend_pushbar",
+      class = "pushbar from_bottom",
+			fluidRow(
+				column(12, uiOutput(ns("legend"), class = "center"))
+			),
+      tags$a(
+        style = "right:20px;bottom:20px;position:absolute;",
+        icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
+      )
+		),
     div(
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
@@ -598,7 +615,6 @@ networks <- function(input, output, session, dat){
   })
 
   observeEvent(input$legendOut, {
-    req(input$legendOut)
     ns <- session$ns
     if(input$legendOut != "all")
       sigmajs::sigmajsProxy(ns("graph")) %>% 

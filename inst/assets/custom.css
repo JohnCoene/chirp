@@ -15,15 +15,15 @@
 #searchNode{
   position:absolute;
   z-index:999;
-  left:20px;
-  bottom:20px;
+  left:80px;
+  top:20px;
 }
 
 #stats{
   position:absolute;
   z-index:999;
-  right:20px;
-  bottom:20px;
+  right:80px;
+  top:20px;
 }
 
 nav{
@@ -33,6 +33,12 @@ nav{
 #pushbarLeft, #pushbarTop, #pushbarBottom, #pushbarSearchNode{
   padding:25px;
   width:320px;
+}
+
+#legendBottom{
+	bottom:20px;
+	left:49%;
+	position:absolute;
 }
 
 .center_arrow{
