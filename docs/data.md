@@ -35,6 +35,14 @@ The coordinates and radius will allow you to restrict tweets posted from a certa
 
 On the network screen you will have an additional option: to append the subsequent search to the previously.
 
+### Tip
+
+Search for topics not keywords, a sparingly mentioned keyword that does not resonate will not result in an interesting graph but a mess of scattered nodes with barely any edges. Chirp tagline goes:
+
+> Visualise Twitter Interactions
+
+The emphasis is on _interactions_: Twitter users discussing and interacting with one another. This does not necessarily mean "trending" topics will be appropriate as they are, somehow surprisingly, rarely the result of actual conversations that sprung organically.
+
 ## Load
 
 Alternatively, you can load a previously downloaded dataset, which you can obtain in two different ways.
@@ -47,3 +55,4 @@ Note you can select multiple files as well as combine search and files from the 
 1. Execute your initial search or load your file from the home screen.
 2. From the resulting network screen click the <i class="fas fa-database"></i> button.
 3. From either the _Search_ or the _load_ tab tick the append check box.
+
