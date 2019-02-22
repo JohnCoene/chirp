@@ -62,6 +62,15 @@ chirp <- function(){
     theme <- settings[["style"]][["theme"]]
   }
 
+	if(!"sliders" %in% names(settings[["style"]])){
+		cat(
+			crayon::yellow(cli::symbol$warning), "No sliders color in _chirp.yml, defaulting to white\n"
+		)
+		slider_color <- "white"
+	} else {
+		slider_color <- settings[["style"]][["sliders"]]
+	}
+
   if(!"font" %in% names(settings[["style"]])){
     cat(
       crayon::yellow(cli::symbol$warning), "No font set in _chirp.yml, defaulting to",
@@ -142,7 +151,10 @@ chirp <- function(){
     ),
     tags$script(
       src = "chirp-assets/custom.js"
-    )
+    ),
+		tags$style(
+			paste0(".pushbar{background-color:", slider_color, ";}")
+		)
   )
 
   # add google analytics if present
@@ -375,7 +387,7 @@ chirp <- function(){
 					token = .get_token()
 				)
 
-        options(search_query = input$q)
+        options(search_query = .clean_input(input$q))
         
 				updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
 				callModule(networks, "networks", dat = tweets)

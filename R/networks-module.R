@@ -223,7 +223,7 @@ networks_ui <- function(id){
     shinyjs::useShinyjs(),
     htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
     shinycustomloader::withLoader(
-      sigmajs::sigmajsOutput(ns("graph"), height = "90vh"),
+      sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
       type = "html",
       loader = "loader9"
     ),
@@ -414,7 +414,7 @@ networks <- function(input, output, session, dat){
 
 			lim <- .check_rate_limit()
 
-      options(search_query = input$q)
+      options(search_query = .clean_input(input$q))
 
 			if(lim$remaining == 0){
 				shinyjs::disable("submit")

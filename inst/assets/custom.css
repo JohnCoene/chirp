@@ -39,6 +39,7 @@ nav{
 	bottom:20px;
 	left:49%;
 	position:absolute;
+	z-index:999;
 }
 
 .center_arrow{

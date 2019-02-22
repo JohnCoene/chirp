@@ -146,3 +146,7 @@ globalVariables(
   icn <- sample(x, 1)
   icon(icn, class = "text-primary")
 }
+
+.clean_input <- function(x){
+	gsub("#", "", x)
+}
