@@ -254,7 +254,7 @@ chirp <- function(){
             ),
             div(
               id = "options",
-              style = "display:none;background:rgba(255,255,255,.6);",
+              style = "display:none;",
               h3("Options"),
               fluidRow(
                 column(

@@ -101,40 +101,40 @@ class Index extends React.Component {
     );
 
     const TryOut = () => (
-      <Block id="try">
+      <Block background="white">
         {[
           {
-            content: 'Talk about trying this out',
-            image: `${baseUrl}img/docusaurus.svg`,
+            content: 'Chirp packs a ton of insights in a single visualisation.',
+            image: `${baseUrl}img/chirp_mac_ui.png`,
             imageAlign: 'left',
-            title: 'Try it Out',
+            title: 'Smart',
           },
         ]}
       </Block>
     );
 
     const Description = () => (
-      <Block background="dark">
+      <Block background="white">
         {[
           {
             content:
-              'This is another description of how this project is useful',
-            image: `${baseUrl}img/docusaurus.svg`,
+              'Chirp is fully customisable: make it look however you want.',
+            image: `${baseUrl}img/chirp_mac_custom.png`,
             imageAlign: 'right',
-            title: 'Description',
+            title: 'Customisable',
           },
         ]}
       </Block>
     );
 
     const LearnHow = () => (
-      <Block background="light">
+      <Block background="white">
         {[
           {
-            content: 'Talk about learning how to use this',
-            image: `${baseUrl}img/docusaurus.svg`,
+            content: 'Chirp is easy to navigate, understand, and setup; get up and runing in under a minute with 5 lines of code.',
+            image: `${baseUrl}img/chirp_mac_clean.png`,
             imageAlign: 'right',
-            title: 'Learn How',
+            title: 'Easy',
           },
         ]}
       </Block>
@@ -199,11 +199,9 @@ class Index extends React.Component {
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
           <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase />
+					<TryOut />
+					<Description />
         </div>
       </div>
     );
