@@ -36,7 +36,7 @@ This actually does have a great impact on the meaning of the resulting network. 
 
 ### Hashtags
 
-Hashtags networks tell you more about the nature of the Twitter discussions. You can either connect users to the hashtags they use in their tweets or connect co-occurences of hashtags in tweets.
+Hashtags networks tell you more about the nature of the Twitter discussions. You can either connect users to the hashtags they use in their tweets or connect co-occurences of hashtags in tweets. Note that the former produces a directed network while the latter results in an undirected network.
 
 ### Conversations
 

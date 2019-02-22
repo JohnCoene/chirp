@@ -47,26 +47,14 @@ body.pg-loaded > .inner {
   display: block;
 }
 
-#closeOpts{
-  bottom:20px;
+#closeOpts, #closeStats{
+  top:30px;
   right:20px;
   position:absolute;
 }
 
-#closeSearch{
-  bottom:20px;
-  left:20px;
-  position:absolute;
-}
-
-#closeSearchNode{
-  bottom:20px;
-  left:20px;
-  position:absolute;
-}
-
-#closeStats {
-  bottom:20px;
+#closeSearch, #closeSearchNode{
+  top:30px;
   right:20px;
   position:absolute;
 }

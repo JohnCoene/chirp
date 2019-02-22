@@ -25,3 +25,40 @@ Shiny.addCustomMessageHandler('close', function(msg) {
 Shiny.addCustomMessageHandler('open', function(msg) {
   pushbar.open(msg);
 });
+
+// CUSTOM LABELS
+
+$(document).on("click", ".networks-legend", function(evt) {
+
+  // evt.target is the button that was clicked
+  var el = $(evt.target);
+
+  // Set the button's text to its current value plus 1
+  console.log(el[0].id);
+
+  // Raise an event to signal that the value changed
+  el.trigger("change");
+});
+
+var legendBinding = new Shiny.InputBinding();
+$.extend(legendBinding, {
+  find: function(scope) {
+    return $(scope).find(".networks-legend");
+  },
+  getValue: function(el) {
+    return $(el).value
+  },
+  setValue: function(el, value) {
+    $(el).value;
+  },
+  subscribe: function(el, callback) {
+    $(el).on("change.legendBinding", function(e) {
+      callback();
+    });
+  },
+  unsubscribe: function(el) {
+    $(el).off(".legendBinding");
+  }
+});
+
+Shiny.inputBindings.register(legendBinding);

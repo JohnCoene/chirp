@@ -5,10 +5,10 @@ credentials:                    # twitter app credentials
   access_secret: null
 
 style:
-  theme: paper                          # from: https://rstudio.github.io/shinythemes
-  font: Raleway                         # google font
-  font_family: "'Raleway', sans-serif"  # font family
-  continuous:                           # network color palettes for continuous variable
+  theme: paper                            # from: https://rstudio.github.io/shinythemes
+  font: Raleway                           # google font
+  font_family: "'Raleway', sans-serif"    # font family
+  continuous:                             # network color palettes for continuous variable
     - "#BADEFAFF"
     - "#90CAF8FF"
     - "#64B4F6FF"
@@ -18,7 +18,7 @@ style:
     - "#1976D2FF"
     - "#1465BFFF" 
     - "#0C46A0FF"
-  discrete:                             # discrete palette 
+  discrete:                               # discrete palette 
     - "#E58606" 
     - "#5D69B1" 
     - "#52BCA3"
@@ -31,8 +31,8 @@ style:
     - "#ED645A"
     - "#CC3A8E"
     - "#A5AA99"
-  background: 'rgba(0,0,0,0)'           # background of network graph
-  edges_color: '#bababa'                # Color of edges
+  background: 'rgba(0,0,0,0)'             # background of network graph
+  edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
 
 tracking:
   ganalytics: "UA-74544116-1"

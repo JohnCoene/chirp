@@ -216,10 +216,11 @@ networks_ui <- function(id){
     shinyjs::useShinyjs(),
     htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
     shinycustomloader::withLoader(
-      sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
+      sigmajs::sigmajsOutput(ns("graph"), height = "90vh"),
       type = "html",
       loader = "loader9"
     ),
+    uiOutput(ns("legend"), class = "center"),
     div(
       id = "pushbarLeft",
       `data-pushbar-id` = "save_pushbar",
@@ -396,22 +397,33 @@ networks <- function(input, output, session, dat){
 
 			lim <- .check_rate_limit()
 
-			if(lim$remaining == 0)
-				shinyjs::disable("submit")
+      options(search_query = input$q)
 
-			tw <- rtweet::search_tweets(
-				input$q,
-				n = input$n,
-				type = input$type,
-				include_rts = input$include_rts,
-				geocode = geocode,
-				token = .get_token()
-			)
-			if(isTRUE(input$append))
-				rbind.data.frame(tweets(), tw) %>% 
-					tweets()
-			else
-				tweets(tw)
+			if(lim$remaining == 0){
+				shinyjs::disable("submit")
+        showModal(
+					modalDialog(
+						title = "Rate limit hit!",
+						"You have hit the rate limit, wait until", lim$reset_at, "to make another search.",
+						easyClose = TRUE,
+						footer = NULL
+        	)
+				)
+			} else {
+        tw <- rtweet::search_tweets(
+          input$q,
+          n = input$n,
+          type = input$type,
+          include_rts = input$include_rts,
+          geocode = geocode,
+          token = .get_token()
+        )
+        if(isTRUE(input$append))
+          rbind.data.frame(tweets(), tw) %>% 
+            tweets()
+        else
+          tweets(tw)
+      }
 
 			session$sendCustomMessage("unload", "") # stop loading
     }
@@ -525,6 +537,77 @@ networks <- function(input, output, session, dat){
 
   })
 
+  output$legend <- renderUI({
+
+    nodes <- .color_nodes(graph()$nodes, "group") %>% 
+      select(label, group, color)
+
+    leg <- tweets() %>% 
+      select_("hashtags", "screen_name", "v2" = input$network) %>% 
+      mutate(
+        screen_name = tolower(screen_name),
+        v2 = tolower(v2)
+      ) %>% 
+      left_join(nodes, by = c("screen_name" = "label")) %>% 
+      left_join(nodes, by = c("v2" = "label"), suffix = c("_source", "_target")) %>% 
+      mutate(
+        group_source = case_when(
+          is.na(group_source) ~ group_target,
+          TRUE ~ group_source,
+        ),
+        color_source = case_when(
+          is.na(color_source) ~ color_target,
+          TRUE ~ color_source,
+        ),
+        grp = case_when(
+          group_source == group_target ~ group_source,
+          TRUE ~ group_source
+        ),
+        color = case_when(
+          color_source == color_target ~ color_source,
+          TRUE ~ color_source
+        )
+      )  %>% 
+      filter(!is.na(grp)) %>% 
+      tidyr::unnest(hashtags) %>% 
+      group_by(grp, color) %>% 
+      count(hashtags, sort = TRUE) %>%  
+      filter(hashtags != .get_search_query()) %>% 
+      filter(!is.na(hashtags)) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      mutate(grp = as.integer(grp)) %>% 
+      arrange(grp) %>% 
+      slice(1:10)
+
+    ch <- as.character(unlist(leg$grp))
+    ch <- c("all", ch)
+    names(ch) <- c("All nodes", as.character(unlist(leg$hashtags)))
+
+    ns <- session$ns
+    tgs <- radioButtons(
+      ns("legendOut"),
+      "FILTER CLUSTERS",
+      choices = ch,
+      inline = TRUE,
+      width = "100%"
+    )
+
+    tgs
+    
+  })
+
+  observeEvent(input$legendOut, {
+    ns <- session$ns
+    if(input$legendOut != "all")
+      sigmajs::sigmajsProxy(ns("graph")) %>% 
+        sigmajs::sg_filter_undo_p("legend-filter") %>% 
+        sigmajs::sg_filter_eq_p(input$legendOut, "group", name = "legend-filter")
+    else if(input$legendOut == "all")
+      sigmajs::sigmajsProxy(ns("graph")) %>% 
+        sigmajs::sg_filter_undo_p("legend-filter") 
+  })
+
   output$graph <- sigmajs::renderSigmajs({
 
     g <- graph()
@@ -535,7 +618,7 @@ networks <- function(input, output, session, dat){
     edges <- g$edges
 
     sigmajs::sigmajs(type = "webgl") %>%
-      sigmajs::sg_nodes(nodes, id, label, size, color) %>%
+      sigmajs::sg_nodes(nodes, id, label, size, color, group) %>%
       sigmajs::sg_edges(edges, id, source, target, type, size) %>%
       sigmajs::sg_force(slowDown = 4) %>%
       sigmajs::sg_neighbours() %>%

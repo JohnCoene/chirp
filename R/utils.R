@@ -9,9 +9,12 @@ globalVariables(
     "created_at",
     "is_retweet",
     "components",
+    "out_degree",
 		"remaining",
     "status_id",
+    "in_degree",
 		"reset_at",
+    "pagerank",
     "target",
     "tweets",
     "weight",
@@ -40,6 +43,10 @@ globalVariables(
 
 .get_discrete <- function(){
   getOption("chirp_discrete")
+}
+
+.get_search_query <- function(){
+  getOption("search_query")
 }
 
 .get_edge_color <- function(){

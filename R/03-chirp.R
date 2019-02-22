@@ -177,7 +177,8 @@ chirp <- function(){
     chirp_palette = palette,
     chirp_edge_color = edge_color,
     chirp_font_family = font_family,
-    rtweet_token = rtweet_token
+    rtweet_token = rtweet_token,
+    search_query = ""
   )
 
   ui <- navbarPage(
@@ -310,7 +311,7 @@ chirp <- function(){
         br(),
         br(),
         div(
-          style = "position:fixed;bottom:20px;right:43%;",
+          style = "position:fixed;bottom:0px;right:43%;",
           p(
             class = "center",
             "Visit", 
@@ -373,6 +374,8 @@ chirp <- function(){
 					geocode = geocode,
 					token = .get_token()
 				)
+
+        options(search_query = input$q)
         
 				updateTabsetPanel(session = session, inputId = "tabs", selected = "NETWORKS")
 				callModule(networks, "networks", dat = tweets)
