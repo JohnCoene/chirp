@@ -104,7 +104,7 @@ class Index extends React.Component {
       <Block background="white">
         {[
           {
-            content: 'Chirp packs a ton of insights in a single visualisation.',
+            content: 'Chirp packs tons of insights in a single visualisation; everthing fits in a single screen.',
             image: `${baseUrl}img/chirp_mac_ui.png`,
             imageAlign: 'left',
             title: 'Smart',
@@ -118,7 +118,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Chirp is fully customisable: make it look however you want.',
+              'Chirp is fully customisable: make it look however you want.<br><br>- Themes<br>- Fonts<br>- Palettes',
             image: `${baseUrl}img/chirp_mac_custom.png`,
             imageAlign: 'right',
             title: 'Customisable',
@@ -131,7 +131,7 @@ class Index extends React.Component {
       <Block background="white">
         {[
           {
-            content: 'Chirp is easy to navigate, understand, and setup; get up and runing in under a minute with 5 lines of code.',
+            content: 'Chirp is easy to navigate, understand, and setup; get up and runing in under a minute: just 5 lines of code.',
             image: `${baseUrl}img/chirp_mac_clean.png`,
             imageAlign: 'right',
             title: 'Easy',
