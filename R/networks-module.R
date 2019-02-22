@@ -598,6 +598,7 @@ networks <- function(input, output, session, dat){
   })
 
   observeEvent(input$legendOut, {
+    req(input$legendOut)
     ns <- session$ns
     if(input$legendOut != "all")
       sigmajs::sigmajsProxy(ns("graph")) %>% 
