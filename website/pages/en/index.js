@@ -145,19 +145,19 @@ class Index extends React.Component {
         {[
           {
             content: 'Clean UI to easily explore networks',
-            image: `${baseUrl}img/docusaurus.svg`,
+            image: `${baseUrl}img/tap.svg`,
             imageAlign: 'top',
             title: 'Intuitive',
           },
           {
             content: 'Tons of insights packed in simple platform',
-            image: `${baseUrl}img/docusaurus.svg`,
+            image: `${baseUrl}img/creative-idea.svg`,
             imageAlign: 'top',
             title: 'Insightful',
 					},
           {
             content: 'Customize all the appearance',
-            image: `${baseUrl}img/docusaurus.svg`,
+            image: `${baseUrl}img/pencil-case.svg`,
             imageAlign: 'top',
             title: 'Customizable',
           },

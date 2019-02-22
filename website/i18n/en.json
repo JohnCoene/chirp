@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Twitter network visualisation platform",
+    "tagline": "Visualise Twitter Interactions",
     "docs": {
       "configure": {
         "title": "Configuration"
@@ -14,12 +14,6 @@
       "deploy": {
         "title": "Deploy",
         "sidebar_label": "Deploy"
-      },
-      "doc4": {
-        "title": "Other Document"
-      },
-      "doc5": {
-        "title": "Fifth Document"
       },
       "networks": {
         "title": "Networks"
@@ -37,8 +31,7 @@
     },
     "categories": {
       "Guide": "Guide",
-      "Usage": "Usage",
-      "First Category": "First Category"
+      "Usage": "Usage"
     }
   },
   "pages-strings": {

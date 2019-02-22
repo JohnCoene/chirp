@@ -152,6 +152,10 @@ chirp <- function(){
     tags$script(
       src = "chirp-assets/custom.js"
     ),
+		tags$link(
+			rel="shortcut icon",
+			href = "https://chirp.sh/img/chirp_favicon.png"
+		),
 		tags$style(
 			paste0(".pushbar{background-color:", slider_color, ";}")
 		)
