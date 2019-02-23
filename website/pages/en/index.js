@@ -60,12 +60,12 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        <Logo img_src={`${baseUrl}img/docusaurus.svg`} />
+        {/* <Logo img_src={`${baseUrl}img/docusaurus.svg`} /> */}
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href="https://shiny.john-coene.com/chirp" target="_blank">Demo</Button>
-            <Button href={docUrl('quick-start.html')}>Quick Start</Button>
+						<Button href={docUrl('quick-start.html')}>Quick Start</Button>
+            <Button href="https://github.com/JohnCoene/chirp" target="_blank">Github</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -95,8 +95,11 @@ class Index extends React.Component {
       <div
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
-        <h2>Features</h2>
-        <MarkdownBlock>These are features of this project</MarkdownBlock>
+				<img src="/img/chirp_gif_1.gif" width="40%" class="shadow"></img>
+				<br/>
+				<br/>
+        <MarkdownBlock>Chirp in action</MarkdownBlock>
+				<a href="https://shiny.john-coene.com/chirp" target="_blank" class="button">Demo</a>
       </div>
     );
 
@@ -198,6 +201,7 @@ class Index extends React.Component {
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
+					<FeatureCallout />
           <Features />
           <LearnHow />
 					<TryOut />

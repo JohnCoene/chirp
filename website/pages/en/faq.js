@@ -41,9 +41,9 @@ function Help(props) {
       <Container className="mainContainer documentContainer postContainer">
         <div className="post">
           <header className="postHeader">
-            <h1>Need help?</h1>
+            <h1>Functions</h1>
           </header>
-          <p>This project is maintained by a dedicated group of people.</p>
+          <p>The few functions that constitute Chirp.</p>
           <GridBlock contents={supportLinks} layout="threeColumn" />
         </div>
       </Container>

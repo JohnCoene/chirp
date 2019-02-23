@@ -103,12 +103,17 @@ R -e "chirp::chirp()"
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
+The above will open your browser and you'll be ready to use Chirp.
+
+<img src="/img/chirp_home.png">
+
 ## Recap
 
 The above can be compacted into the snippet below.
 
 ```r
-devtools::install_github("JohnCoene/chirp") # install
+install.packages("remotes", repos = "https://cran.rstudio.com")
+remotes::install_github("JohnCoene/chirp") # install
 chirp::build_nest() # create config file
 chirp::check_nest() # check config file
 chirp::chirp() # launch

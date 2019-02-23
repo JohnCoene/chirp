@@ -11,6 +11,11 @@ On a Shiny Community server you can do so with.
 sudo systemctl restart shiny-server
 ```
 
+_Original_
+<img src="/img/chirp_mac_ui.png" width="50%">
+_Customised_
+<img src="/img/custom_chirp_network.png" width="50%">
+
 ## Default
 
 Below is the default config file as created by `chirp::build_nest()`.
