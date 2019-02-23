@@ -134,7 +134,7 @@ class Index extends React.Component {
       <Block background="white">
         {[
           {
-            content: 'Chirp is easy to navigate, understand, and setup; get up and runing in under a minute: just 5 lines of code.',
+            content: 'Chirp is easy to navigate, understand, and setup; get up and runing in under a minute: just _5 lines of code_.',
             image: `${baseUrl}img/chirp_mac_clean.png`,
             imageAlign: 'right',
             title: 'Easy',
