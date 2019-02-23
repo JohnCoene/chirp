@@ -95,7 +95,7 @@ class Index extends React.Component {
       <div
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
-				<img src="/img/chirp_gif_1.gif" width="40%" class="shadow"></img>
+				<img src="/img/chirp_gif_1.gif" class="shadow"></img>
 				<br/>
 				<br/>
         <MarkdownBlock>Chirp in action</MarkdownBlock>
