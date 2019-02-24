@@ -289,7 +289,7 @@ networks_ui <- function(id){
             ),
             width = "100%"
           ),
-          tippy_this(ns("colour"), "Variable to colour nodes")
+          tippy_this(ns("size"), "Variable to size nodes")
         ),
         column(
           6, 
@@ -630,8 +630,8 @@ networks <- function(input, output, session, dat){
     g <- graph()
 
     nodes <- g$nodes
-    nodes <- .color_nodes(nodes, input$colour)
-    nodes <- .size_nodes(nodes, input$size)
+    nodes <- .color_nodes(nodes, "group")
+    nodes <- .size_nodes(nodes, "n_tweets")
     edges <- g$edges
 
     sigmajs::sigmajs(type = "webgl") %>%
@@ -653,6 +653,28 @@ networks <- function(input, output, session, dat){
       )
 
   })
+
+	observeEvent(input$colour, {
+		ns <- session$ns
+
+		nodes <- isolate(graph()$nodes)
+
+		df = .color_nodes(nodes, input$colour)
+
+		sigmajs::sigmajsProxy(ns("graph")) %>% 
+			sigmajs::sg_change_nodes_p(df, color, "color")
+	})
+
+	observeEvent(input$size, {
+		ns <- session$ns
+
+		nodes <- isolate(graph()$nodes)
+
+		df = .size_nodes(nodes, input$size)
+
+		sigmajs::sigmajsProxy(ns("graph")) %>% 
+			sigmajs::sg_change_nodes_p(df, size, "size")
+	})
 
   output$display <- renderText({
 
