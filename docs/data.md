@@ -11,6 +11,8 @@ The data source used by Chirp is obviously [Twitter](https://twitter.com), the [
 
 You can search for tweets by tiping a query in the search bar. Note that it supports boolean operators as well as others specific to Twitter.
 
+<img src="/img/chirp_search_home.gif" style="max-width:100%;">
+
 ### Examples
 
 Look for tweets using the #brexit hashtag or mentioning Theresa May.
@@ -34,6 +36,8 @@ You will find more options by clicking on the <i class="fas fa-plus"></i> button
 The coordinates and radius will allow you to restrict tweets posted from a certain geographical region. Specify the `longitude` and `latitude` as numerics and the `radius` in either kilometer or miles.
 
 On the network screen you will have an additional option: to append the subsequent search to the previously.
+
+<img src="/img/chirp_search_append.gif" style="max-width:100%;">
 
 ### Tip
 

@@ -39,8 +39,9 @@ remotes::install_github('JohnCoene/chirp')
 ```bash
 R -e "install.packages('remotes', repos = 'https://cran.rstudio.com');\remotes::install_github('JohnCoene/chirp')"
 ```
-
 <!--END_DOCUSAURUS_CODE_TABS-->
+
+<img src="/img/chirp_installation.gif" style="max-width:100%;"/>
 
 ## Initialise
 
@@ -58,6 +59,8 @@ R -e "chirp::build_nest()"
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 The configuration file (`_chirp.yml`) allows you to customise Chirp and hold Twitter credentials. 
+
+<img src="/img/chirp_init.gif" style="max-width:100%;"/>
 
 ## Configure
 
@@ -95,8 +98,9 @@ chirp::check_nest()
 ```bash
 R -e "chirp::check_nest()"
 ```
-
 <!--END_DOCUSAURUS_CODE_TABS-->
+
+<img src="/img/chirp_check.gif" style="max-width:100%;"/>
 
 ## Run
 
@@ -116,5 +120,5 @@ R -e "chirp::chirp()"
 
 The above will open your browser and you'll be ready to use Chirp.
 
-<img src="/img/chirp_home.png">
+<img src="/img/chirp_launch.gif">
 
