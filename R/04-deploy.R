@@ -11,7 +11,7 @@ fly <- function(edit = interactive()) {
 
   if(file.exists(file)){
     cat(
-      crayon::red(cli::symbol$cross), " The app file,", file, " already exists.\n",
+      crayon::red(cli::symbol$cross), " The app.R file,", file, " already exists.\n",
       sep = ""
     )
 

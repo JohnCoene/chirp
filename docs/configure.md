@@ -31,7 +31,7 @@ style:
   theme: paper                            # from: https://rstudio.github.io/shinythemes
   font: Raleway                           # google font
   font_family: "'Raleway', sans-serif"    # font family
-  sliders: 'rgb(255, 255, 255)'            # background color of sliders
+  sliders: 'rgb(255, 255, 255)'           # background color of sliders
   continuous:                             # network color palettes for continuous variable
     - "#BADEFAFF"
     - "#90CAF8FF"
@@ -129,6 +129,8 @@ Default _discrete_ palette:
 <input class="jscolor" value="ED645A">
 <input class="jscolor" value="CC3A8E">
 <input class="jscolor" value="A5AA99">
+
+There is also a `sliders` options to specify the background color of the various sliders on the network screen. This is generally useful if you changed the theme to a dark one.
 
 ### Tracking
 
