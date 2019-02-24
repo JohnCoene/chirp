@@ -81,6 +81,7 @@ Without proxies and events Chirp would not allow:
 - Running and stopping the layout
 - Removing node overlap
 - Exporting the network to svg or png
+- Changing node size and colour
 - Displaying tweets on node click
 - Displaying node stats on click
 
@@ -88,7 +89,7 @@ Or rather, it could do perhaps do some of those things but would have to redraw 
 
 ## Notable Dependencies
 
-Note that the list below excludes many packages from the [tidyverse](https://www.tidyverse.org/).
+In gratitude to the many packages without which Chirp would not be possible. Note that the list below excludes many packages from the [tidyverse](https://www.tidyverse.org/).
 
 - [rtweet](https://rtweet.info/) by [Michael Kearney](https://mikewk.com/) to collect the tweets.
 - [graphTweets](http://graphtweets.john-coene.com/) by myself to build Twitter networks.
