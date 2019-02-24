@@ -6,7 +6,7 @@ authorURL: http://twitter.com/jdatap
 
 This is an early launch of Chirp, still much needs to be improved and added. It should still be in development but I really wanted to submit it to the [Shiny Contest](https://blog.rstudio.com/2019/01/07/first-shiny-contest/) to see how it'd fare.
 
-This post gives some idea of how Chirp was put together.
+This post gives some idea of how Chirp was put together as well as the roadmap ahead.
 
 <!--truncate-->
 
@@ -90,8 +90,8 @@ Or rather, it could do perhaps do some of those things but would have to redraw 
 
 Note that the list below excludes many packages from the [tidyverse](https://www.tidyverse.org/).
 
-- [rtweet](https://rtweet.info/) by [Michael Kearney](https://mikewk.com/).
-- [graphTweets](http://graphtweets.john-coene.com/) by myself to build the networks.
+- [rtweet](https://rtweet.info/) by [Michael Kearney](https://mikewk.com/) to collect the tweets.
+- [graphTweets](http://graphtweets.john-coene.com/) by myself to build Twitter networks.
 - [sigmajs](http://sigmajs.john-coene.com/) by myself to visualise the networks.
 - [tidygraph](https://github.com/thomasp85/tidygraph) by [Thomas Lin Pedersen](https://www.data-imaginist.com/) which is a lifesaver when working with graphs.
 - [shinyparticles](https://github.com/dreamRs/shinyparticles) by [DreamRs](https://www.dreamrs.fr/) on the homepage, a nice touch given Chirp is network-related.
@@ -99,6 +99,19 @@ Note that the list below excludes many packages from the [tidyverse](https://www
 - [shinycustomloader](https://github.com/emitanaka/shinycustomloader) by [Emi Tanaka](https://emitanaka.github.io/) for the loader over the graph.
 - [shinythemes](https://rstudio.github.io/shinythemes/) by [RStudio](https://www.rstudio.com/) for the themes in `_chirp.yml`.
 
+## Roadmap
+
+There is still much to be added to Chirp, namely in the substance, the platform has the potential to be much more insightful than it is now. The very first thing to do is refactoring.
+
+One core feature that will require a lot of work but I thing could bring a lot is a plugin system to enable adding other visualisations. Currently, like most R packages, the only way someone can make additions to the platform is by making a pull a request which implies two things:
+
+1. Making a lot of research to understand how Chirp works
+2. The features added would be _forced_ onto everyone else
+
+A plugin system reduces transactional costs, a developper does not have to do extensive research on the source code to design an additional feature. Plugins are also optional, you can include or exclude it from your own Chirp, which one could hardly do otherwise.
+
 ## Known issues
+
+As the title implies there may be some issues, this is by no means an exhaustive list.
 
 - Clusters filters (<i class="fas fa-layer-group"></i> button) stop working after updating the data from the network screen.
