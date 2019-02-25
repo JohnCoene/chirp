@@ -117,6 +117,6 @@ Currently Chirp lets the user upload or search for tweets, in an ideal world Chi
 
 ## Known issues
 
-As the title implies there may be some issues, this is by no means an exhaustive list.
+As the title of this post implies there may be some issues with Chirp. Please kindly report any such issue you may come across on [Github](https://github.com/JohnCoene/chirp/issues), apologies in advance.
 
 - Clusters filters (<i class="fas fa-layer-group"></i> button) stop working after updating the data from the network screen.
