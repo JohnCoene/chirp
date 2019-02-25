@@ -95,6 +95,8 @@ In gratitude to the many packages without which Chirp would not be possible. Not
 - [graphTweets](http://graphtweets.john-coene.com/) by myself to build Twitter networks.
 - [sigmajs](http://sigmajs.john-coene.com/) by myself to visualise the networks.
 - [tidygraph](https://github.com/thomasp85/tidygraph) by [Thomas Lin Pedersen](https://www.data-imaginist.com/) which is a lifesaver when working with graphs.
+- [aforce](https://aforce.john-coene.com/) by myself for the Virtual Reality network.
+- [shinyjs](https://deanattali.com/shinyjs/) by [Dean Attali](https://deanattali.com/).
 - [shinyparticles](https://github.com/dreamRs/shinyparticles) by [DreamRs](https://www.dreamrs.fr/) on the homepage, a nice touch given Chirp is network-related.
 - [reactrend](https://reactrend.john-coene.com/) by myself for the tweets trendline.
 - [shinycustomloader](https://github.com/emitanaka/shinycustomloader) by [Emi Tanaka](https://emitanaka.github.io/) for the loader over the graph.
