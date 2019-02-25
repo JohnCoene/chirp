@@ -399,20 +399,17 @@ networks_ui <- function(id){
       icon = icon("vr-cardboard", class = "fa-lg"),
       class = "btn btn-primary"
     ),
-		div(
-			id = "overlay",
-			shinyjqui::jqui_draggable(
-        htmlOutput(
-          ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"
-        )
-      ),
-			shinycustomloader::withLoader(
-				sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
-				type = "html",
-				loader = "loader9"
-			),
-      uiOutput(ns("aforce"))
-		)
+		shinyjqui::jqui_draggable(
+			htmlOutput(
+				ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"
+			)
+		),
+		shinycustomloader::withLoader(
+			sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
+			type = "html",
+			loader = "loader9"
+		),
+		uiOutput(ns("aforce"))
   )
 
 }
@@ -1131,6 +1128,7 @@ networks <- function(input, output, session, dat){
         "load", 
         "Get your headset!"
       )
+			
       g <- graph()
 
       nodes <- g$nodes
