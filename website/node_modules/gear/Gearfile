@@ -1,0 +1,6 @@
+{
+  log:   {task: ['log', 'Minifying gear for the browser']},
+  read:  {requires: 'log', task: ['read', 'build/gear.js']},
+  min:   {requires: 'read', task: 'jsminify'},
+  write: {requires: 'min', task: ['write', 'build/gear.min.js']}
+}
