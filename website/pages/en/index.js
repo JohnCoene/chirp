@@ -121,7 +121,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Chirp is fully customisable: make it look however you want.<br><br>- Themes<br>- Fonts<br>- Palettes',
+              'Chirp is fully customisable: make it look however you want.<br><br>- Themes<br>- Fonts<br>- Color palettes',
             image: `${baseUrl}img/chirp_mac_custom.png`,
             imageAlign: 'right',
             title: 'Customisable',
@@ -206,6 +206,7 @@ class Index extends React.Component {
           <LearnHow />
 					<TryOut />
 					<Description />
+          <Showcase />
         </div>
       </div>
     );

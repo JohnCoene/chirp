@@ -56,6 +56,7 @@ style:
     - "#CC3A8E"
     - "#A5AA99"
   background: 'rgba(0,0,0,0)'             # background of network graph
+  vr_background: '#FFFFFF'                # VR background color
   edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
 
 tracking:

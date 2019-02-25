@@ -6,6 +6,7 @@
       "deploy"
 		],
 		"Usage": [
+      "vr",
       "data",
       "networks"
 		]

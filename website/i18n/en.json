@@ -21,6 +21,9 @@
       "quick-start": {
         "title": "Quick Start",
         "sidebar_label": "Quick Start"
+      },
+      "vr": {
+        "title": "Virtual Reality"
       }
     },
     "links": {

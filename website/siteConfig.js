@@ -14,7 +14,7 @@ const users = [
     caption: 'JohnCoene',
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: '/img/docusaurus.svg',
+    image: '/img/JohnCoene.png',
     infoLink: 'https://john-coene.com',
     pinned: true,
   },
