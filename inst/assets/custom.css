@@ -26,6 +26,13 @@
   top:20px;
 }
 
+#networks-vr{
+  position:absolute;
+  z-index:999;
+  right:20px;
+  bottom:20px;
+}
+
 nav{
   display: none;
 }

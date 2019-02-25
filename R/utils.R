@@ -151,3 +151,13 @@ globalVariables(
 	x <- tolower(x)
 	gsub("#", "", x)
 }
+
+.slice_node <- function(x, i){
+
+  if(is.null(x))
+    return(NULL)
+
+  x %>% 
+    slice(i) %>% 
+    pull(label)
+}

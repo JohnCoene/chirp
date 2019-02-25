@@ -150,6 +150,9 @@ chirp <- function(){
       src = "chirp-assets/please-wait.min.js"
     ),
     tags$script(
+      src = "https://unpkg.com/micromodal/dist/micromodal.min.js"
+    ),
+    tags$script(
       src = "chirp-assets/custom.js"
     ),
 		tags$link(

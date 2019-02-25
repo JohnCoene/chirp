@@ -221,12 +221,6 @@ networks_ui <- function(id){
       )
     ),
     shinyjs::useShinyjs(),
-    htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
-    shinycustomloader::withLoader(
-      sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
-      type = "html",
-      loader = "loader9"
-    ),
     div(
       `data-pushbar-id` = "legend_pushbar",
       class = "pushbar from_bottom",
@@ -335,6 +329,14 @@ networks_ui <- function(id){
           )
         )
       ),
+			sliderInput(
+				ns("node_size"),
+				"Filter node by size",
+				width = "100%",
+				min = 3,
+				max = 17,
+				value = 17
+			),
 			h5("LAYOUT"),
       fluidRow(
         column(
@@ -390,7 +392,22 @@ networks_ui <- function(id){
         id = "closeOpts",
         icon("times"), onclick = "pushbar.close();", class = "btn btn-danger"
       )
-    )
+    ),
+    actionButton(
+			ns("vr"),
+			"Virtual Reality Network",
+      icon = icon("vr-cardboard", class = "fa-lg"),
+      class = "btn btn-primary"
+    ),
+		div(
+			id = "overlay",
+			htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
+			shinycustomloader::withLoader(
+				sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
+				type = "html",
+				loader = "loader9"
+			)
+		)
   )
 
 }
@@ -398,6 +415,8 @@ networks_ui <- function(id){
 networks <- function(input, output, session, dat){
 
   tweets <- reactiveVal(dat)
+
+	# shinyjs::hide("aforce")
 
   observeEvent(input$submit, {
     geocode <- NULL
@@ -587,6 +606,7 @@ networks <- function(input, output, session, dat){
       )  %>% 
       filter(!is.na(grp)) %>% 
       tidyr::unnest(hashtags) %>% 
+			mutate(hashtgas = tolower(hashtags)) %>% 
       group_by(grp, color) %>% 
       count(hashtags, sort = TRUE) %>%  
       filter(hashtags != .get_search_query()) %>% 
@@ -595,11 +615,11 @@ networks <- function(input, output, session, dat){
       ungroup() %>% 
       mutate(grp = as.integer(grp)) %>% 
       arrange(grp) %>% 
-      slice(1:10)
+      slice(1:10) 
 
     ch <- as.character(unlist(leg$grp))
     ch <- c("all", ch)
-    names(ch) <- c("All nodes", as.character(unlist(leg$hashtags)))
+    names(ch) <- c("All nodes", paste0("#", as.character(unlist(leg$hashtags))))
 
     ns <- session$ns
     tgs <- radioButtons(
@@ -1090,14 +1110,37 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_zoom_p(id - 1, duration = 1500, ratio = ratio)
   })
 
-}
+	observeEvent(input$node_size, {
+		ns <- session$ns
+    sigmajs::sigmajsProxy(ns("graph")) %>% 
+      sigmajs::sg_filter_undo_p("sz") %>% # we undo the filter before applying it
+      sigmajs::sg_filter_lt_p(input$node_size, "size", name = "sz")
+	})
 
-.slice_node <- function(x, i){
+	observeEvent(input$vr, {
+		shinyjs::toggle("aforce")
 
-  if(is.null(x))
-    return(NULL)
+    g <- graph()
 
-  x %>% 
-    slice(i) %>% 
-    pull(label)
+    nodes <- g$nodes
+    nodes <- .color_nodes(nodes, "group")
+    nodes <- .size_nodes(nodes, "n_tweets")
+
+		vr <- aForce$
+			new(n_label = "label")$ # initialise
+			nodes(nodes, id, size, color, label)$ # add nodes
+			links(graph()$edges, source, target)$ # add edges
+			build( # build
+				aframer::a_camera(
+					`wasd-controls` = "fly: true; acceleration: 600",
+					aframer::a_cursor(opacity = 0.5)
+				),
+				aframer::a_sky(color="#4c4c4c")
+			)$ 
+			embed()
+
+		session$sendCustomMessage("vr", vr)
+
+	})
+
 }
