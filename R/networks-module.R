@@ -24,13 +24,16 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_node_pushbar",
       id = "searchNode"
     ),
-    tags$a(
-      icon("layer-group", class = "fa-lg"),
-      onclick = "pushbar.open('legend_pushbar');",
-      class = "btn btn-primary",
-      `data-pushbar-target` = "legend_pushbar",
-      id = "legendBottom"
-    ),
+		conditionalPanel(
+    	"input['networks-network'] != 'hashtags'",
+			tags$a(
+				icon("layer-group", class = "fa-lg"),
+				onclick = "pushbar.open('legend_pushbar');",
+				class = "btn btn-primary",
+				`data-pushbar-target` = "legend_pushbar",
+				id = "legendBottom"
+			)
+		),
     div(
       id = "pushbarSearchNode",
       `data-pushbar-id` = "search_node_pushbar",
@@ -579,6 +582,10 @@ networks <- function(input, output, session, dat){
 
     nodes <- .color_nodes(graph()$nodes, "group") %>% 
       select(label, group, color)
+
+		if(input$network == "hashtags"){
+			return("")
+		}
 
     leg <- tweets() %>% 
       select_("hashtags", "screen_name", "v2" = input$network) %>% 
