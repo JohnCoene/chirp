@@ -401,7 +401,11 @@ networks_ui <- function(id){
     ),
 		div(
 			id = "overlay",
-			htmlOutput(ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"),
+			shinyjqui::jqui_draggable(
+        htmlOutput(
+          ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"
+        )
+      ),
 			shinycustomloader::withLoader(
 				sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
 				type = "html",
@@ -825,10 +829,10 @@ networks <- function(input, output, session, dat){
     node_clicked <- input$graph_click_node$label
     ns <- session$ns
 
-    if(isTRUE(input$delete_nodes)){
+    if(isTRUE(input$delete_nodes))
       sigmajs::sigmajsProxy(ns("graph")) %>%
         sigmajs::sg_drop_node_p(id = input$graph_click_node$id)
-    }
+    
   })
 
   observeEvent(input$start_layout, {

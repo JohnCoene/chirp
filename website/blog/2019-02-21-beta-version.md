@@ -104,7 +104,7 @@ In gratitude to the many packages without which Chirp would not be possible. Not
 
 ## Roadmap
 
-There is still much to be added to Chirp, namely in the substance, the platform has the potential to be much more insightful than it is now. Though the very first thing to do is refactoring.
+There is still much to be added to Chirp, namely in the substance, the platform has the potential to be much more insightful than it is now. Though the very first thing to do is refactoring and some bug fixing.
 
 One core feature that will require a lot of work but I thing could bring a lot is a plugin system to enable adding other visualisations. Currently, like most R packages, the only way someone can make additions to the platform is by making a pull a request which implies two things:
 
