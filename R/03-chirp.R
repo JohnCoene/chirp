@@ -94,6 +94,16 @@ chirp <- function(){
     palette <- settings[["style"]][["continuous"]]
   }
 
+  if(!"vr_background" %in% names(settings[["style"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No vr_background set in _chirp.yml, defaulting to white.\n"
+    )
+
+    vr_background <- "#FFFFFF"
+  } else {
+    vr_background <- settings[["style"]][["vr_background"]]
+  }
+
   if(!"discrete" %in% names(settings[["style"]])){
     cat(
       crayon::yellow(cli::symbol$warning), "No discrete palette set in _chirp.yml, setting to default discrete palette.\n"
@@ -152,6 +162,12 @@ chirp <- function(){
     tags$script(
       src = "https://unpkg.com/micromodal/dist/micromodal.min.js"
     ),
+    tags$link(
+      rel = "stylesheet",
+      href = "https://use.fontawesome.com/releases/v5.7.2/css/all.css", 
+      integrity = "sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr",
+      crossorigin = "anonymous"
+    ),
     tags$script(
       src = "chirp-assets/custom.js"
     ),
@@ -197,6 +213,7 @@ chirp <- function(){
     chirp_edge_color = edge_color,
     chirp_font_family = font_family,
     rtweet_token = rtweet_token,
+    vr_background = vr_background,
     search_query = ""
   )
 

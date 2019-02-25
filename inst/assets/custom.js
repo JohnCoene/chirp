@@ -62,3 +62,8 @@ $.extend(legendBinding, {
 });
 
 Shiny.inputBindings.register(legendBinding);
+
+MicroModal.init();
+Shiny.addCustomMessageHandler('open-vr-modal', function(msg) {
+  MicroModal.show('vr-modal');
+});

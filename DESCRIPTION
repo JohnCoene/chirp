@@ -16,10 +16,12 @@ Imports:
 	shiny,
 	tidyr,
 	tippy,
+	aforce,
 	scales,
 	rtweet,
 	crayon,
 	igraph,
+	aframer,
 	sigmajs,
 	shinyjs,
 	jsonlite,
@@ -30,6 +32,8 @@ Imports:
 	shinyparticles,
 	shinycustomloader
 Remotes: 
+	JohnCoene/aforce,
 	JohnCoene/sigmajs,
+	JohnCoene/aframer,
 	JohnCoene/reactrend,
 	dreamRs/shinyparticles

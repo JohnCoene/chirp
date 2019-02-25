@@ -395,7 +395,7 @@ networks_ui <- function(id){
     ),
     actionButton(
 			ns("vr"),
-			"Virtual Reality Network",
+			"",
       icon = icon("vr-cardboard", class = "fa-lg"),
       class = "btn btn-primary"
     ),
@@ -406,7 +406,8 @@ networks_ui <- function(id){
 				sigmajs::sigmajsOutput(ns("graph"), height = "99vh"),
 				type = "html",
 				loader = "loader9"
-			)
+			),
+      uiOutput(ns("aforce"))
 		)
   )
 
@@ -416,7 +417,7 @@ networks <- function(input, output, session, dat){
 
   tweets <- reactiveVal(dat)
 
-	# shinyjs::hide("aforce")
+	shinyjs::hide("aforce")
 
   observeEvent(input$submit, {
     geocode <- NULL
@@ -1117,30 +1118,49 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_filter_lt_p(input$node_size, "size", name = "sz")
 	})
 
-	observeEvent(input$vr, {
-		shinyjs::toggle("aforce")
+  aforce <- eventReactive(input$vr, {
 
-    g <- graph()
+    vr <- ""
 
-    nodes <- g$nodes
-    nodes <- .color_nodes(nodes, "group")
-    nodes <- .size_nodes(nodes, "n_tweets")
+    if(input$vr %% 2 == 1){
+      session$sendCustomMessage(
+        "load", 
+        "Get your headset!"
+      )
+      g <- graph()
 
-		vr <- aForce$
-			new(n_label = "label")$ # initialise
-			nodes(nodes, id, size, color, label)$ # add nodes
-			links(graph()$edges, source, target)$ # add edges
-			build( # build
-				aframer::a_camera(
-					`wasd-controls` = "fly: true; acceleration: 600",
-					aframer::a_cursor(opacity = 0.5)
-				),
-				aframer::a_sky(color="#4c4c4c")
-			)$ 
-			embed()
+      nodes <- g$nodes
+      nodes <- .color_nodes(nodes, "group")
+      nodes <- .size_nodes(nodes, "n_tweets")
 
-		session$sendCustomMessage("vr", vr)
+      vr <- aforce::aForce$
+        new(n_label = "label")$ # initialise
+        nodes(nodes, id, size, color, label)$ # add nodes
+        links(graph()$edges, source, target)$ # add edges
+        build( # build
+          aframer::a_camera(
+            `wasd-controls` = "fly: true; acceleration: 600",
+            aframer::a_cursor(opacity = 0.5)
+          ),
+          aframer::a_sky(color=getOption("vr_background"))
+        )$ 
+        embed(width="100%", height = "80vh")
 
+      session$sendCustomMessage(
+        "unload", 
+        ""
+      )
+    } 
+
+    return(vr)
+  })
+
+	output$aforce <- renderUI({
+    aforce()
 	})
+
+  observeEvent(input$vr, {
+    shinyjs::toggle("aforce")
+  })
 
 }

@@ -15,6 +15,7 @@ globalVariables(
     "in_degree",
 		"reset_at",
     "pagerank",
+    "hashtags",
     "target",
     "tweets",
     "weight",
