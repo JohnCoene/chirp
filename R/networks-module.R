@@ -404,7 +404,7 @@ networks_ui <- function(id){
     ),
 		shinyjqui::jqui_draggable(
 			htmlOutput(
-				ns("display"), style="position:absolute;z-index:999;left:20px;top:70px;"
+				ns("display"), style="position:absolute;z-index:99;left:20px;top:70px;"
 			)
 		),
 		shinycustomloader::withLoader(

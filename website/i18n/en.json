@@ -32,9 +32,8 @@
       "Blog": "Blog"
     },
     "categories": {
-      "Docusaurus": "Docusaurus",
-      "First Category": "First Category",
-      "Second Category": "Second Category"
+      "Guide": "Guide",
+      "Usage": "Usage"
     }
   },
   "pages-strings": {
