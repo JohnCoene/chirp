@@ -104,6 +104,33 @@ chirp <- function(){
     vr_background <- settings[["style"]][["vr_background"]]
   }
 
+  if(!"max_tweets" %in% names(settings[["options"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No max_tweets specified in _chirp.yml, defaulting to 17,000.\n"
+    )
+
+    max_tweets <- "#FFFFFF"
+  } else {
+    max_tweets <- settings[["options"]][["max_tweets"]]
+  }
+
+  if(!"max_tweets" %in% names(settings[["options"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No min_tweets specified in _chirp.yml, defaulting to 500.\n"
+    )
+
+    min_tweets <- "#FFFFFF"
+  } else {
+    min_tweets <- settings[["options"]][["min_tweets"]]
+  }
+
+  if(min_tweets > max_tweets){
+    cat(
+      crayon::red(cli::symbol$cross), "min_tweets is greater than max_tweets.\n"
+    )
+    return(NULL)
+  }
+
   if(!"discrete" %in% names(settings[["style"]])){
     cat(
       crayon::yellow(cli::symbol$warning), "No discrete palette set in _chirp.yml, setting to default discrete palette.\n"
@@ -214,6 +241,8 @@ chirp <- function(){
     chirp_font_family = font_family,
     rtweet_token = rtweet_token,
     vr_background = vr_background,
+    min_tweets = min_tweets,
+    max_tweets = max_tweets,
     search_query = ""
   )
 
@@ -282,9 +311,9 @@ chirp <- function(){
                   sliderInput(
                     "n",
                     label = "Number of tweets",
-                    min = 500,
-                    max = 18000,
-                    value = 500,
+                    min = min_tweets,
+                    max = max_tweets,
+                    value = min_tweets,
                     step = 100,
                     width = "100%"
                   ),

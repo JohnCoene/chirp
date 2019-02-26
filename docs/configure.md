@@ -27,6 +27,10 @@ credentials:                              # twitter app credentials
   access_token: null
   access_secret: null
 
+options:
+  min_tweets: 100                         # Minimum number of tweets one can fetch
+  max_tweets: 100                         # Maximum number of tweets one can fetch
+
 style:
   theme: paper                            # from: https://rstudio.github.io/shinythemes
   font: Raleway                           # google font
