@@ -21,7 +21,7 @@ _Customised_
 Below is the default config file as created by `chirp::build_nest()`.
 
 ```yaml
-credentials:                    # twitter app credentials
+credentials:                              # twitter app credentials
   consumer_key: null
   consumer_secret: null
   access_token: null
@@ -33,15 +33,15 @@ style:
   font_family: "'Raleway', sans-serif"    # font family
   sliders: 'rgb(255, 255, 255)'           # background color of sliders
   continuous:                             # network color palettes for continuous variable
-    - "#BADEFAFF"
-    - "#90CAF8FF"
-    - "#64B4F6FF"
-    - "#41A5F4FF"
-    - "#2096F2FF"
-    - "#1E87E5FF"
-    - "#1976D2FF"
-    - "#1465BFFF" 
-    - "#0C46A0FF"
+    - "#BADEFA"
+    - "#90CAF8"
+    - "#64B4F6"
+    - "#41A5F4"
+    - "#2096F2"
+    - "#1E87E5"
+    - "#1976D2"
+    - "#1465BF" 
+    - "#0C46A0"
   discrete:                               # discrete palette 
     - "#E58606" 
     - "#5D69B1" 
@@ -56,7 +56,7 @@ style:
     - "#CC3A8E"
     - "#A5AA99"
   background: 'rgba(0,0,0,0)'             # background of network graph
-  vr_background: '#FFFFFF'                # VR background color
+  vr_background: '#052960'                # VR background color
   edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
 
 tracking:
@@ -102,7 +102,7 @@ You can specify any [Google Font](https://fonts.google.com/) font to use in Chir
 
 ## Colors
 
-You can specify two color palettes, one for continuous variables and one for discrete variables as well as the background color of the network (defaults to transparent), and the color of the edges.
+You can specify two color palettes, one for continuous variables and one for discrete variables as well as the background color of the traditional and Virtual Reality network (defaults to transparent), and the color of the edges.
 
 Default _continuous_ palette:
 

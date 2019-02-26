@@ -118,7 +118,7 @@ class Index extends React.Component {
         {[
           {
             content: 'Chirp is fun to use! It is highly interactive and let\'s you view networks in virtual reality.',
-            image: `${baseUrl}img/chirp_mac_ui.png`,
+            image: `${baseUrl}img/chirp_vr_example.png`,
             imageAlign: 'left',
             title: 'Fun',
           },

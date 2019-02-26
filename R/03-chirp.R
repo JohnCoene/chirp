@@ -386,15 +386,20 @@ chirp <- function(){
 
 			if(lim$remaining == 0){
 				shinyjs::disable("submit")
+        shinyjs::delay(difftime(Sys.time(), lim$reset_at, units = "secs") * 1000, shinyjs::enable("submit"))
+        time <- difftime(Sys.time(), lim$reset_at, units = "mins")
+        time <- ceiling(time)
         showModal(
 					modalDialog(
 						title = "Rate limit hit!",
-						"You have hit the rate limit, wait until", lim$reset_at, "to make another search.",
+						"You have hit the rate limit, wait until",
+            time 
+            , "to make another search.",
 						easyClose = TRUE,
 						footer = NULL
         	)
 				)
-			}
+			} 
 
 			session$sendCustomMessage(
 				"load", 
