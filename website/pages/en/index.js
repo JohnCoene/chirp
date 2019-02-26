@@ -97,7 +97,7 @@ class Index extends React.Component {
         style={{textAlign: 'center'}}>
 				<div style={{padding:"50.83% 0 0 0",position:"relative;",maxWidth:"990px",margin:"auto"}}>
           <iframe 
-            src="https://player.vimeo.com/video/319599255?autoplay=1&title=0&byline=0&portrait=0&muted=1" 
+            src="https://player.vimeo.com/video/319599255?autoplay=1&title=0&byline=0&portrait=0&muted=1&loop=1" 
             style={{position:"absolute",top:"0",left:"0",width:"100%",height:"100%"}} 
             frameborder="0"
             webkitallowfullscreen 
