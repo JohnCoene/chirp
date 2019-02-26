@@ -117,10 +117,10 @@ class Index extends React.Component {
       <Block background="white">
         {[
           {
-            content: 'Chirp packs tons of insights in a single visualisation; everthing fits in a single screen.',
+            content: 'Chirp is fun to use! It is highly interactive and let\'s you view networks in virtual reality.',
             image: `${baseUrl}img/chirp_mac_ui.png`,
             imageAlign: 'left',
-            title: 'Smart',
+            title: 'Fun',
           },
         ]}
       </Block>

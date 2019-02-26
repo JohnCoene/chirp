@@ -9,9 +9,10 @@ The data source used by Chirp is obviously [Twitter](https://twitter.com), the [
 
 ## Search
 
-You can search for tweets by tiping a query in the search bar. Note that it supports boolean operators as well as others specific to Twitter.
+You can search for tweets by tiping a query in the search bar. Note that it supports boolean operators as well as others specific to Twitter. Note that the [Twitter Search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html) limits the number of tweets you can fetch to _18,000 every 15 minutes_. 
 
 <img src="/img/chirp_search_home.gif" style="max-width:100%;">
+
 
 ### Examples
 
