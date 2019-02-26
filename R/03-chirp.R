@@ -218,7 +218,7 @@ chirp <- function(){
   )
 
   ui <- navbarPage(
-    title = "|tʃəːp|",
+    title = "chirp",
     fluid = TRUE,
     inverse = inverse,
     windowTitle = "chirp",
@@ -239,7 +239,7 @@ chirp <- function(){
           ),
           div(
             style = "padding-top:60px;",
-            h1("|tʃəːp|", class = "center"),
+            h1("\u007c\u0074\u0283\u0259\u02d0\u0070\u007c", class = "center"),
             h3("Twitter Network Explorer.", class = "center")
           )
         ),
