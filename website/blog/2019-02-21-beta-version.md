@@ -104,7 +104,7 @@ In gratitude to the many packages without which Chirp would not be possible. Not
 
 ## Roadmap
 
-There is still much to be added to Chirp, namely in the substance, the platform has the potential to be much more insightful than it is now. Though the very first thing to do is refactoring and some bug fixing.
+There is still much to be added to Chirp, namely in the substance, the platform has the potential to be much more insightful than it is now. Though the very first thing to do is refactoring and some bug fixing so don't expect the features below anytime soon.
 
 One core feature that will require a lot of work but I thing could bring a lot is a plugin system to enable adding other visualisations. Currently, like most R packages, the only way someone can make additions to the platform is by making a pull a request which implies two things:
 
@@ -114,6 +114,8 @@ One core feature that will require a lot of work but I thing could bring a lot i
 A plugin system reduces transactional costs, a developper does not have to do extensive research on the source code to design an additional feature. Plugins are also optional, you can include or exclude it from your own Chirp, which one could hardly do otherwise.
 
 Currently Chirp lets the user upload or search for tweets, in an ideal world Chirp can also be connected to a database so that one can study more than 18,000 tweets at once.
+
+Another grand idea is to allow to stream tweets and visualise the network in near-real time, though I already some prototypes this they do not work brilliantly to say the least. It's tough to implement in R but I reckon it is doable.
 
 ## Known issues
 

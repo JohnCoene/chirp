@@ -75,7 +75,7 @@ You can obtain the necessary keys and tokens by heading to [apps.twitter.com](ht
 
 ## Options
 
-Currently one can only changed the m
+Currently one can change the range slider determining the number of tweets to fetch. You define the minimum and maximum of the range slider, the selected default value will always be the minimum. This was done out of convenience for the demo deploy, more options might be added later on.
 
 ## Style
 
