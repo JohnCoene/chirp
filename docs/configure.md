@@ -28,8 +28,8 @@ credentials:                              # twitter app credentials
   access_secret: null
 
 options:
-  min_tweets: 100                         # Minimum number of tweets one can fetch
-  max_tweets: 100                         # Maximum number of tweets one can fetch
+  min_tweets: 500                         # Minimum number of tweets one can fetch
+  max_tweets: 17000                         # Maximum number of tweets one can fetch
 
 style:
   theme: paper                            # from: https://rstudio.github.io/shinythemes
@@ -72,6 +72,10 @@ tracking:
 This holds the credentials for your twitter application so that Chirp can search for tweets. Though in the [quick-start](quick-start.md) section it states that you may not need to specify the `credentials` if you run Chirp locally, chances are, when deploying, this will be necessary. 
 
 You can obtain the necessary keys and tokens by heading to [apps.twitter.com](https://apps.twitter.com) and creating an application. Fill in the form however you see fit, the only thing of importance is to fill in the "Callback URLs" with `http://127.0.0.1:1410`.
+
+## Options
+
+Currently one can only changed the m
 
 ## Style
 

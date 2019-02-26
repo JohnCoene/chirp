@@ -159,9 +159,9 @@ networks_ui <- function(id){
             sliderInput(
               ns("n"),
               label = "Number of tweets",
-              min = 500,
-              max = 18000,
-              value = 500,
+              min = .get_tweet_range("min"),
+              max = .get_tweet_range("max"),
+              value = .get_tweet_range("min"),
               step = 100,
               width = "100%"
             ),

@@ -62,6 +62,14 @@ globalVariables(
   getOption("rtweet_token")
 }
 
+.get_tweet_range <- function(v){
+  switch(
+    v,
+    max = getOption("max_tweets"),
+    min = getOption("min_tweets")
+  )
+}
+
 .get_tweet <- function(data){
 
   url <- URLencode(
