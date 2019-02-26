@@ -95,8 +95,17 @@ class Index extends React.Component {
       <div
         className="productShowcaseSection paddingBottom"
         style={{textAlign: 'center'}}>
-				<div style={{padding:"30.83% 0 0 0",position:"relative;",width:"990px",margin:"auto"}}><iframe src="https://player.vimeo.com/video/319599255?autoplay=1&title=0&byline=0&portrait=0&muted=1" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%"}} frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-				<p><a href="https://vimeo.com/319594227">Chirp - Early Launch</a> from <a href="https://vimeo.com/user85024316">Jean-Philippe Coene</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+				<div style={{padding:"30.83% 0 0 0",position:"relative;",maxWidth:"990px",margin:"auto"}}>
+          <iframe 
+            src="https://player.vimeo.com/video/319599255?autoplay=1&title=0&byline=0&portrait=0&muted=1" 
+            style={{position:"absolute",top:"0",left:"0",width:"100%",height:"100%"}} 
+            frameborder="0"
+            webkitallowfullscreen 
+            mozallowfullscreen 
+            allowfullscreen>
+          </iframe>
+        </div>
+        <script src="https://player.vimeo.com/api/player.js"></script>
 				<br/>
 				<br/>
         <MarkdownBlock>Chirp in action</MarkdownBlock>
