@@ -81,7 +81,7 @@ globalVariables(
   response <- httr::GET(
     url = paste0(
       "https://publish.twitter.com/oembed?url=", url,
-      "&maxwidth=300&link_color="
+      "&maxwidth=300&omit_script=false&link_color="
     )
   )
   content <- httr::content(response)
