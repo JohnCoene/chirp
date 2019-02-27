@@ -19,6 +19,13 @@
   top:20px;
 }
 
+#networks-hide_tweet{
+  position:absolute;
+  z-index:999;
+  left:140px;
+  top:20px;
+}
+
 #stats{
   position:absolute;
   z-index:999;

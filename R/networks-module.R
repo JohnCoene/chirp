@@ -24,6 +24,14 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_node_pushbar",
       id = "searchNode"
     ),
+    shinyjs::hidden(
+      actionButton(
+        ns("hide_tweet"),
+        "",
+        icon = icon("times"),
+        class = "btn-danger"
+      )
+    ),
 		conditionalPanel(
     	"input['networks-network'] != 'hashtags'",
 			tags$a(
@@ -720,6 +728,7 @@ networks <- function(input, output, session, dat){
     tw <- ""
 
     if(!is.null(input$graph_click_node$label) & !isTRUE(input$delete_nodes)){
+      
       tw <- tweets() %>%
         filter(is_retweet %in% c(FALSE, input$include_retweets)) %>% 
         select(
@@ -750,8 +759,10 @@ networks <- function(input, output, session, dat){
 					.get_tweet()
     }
 
-    if(inherits(tw, "error"))
+    if(inherits(tw, "error")){
       tw <- ""
+      shinyjs::hide("display")
+    }
 
     return(tw)
 
@@ -841,6 +852,10 @@ networks <- function(input, output, session, dat){
     if(isTRUE(input$delete_nodes))
       sigmajs::sigmajsProxy(ns("graph")) %>%
         sigmajs::sg_drop_node_p(id = input$graph_click_node$id)
+    else {
+      shinyjs::show("display")
+      shinyjs::show("hide_tweet")
+    }
     
   })
 
@@ -1003,6 +1018,16 @@ networks <- function(input, output, session, dat){
         round(.3)
 		)
 	})
+
+  observeEvent(input$graph_click_stage, {
+    shinyjs::hide("display")
+    shinyjs::hide("hide_tweet")
+  })
+
+  observeEvent(input$hide_tweet, {
+    shinyjs::hide("display")
+    shinyjs::hide("hide_tweet")
+  })
 
 	output$target_pagerank <- renderUI({
 
