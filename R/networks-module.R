@@ -24,6 +24,14 @@ networks_ui <- function(id){
       `data-pushbar-target` = "search_node_pushbar",
       id = "searchNode"
     ),
+    shinyjs::hidden(
+      actionButton(
+        ns("hide_tweet"),
+        "",
+        icon = icon("times"),
+        class = "btn-danger"
+      )
+    ),
 		conditionalPanel(
     	"input['networks-network'] != 'hashtags'",
 			tags$a(
@@ -844,8 +852,10 @@ networks <- function(input, output, session, dat){
     if(isTRUE(input$delete_nodes))
       sigmajs::sigmajsProxy(ns("graph")) %>%
         sigmajs::sg_drop_node_p(id = input$graph_click_node$id)
-    else
+    else {
       shinyjs::show("display")
+      shinyjs::show("hide_tweet")
+    }
     
   })
 
@@ -1011,6 +1021,12 @@ networks <- function(input, output, session, dat){
 
   observeEvent(input$graph_click_stage, {
     shinyjs::hide("display")
+    shinyjs::hide("hide_tweet")
+  })
+
+  observeEvent(input$hide_tweet, {
+    shinyjs::hide("display")
+    shinyjs::hide("hide_tweet")
   })
 
 	output$target_pagerank <- renderUI({
