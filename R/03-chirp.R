@@ -96,10 +96,10 @@ chirp <- function(){
 
   if(!"vr_background" %in% names(settings[["style"]])){
     cat(
-      crayon::yellow(cli::symbol$warning), "No vr_background set in _chirp.yml, defaulting to white.\n"
+      crayon::yellow(cli::symbol$warning), "No vr_background set in _chirp.yml, defaulting to #052960.\n"
     )
 
-    vr_background <- "#FFFFFF"
+    vr_background <- "#052960"
   } else {
     vr_background <- settings[["style"]][["vr_background"]]
   }
