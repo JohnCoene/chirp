@@ -16,6 +16,8 @@ chirp::check_nest() # check config file
 chirp::chirp() # launch
 ```
 
+Note that the app may not launch dependeing on whether you have used rtweet in the past, if it does not go to the [Configure section](#configure) to understand why.
+
 ## Install
 
 Chirp is written in [R](https://www.r-project.org/), the programming language must thus be installed on your machine. Once installed follow the instructions below to setup a working Chirp platform on your local machine.
