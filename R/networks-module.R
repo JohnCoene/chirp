@@ -282,7 +282,7 @@ networks_ui <- function(id){
           6, 
           selectInput(
             ns("size"), 
-            "SIZE", 
+            "NODES SIZE", 
             choices = c(
               "# tweets" = "n_tweets",
               "In-degree" = "in_degree",
@@ -300,7 +300,7 @@ networks_ui <- function(id){
           6, 
           selectInput(
             ns("colour"), 
-            "COLOUR", 
+            "NODES COLOUR", 
             choices = c(
               "Cluster" = "group",
               "# tweets" = "n_tweets",
@@ -317,6 +317,16 @@ networks_ui <- function(id){
           ),
           tippy_this(ns("colour"), "Variable to colour nodes")
         )
+      ),
+      selectInput(
+        ns("edges_colour"),
+        "EDGES COLOUR",
+        choices = c(
+          "None" = "none",
+          "Sentiment" = "sentiment",
+          "# tweets" = "size"
+        ),
+        width = "100%"
       ),
 			h5("FILTER"),
       fluidRow(
@@ -529,12 +539,15 @@ networks <- function(input, output, session, dat){
   graph <- reactive({
 
     tw <- tweets() %>% 
-      filter(is_retweet %in% c(FALSE, input$include_retweets))
+      filter(is_retweet %in% c(FALSE, input$include_retweets)) %>% 
+      .compute_sentiment()
 
     if(isTRUE(input$comentions) && input$network %in% c("hashtags", "mentions_screen_name"))
       edges <- tw %>% gt_co_edges(!!sym(input$network))
     else
-      edges <- tw %>% gt_edges(screen_name, !!sym(input$network))
+      edges <- tw %>% 
+        gt_edges(screen_name, !!sym(input$network), sentiment) %>% 
+        gt_preproc_edges(.preproc)
 
 		if(isTRUE(input$quoted) && input$network == "retweet_screen_name")
 			edges <- edges %>% 
@@ -694,6 +707,19 @@ networks <- function(input, output, session, dat){
         labelThreshold = 9999
       )
 
+  })
+
+
+  observeEvent(input$edges_colour, {
+
+    ns <- session$ns
+
+    edges <- isolate(graph()$edges)
+
+    df <- .color_edges(edges, input$edges_colour)
+
+		sigmajs::sigmajsProxy(ns("graph")) %>% 
+			sigmajs::sg_change_edges_p(df, color, "color")
   })
 
 	observeEvent(input$colour, {

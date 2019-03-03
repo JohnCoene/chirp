@@ -62,6 +62,10 @@ globalVariables(
   getOption("rtweet_token")
 }
 
+.get_sentiment_pal <- function(){
+  getOption("sentiment_palette")
+}
+
 .get_tweet_range <- function(v){
   switch(
     v,
@@ -122,6 +126,43 @@ globalVariables(
   return(nodes)
 }
 
+.compute_sentiment <- function(tweets){
+
+  lexicon <- tidytext::get_sentiments("bing")  
+
+  tweets %>% 
+    select(status_id, text) %>% 
+    tidytext::unnest_tokens(word, text) %>% 
+    inner_join(lexicon, by = "word") %>% 
+    count(status_id, sentiment) %>%
+    tidyr::spread(sentiment, n, fill = 0) %>% 
+    mutate(sentiment = positive - negative) %>% 
+    left_join(tweets, ., by = "status_id") %>% 
+    mutate(sentiment = ifelse(is.na(sentiment), 0, sentiment))
+}
+
+.color_edges <- function(edges, x){
+
+  if(x != "sentiment")
+    palette <- .get_pal()
+  else 
+    palette <- .get_sentiment_pal()
+
+  if(x != "none"){
+    var <- edges %>% 
+      pull(x)
+
+    colors <- scales::col_numeric(
+      palette, domain = NULL
+    )(var)
+  } else {
+    colors <- rep(.get_edge_color(), nrow(edges))
+  }
+
+  data.frame(color = colors)
+
+}
+
 .size_nodes <- function(nodes, x){
   var = pull(nodes, x)
   var <- scales::rescale(var, to = c(3, 17))
@@ -169,4 +210,14 @@ globalVariables(
   x %>% 
     slice(i) %>% 
     pull(label)
+}
+
+.preproc <- function(df){
+  df %>% 
+    group_by(source, target) %>% 
+    summarise(
+      n = sum(n),
+      sentiment = sum(sentiment)
+    ) %>% 
+    ungroup()
 }

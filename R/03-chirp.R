@@ -104,6 +104,16 @@ chirp <- function(){
     vr_background <- settings[["style"]][["vr_background"]]
   }
 
+  if(!"sentiment_palette" %in% names(settings[["style"]])){
+    cat(
+      crayon::yellow(cli::symbol$warning), "No sentiment_palette set in _chirp.yml.\n"
+    )
+
+    sentiment_palette <- c("red", "green")
+  } else {
+    sentiment_palette <- settings[["style"]][["sentiment_palette"]]
+  }
+
   if(!"max_tweets" %in% names(settings[["options"]])){
     cat(
       crayon::yellow(cli::symbol$warning), "No max_tweets specified in _chirp.yml, defaulting to 17,000.\n"
@@ -235,6 +245,7 @@ chirp <- function(){
   )
 
   options(
+    sentiment_palette = sentiment_palette,
     chirp_discrete = discrete,
     chirp_palette = palette,
     chirp_edge_color = edge_color,
