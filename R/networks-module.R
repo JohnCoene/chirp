@@ -346,7 +346,7 @@ networks_ui <- function(id){
 				width = "100%",
 				min = 3,
 				max = 17,
-				value = 17
+				value = c(3, 17)
 			),
 			h5("LAYOUT"),
       fluidRow(
@@ -1152,8 +1152,10 @@ networks <- function(input, output, session, dat){
 	observeEvent(input$node_size, {
 		ns <- session$ns
     sigmajs::sigmajsProxy(ns("graph")) %>% 
-      sigmajs::sg_filter_undo_p("sz") %>% # we undo the filter before applying it
-      sigmajs::sg_filter_lt_p(input$node_size, "size", name = "sz")
+      sigmajs::sg_filter_undo_p("lt") %>% 
+      sigmajs::sg_filter_undo_p("gt") %>% 
+      sigmajs::sg_filter_lt_p(input$node_size[2] + 1, "size", name = "lt") %>% 
+      sigmajs::sg_filter_gt_p(input$node_size[1] - 1, "size", name = "gt")
 	})
 
   aforce <- eventReactive(input$vr, {
