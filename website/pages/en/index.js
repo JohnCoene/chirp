@@ -108,10 +108,8 @@ class Index extends React.Component {
         <script src="https://player.vimeo.com/api/player.js"></script>
 				<br/>
 				<br/>
-        <MarkdownBlock>Chirp in action</MarkdownBlock>
 				<a href="https://shiny.john-coene.com/chirp" target="_blank" class="button">Demo</a>
-        <br/>
-				<i>Limited to 500 tweets</i>
+        <MarkdownBlock>_Limited to 500 tweets_</MarkdownBlock>
       </div>
     );
 
