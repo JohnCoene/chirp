@@ -146,7 +146,7 @@ globalVariables(
     mutate(
       sentiment = ifelse(is.na(sentiment), 0, sentiment),
       sentiment = case_when(
-        sentiment > 0 ~ 1,
+        sentiment > 0 ~ 1,
         sentiment < 0 ~ -1,
         TRUE ~ 0
       )
