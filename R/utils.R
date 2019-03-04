@@ -143,7 +143,14 @@ globalVariables(
     tidyr::spread(sentiment, n, fill = 0) %>% 
     mutate(sentiment = positive - negative) %>% 
     left_join(tweets, ., by = "status_id") %>% 
-    mutate(sentiment = ifelse(is.na(sentiment), 0, sentiment))
+    mutate(
+      sentiment = ifelse(is.na(sentiment), 0, sentiment),
+      sentiment = case_when(
+        sentiment > 0 ~ 1,
+        sentiment < 0 ~ -1,
+        TRUE ~ 0
+      )
+    )
 }
 
 .color_edges <- function(edges, x){
@@ -158,7 +165,7 @@ globalVariables(
       pull(x)
 
     colors <- scales::col_numeric(
-      palette, domain = NULL
+      palette, domain = c(-1, 1)
     )(var)
   } else {
     colors <- rep(.get_edge_color(), nrow(edges))

@@ -62,6 +62,10 @@ style:
   background: 'rgba(0,0,0,0)'             # background of network graph
   vr_background: '#052960'                # VR background color
   edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
+  sentiment_palette:                      # Palette for sentiment edges
+    - "#ff4d4d"
+    - "#c4c4c4"
+    - "#008040"
 
 tracking:
   ganalytics: "UA-74544116-1"

@@ -40,8 +40,9 @@ style:
   vr_background: '#052960'                # VR background color
   edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
   sentiment_palette:                      # Palette for sentiment edges
-    - "#ff4d4d"
-    - "#008040"
+    - "#EE6352"
+    - "#c4c4c4"
+    - "#59CD90"
 
 tracking:
   ganalytics: "UA-74544116-1"
