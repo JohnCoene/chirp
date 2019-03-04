@@ -709,7 +709,6 @@ networks <- function(input, output, session, dat){
 
   })
 
-
   observeEvent(input$edges_colour, {
 
     ns <- session$ns

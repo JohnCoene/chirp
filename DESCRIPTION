@@ -24,6 +24,7 @@ Imports:
 	aframer,
 	sigmajs,
 	shinyjs,
+	tidytext,
 	jsonlite,
 	reactrend,
 	tidygraph,
