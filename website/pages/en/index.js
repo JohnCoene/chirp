@@ -110,6 +110,7 @@ class Index extends React.Component {
 				<br/>
         <MarkdownBlock>Chirp in action</MarkdownBlock>
 				<a href="https://shiny.john-coene.com/chirp" target="_blank" class="button">Demo</a>
+        <br/>
 				<i>Limited to 500 tweets</i>
       </div>
     );
