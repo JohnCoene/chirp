@@ -6,7 +6,7 @@ credentials:                              # twitter app credentials
 
 options:
   min_tweets: 500                         # Minimum number of tweets one can fetch
-  max_tweets: 17000                         # Maximum number of tweets one can fetch
+  max_tweets: 17000                       # Maximum number of tweets one can fetch
 
 style:
   theme: paper                            # from: https://rstudio.github.io/shinythemes

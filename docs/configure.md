@@ -29,7 +29,7 @@ credentials:                              # twitter app credentials
 
 options:
   min_tweets: 500                         # Minimum number of tweets one can fetch
-  max_tweets: 17000                         # Maximum number of tweets one can fetch
+  max_tweets: 17000                       # Maximum number of tweets one can fetch
 
 style:
   theme: paper                            # from: https://rstudio.github.io/shinythemes
@@ -63,9 +63,9 @@ style:
   vr_background: '#052960'                # VR background color
   edges_color: 'rgba(196, 196, 196, .6)'  # Color of edges
   sentiment_palette:                      # Palette for sentiment edges
-    - "#ff4d4d"
+    - "#EE6352"
     - "#c4c4c4"
-    - "#008040"
+    - "#59CD90"
 
 tracking:
   ganalytics: "UA-74544116-1"
@@ -142,6 +142,15 @@ Default _discrete_ palette:
 <input class="jscolor" value="ED645A">
 <input class="jscolor" value="CC3A8E">
 <input class="jscolor" value="A5AA99">
+
+The *sentiment_palette* used to color edges by aggregated sentiment:
+
+Negative
+<input class="jscolor" value="EE6352">
+Neutral
+<input class="jscolor" value="c4c4c4">
+Positive
+<input class="jscolor" value="59CD90">
 
 There is also a `sliders` options to specify the background color of the various sliders on the network screen. This is generally useful if you changed the theme to a dark one.
 
