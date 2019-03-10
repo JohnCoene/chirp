@@ -693,7 +693,6 @@ networks <- function(input, output, session, dat){
       sigmajs::sg_nodes(nodes, id, label, size, color, group) %>%
       sigmajs::sg_edges(edges, id, source, target, type, size) %>%
       sigmajs::sg_force(slowDown = 4) %>%
-      sigmajs::sg_neighbours() %>%
       sigmajs::sg_kill() %>%
       sigmajs::sg_drag_nodes() %>%
       sigmajs::sg_force_stop(2500) %>%
@@ -878,6 +877,8 @@ networks <- function(input, output, session, dat){
       sigmajs::sigmajsProxy(ns("graph")) %>%
         sigmajs::sg_drop_node_p(id = input$graph_click_node$id)
     else {
+			sigmajs::sigmajsProxy(ns("graph")) %>% 
+				sigmajs::sg_filter_neighbours_p(node = input$graph_click_node$id, "neighbours-filter")
       shinyjs::show("display")
       shinyjs::show("hide_tweet")
     }
@@ -1047,6 +1048,11 @@ networks <- function(input, output, session, dat){
   observeEvent(input$graph_click_stage, {
     shinyjs::hide("display")
     shinyjs::hide("hide_tweet")
+
+		ns <- session$ns
+
+		sigmajs::sigmajsProxy(ns("graph")) %>% 
+			sigmajs::sg_filter_undo_p("neighbours-filter")
   })
 
   observeEvent(input$hide_tweet, {

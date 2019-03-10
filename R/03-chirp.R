@@ -119,7 +119,7 @@ chirp <- function(){
       crayon::yellow(cli::symbol$warning), "No max_tweets specified in _chirp.yml, defaulting to 17,000.\n"
     )
 
-    max_tweets <- "#FFFFFF"
+    max_tweets <- 17000
   } else {
     max_tweets <- settings[["options"]][["max_tweets"]]
   }
@@ -129,7 +129,7 @@ chirp <- function(){
       crayon::yellow(cli::symbol$warning), "No min_tweets specified in _chirp.yml, defaulting to 500.\n"
     )
 
-    min_tweets <- "#FFFFFF"
+    min_tweets <- 500
   } else {
     min_tweets <- settings[["options"]][["min_tweets"]]
   }

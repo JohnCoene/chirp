@@ -1,6 +1,6 @@
 Package: chirp
 Title: 'Twitter' Networks Analyser
-Version: 0.1
+Version: 0.2
 Authors@R: person("John", "Coene", email = "jcoenep@gmail.com", role = c("aut", "cre"))
 Description: 'Twitter' networks analyser.
 License: Apache License (>= 2.0)
