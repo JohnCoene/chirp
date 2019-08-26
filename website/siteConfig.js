@@ -85,6 +85,8 @@ const siteConfig = {
 		'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js',
 		'https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js',
     '/js/code-block-buttons.js',
+    'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+    '/js/adsense.js'
   ],
   stylesheets: [
 		'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
