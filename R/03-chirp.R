@@ -283,7 +283,7 @@ chirp <- function(){
             h3("Twitter Network Explorer.", class = "center")
           )
         ),
-        shinyparticles::particles(particles_json, target_id = "particles-target", element_id = "particles"),
+        particlesjs::particles(particles_json, target_id = "particles-target", element_id = "particles"),
         tabsetPanel(
           type = "tabs",
           tabPanel(
