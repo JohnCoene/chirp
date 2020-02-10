@@ -31,7 +31,7 @@ Imports:
 	shinyjqui,
 	graphTweets,
 	shinythemes,
-	shinyparticles,
+	particlesjs,
 	shinycustomloader
 Remotes: 
 	JohnCoene/aforce,
@@ -39,4 +39,4 @@ Remotes:
 	JohnCoene/aframer,
 	JohnCoene/reactrend,
 	JohnCoene/graphTweets,
-	dreamRs/shinyparticles
+	dreamRs/particlesjs
