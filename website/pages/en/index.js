@@ -108,7 +108,7 @@ class Index extends React.Component {
         <script src="https://player.vimeo.com/api/player.js"></script>
 				<br/>
 				<br/>
-				<a href="https://shiny.john-coene.com/chirp" target="_blank" class="button">Demo</a>
+				<a href="https://johncoene.shinyapps.io/chirp_demo/" target="_blank" class="button">Demo</a>
         <MarkdownBlock>_Limited to 500 tweets_</MarkdownBlock>
       </div>
     );
