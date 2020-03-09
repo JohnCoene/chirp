@@ -23,6 +23,22 @@ This will create a file named `app.R` in the working directory.
 
 If you had not specified your `credentials` in `_chirp.yml` you should either do so or get a token with [rtweet](https://rtweet.info/) from your server. This won't work on [shinyapps.io](https://www.shinyapps.io/), if you deploy on the latter you _have to_ add your `credentials` to the config file. 
 
+## Docker
+
+The easier way to deploy is probably via docker, pull the container.
+
+```bash
+docker pull jcoenep/chirp
+```
+
+Then run it by mounting the config file.
+
+```bash
+docker run -v "$(pwd)"/_chirp.yml:/_chirp.yml -p 3000:80 jcoenep/chirp
+```
+
+Then visit `localhost:3000`
+
 ## Shinyapps.io
 
 Deploying on [shinyapps.io](https://www.shinyapps.io/) is probably the easiest solution. This requires the [RStudio IDE](https://www.rstudio.com/products/rstudio/), which is available for free and runs on any platform (Linux, Mac, and Windows).
