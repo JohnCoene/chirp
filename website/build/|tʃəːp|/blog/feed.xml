@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>|tʃəːp| Blog</title>
+        <link>https://chirp.sh/blog</link>
+        <description>The best place to stay up-to-date with the latest |tʃəːp| news and events.</description>
+        <lastBuildDate>Thu, 21 Feb 2019 06:00:00 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>|tʃəːp| Blog</title>
+            <url>https://chirp.sh/</url>
+            <link>https://chirp.sh/blog</link>
+        </image>
+        <copyright>Copyright © 2020 |tʃəːp|</copyright>
+        <item>
+            <title><![CDATA[Early Launch]]></title>
+            <link>https://chirp.sh/blog/2019/02/21/beta-version.html</link>
+            <guid>https://chirp.sh/blog/2019/02/21/beta-version.html</guid>
+            <pubDate>Thu, 21 Feb 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>This is an early launch of Chirp, still much needs to be improved and added. It should still be in development but I really wanted to submit it to the <a href="https://blog.rstudio.com/2019/01/07/first-shiny-contest/">Shiny Contest</a> to see how it'd fare.</p>
+<p>This post gives some idea of how Chirp was put together as well as the roadmap ahead.</p>
+]]></description>
+        </item>
+    </channel>
+</rss>

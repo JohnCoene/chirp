@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Configuration · |tʃəːp|</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;This document details the various options available in &lt;code&gt;_chirp.yml&lt;/code&gt;. Note that these options are applied on server launch, therefore after updates the server must be restarted in order for the changes to be reflected.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Configuration · |tʃəːp|"/><meta property="og:type" content="website"/><meta property="og:url" content="https://chirp.sh/index.html"/><meta property="og:description" content="&lt;p&gt;This document details the various options available in &lt;code&gt;_chirp.yml&lt;/code&gt;. Note that these options are applied on server launch, therefore after updates the server must be restarted in order for the changes to be reflected.&lt;/p&gt;
+"/><meta property="og:image" content="https://chirp.sh/img/docusaurus.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://chirp.sh/img/docusaurus.png"/><link rel="shortcut icon" href="/img/chirp_favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="alternate" type="application/atom+xml" href="https://chirp.sh/blog/atom.xml" title="|tʃəːp| Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://chirp.sh/blog/feed.xml" title="|tʃəːp| Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-74544116-1', 'auto');
+              ga('send', 'pageview');
+            </script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/><link rel="stylesheet" href="/css/code-block-buttons.css"/><link rel="stylesheet" href="/css/custom.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script><script type="text/javascript" src="/js/code-block-buttons.js"></script><script type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script type="text/javascript" src="/js/adsense.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><h2 class="headerTitle">|tʃəːp|</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/quick-start" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/deploy" target="_self">Deploy</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Guide</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/quick-start">Quick Start</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/configure">Configuration</a></li><li class="navListItem"><a class="navItem" href="/docs/deploy">Deploy</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Usage</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/vr">Virtual Reality</a></li><li class="navListItem"><a class="navItem" href="/docs/data">Data</a></li><li class="navListItem"><a class="navItem" href="/docs/networks">Networks</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Configuration</h1></header><article><div><span><p>This document details the various options available in <code>_chirp.yml</code>. Note that these options are applied on server launch, therefore after updates the server must be restarted in order for the changes to be reflected.</p>
+<p>On a Shiny Community server you can do so with.</p>
+<pre><code class="hljs css language-bash">sudo systemctl restart shiny-server
+</code></pre>
+<p><em>Original</em>
+<img src="/img/chirp_mac_ui.png" width="50%">
+<em>Customised</em>
+<img src="/img/custom_chirp_network.png" width="50%"></p>
+<h2><a class="anchor" aria-hidden="true" id="default"></a><a href="#default" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Default</h2>
+<p>Below is the default config file as created by <code>chirp::build_nest()</code>.</p>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">credentials:</span>                              <span class="hljs-comment"># twitter app credentials</span>
+<span class="hljs-attr">  consumer_key:</span> <span class="hljs-literal">null</span>
+<span class="hljs-attr">  consumer_secret:</span> <span class="hljs-literal">null</span>
+<span class="hljs-attr">  access_token:</span> <span class="hljs-literal">null</span>
+<span class="hljs-attr">  access_secret:</span> <span class="hljs-literal">null</span>
+
+<span class="hljs-attr">options:</span>
+<span class="hljs-attr">  min_tweets:</span> <span class="hljs-number">500</span>                         <span class="hljs-comment"># Minimum number of tweets one can fetch</span>
+<span class="hljs-attr">  max_tweets:</span> <span class="hljs-number">17000</span>                       <span class="hljs-comment"># Maximum number of tweets one can fetch</span>
+
+<span class="hljs-attr">style:</span>
+<span class="hljs-attr">  theme:</span> <span class="hljs-string">paper</span>                            <span class="hljs-comment"># from: https://rstudio.github.io/shinythemes</span>
+<span class="hljs-attr">  font:</span> <span class="hljs-string">Raleway</span>                           <span class="hljs-comment"># google font</span>
+<span class="hljs-attr">  font_family:</span> <span class="hljs-string">"'Raleway', sans-serif"</span>    <span class="hljs-comment"># font family</span>
+<span class="hljs-attr">  sliders:</span> <span class="hljs-string">'rgb(255, 255, 255)'</span>           <span class="hljs-comment"># background color of sliders</span>
+<span class="hljs-attr">  continuous:</span>                             <span class="hljs-comment"># network color palettes for continuous variable</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#BADEFA"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#90CAF8"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#64B4F6"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#41A5F4"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#2096F2"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#1E87E5"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#1976D2"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#1465BF"</span> 
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#0C46A0"</span>
+<span class="hljs-attr">  discrete:</span>                               <span class="hljs-comment"># discrete palette </span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#E58606"</span> 
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#5D69B1"</span> 
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#52BCA3"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#99C945"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#CC61B0"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#24796C"</span> 
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#DAA51B"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#2F8AC4"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#764E9F"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#ED645A"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#CC3A8E"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#A5AA99"</span>
+<span class="hljs-attr">  background:</span> <span class="hljs-string">'rgba(0,0,0,0)'</span>             <span class="hljs-comment"># background of network graph</span>
+<span class="hljs-attr">  vr_background:</span> <span class="hljs-string">'#052960'</span>                <span class="hljs-comment"># VR background color</span>
+<span class="hljs-attr">  edges_color:</span> <span class="hljs-string">'rgba(196, 196, 196, .6)'</span>  <span class="hljs-comment"># Color of edges</span>
+<span class="hljs-attr">  sentiment_palette:</span>                      <span class="hljs-comment"># Palette for sentiment edges</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#EE6352"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#c4c4c4"</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">"#59CD90"</span>
+
+<span class="hljs-attr">tracking:</span>
+<span class="hljs-attr">  ganalytics:</span> <span class="hljs-string">"UA-74544116-1"</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="credentials"></a><a href="#credentials" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Credentials</h2>
+<p>This holds the credentials for your twitter application so that Chirp can search for tweets. Though in the <a href="/docs/quick-start">quick-start</a> section it states that you may not need to specify the <code>credentials</code> if you run Chirp locally, chances are, when deploying, this will be necessary.</p>
+<p>You can obtain the necessary keys and tokens by heading to <a href="https://apps.twitter.com">apps.twitter.com</a> and creating an application. Fill in the form however you see fit, the only thing of importance is to fill in the &quot;Callback URLs&quot; with <code>http://127.0.0.1:1410</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="options"></a><a href="#options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options</h2>
+<p>Currently one can change the range slider determining the number of tweets to fetch. You define the minimum and maximum of the range slider, the selected default value will always be the minimum. This was done out of convenience for the demo deploy, more options might be added later on.</p>
+<h2><a class="anchor" aria-hidden="true" id="style"></a><a href="#style" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Style</h2>
+<p>This allows you to customise the look and feel of Chirp.</p>
+<h3><a class="anchor" aria-hidden="true" id="theme"></a><a href="#theme" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Theme</h3>
+<p>Since Chirp runs on the <a href="https://rstudio.github.io/shinythemes/">Shiny framework</a> you can specify a theme from <a href="https://rstudio.github.io/shinythemes/">shinythemes</a>. There is a <a href="https://shiny.rstudio.com/gallery/shiny-theme-selector.html">theme selector</a> to help you find your favorite.</p>
+<p>The available themes are:</p>
+<ul>
+<li><code>cerulean</code></li>
+<li><code>cosmo</code></li>
+<li><code>cyborg</code></li>
+<li><code>darkly</code></li>
+<li><code>flatly</code></li>
+<li><code>journal</code></li>
+<li><code>lumen</code></li>
+<li><code>paper</code> (default)</li>
+<li><code>readble</code></li>
+<li><code>sandstone</code></li>
+<li><code>simplex</code></li>
+<li><code>slate</code></li>
+<li><code>spacelab</code></li>
+<li><code>superhero</code></li>
+<li><code>united</code></li>
+<li><code>yeti</code></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="font-font-family"></a><a href="#font-font-family" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Font &amp; Font Family</h3>
+<p>You can specify any <a href="https://fonts.google.com/">Google Font</a> font to use in Chirp, which defaults to <a href="https://fonts.google.com/specimen/Raleway">Raleway</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="colors"></a><a href="#colors" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Colors</h2>
+<p>You can specify two color palettes, one for continuous variables and one for discrete variables as well as the background color of the traditional and Virtual Reality network (defaults to transparent), and the color of the edges.</p>
+<p>Default <em>continuous</em> palette:</p>
+<p><input class="jscolor" value="BADEFA">
+<input class="jscolor" value="90CAF8">
+<input class="jscolor" value="64B4F6">
+<input class="jscolor" value="41A5F4">
+<input class="jscolor" value="2096F2">
+<input class="jscolor" value="1E87E5">
+<input class="jscolor" value="1976D2">
+<input class="jscolor" value="1465BF">
+<input class="jscolor" value="0C46A0"></p>
+<p>Default <em>discrete</em> palette:</p>
+<p><input class="jscolor" value="E58606">
+<input class="jscolor" value="5D69B1">
+<input class="jscolor" value="52BCA3">
+<input class="jscolor" value="99C945">
+<input class="jscolor" value="CC61B0">
+<input class="jscolor" value="24796C">
+<input class="jscolor" value="DAA51B">
+<input class="jscolor" value="2F8AC4">
+<input class="jscolor" value="764E9F">
+<input class="jscolor" value="ED645A">
+<input class="jscolor" value="CC3A8E">
+<input class="jscolor" value="A5AA99"></p>
+<p>The <em>sentiment_palette</em> used to color edges by aggregated sentiment:</p>
+<p>Negative
+<input class="jscolor" value="EE6352">
+Neutral
+<input class="jscolor" value="c4c4c4">
+Positive
+<input class="jscolor" value="59CD90"></p>
+<p>There is also a <code>sliders</code> options to specify the background color of the various sliders on the network screen. This is generally useful if you changed the theme to a dark one.</p>
+<h3><a class="anchor" aria-hidden="true" id="tracking"></a><a href="#tracking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tracking</h3>
+<p>You can specify a <code>ganalytics</code> to track the usage of Chirp when deployed.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/quick-start"><span class="arrow-prev">← </span><span>Quick Start</span></a><a class="docs-next button" href="/docs/deploy"><span>Deploy</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#default">Default</a></li><li><a href="#credentials">Credentials</a></li><li><a href="#options">Options</a></li><li><a href="#style">Style</a><ul class="toc-headings"><li><a href="#theme">Theme</a></li><li><a href="#font-font-family">Font &amp; Font Family</a></li></ul></li><li><a href="#colors">Colors</a><ul class="toc-headings"><li><a href="#tracking">Tracking</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/chirp.svg" alt="|tʃəːp|" width="66" height="58" style="filter:brightness(0) invert(1)"/></a><div><h5>Docs</h5><a href="/docs/en/quick-start.html">Quick-start</a><a href="/docs/en/deploy.html">Deploy</a><a href="/docs/en/networks.html">Usage</a></div><div><h5>Community</h5><a href="/en/users.html">User Showcase</a><a href="http://stackoverflow.com/questions/tagged/chirp" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://github.com/JohnCoene/chirp/issues">Github Issues</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/JohnCoene/chirp">GitHub</a><a class="github-button" href="https://github.com/JohnCoene/chirp" data-icon="octicon-star" data-count-href="/JohnCoene/chirp/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://www.buymeacoffee.com/JohnCoene" target="_blank" class="fbOpenSource"><img src="https://www.buymeacoffee.com/assets/img/custom_images/black_img.png" alt="Buy Me A Coffee" style="height:auto !important;width:auto !important"/></a><section class="copyright">Copyright © 2020 |tʃəːp|</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'b5684430eb9d77620f902606babca491',
+                indexName: 'chirp',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
