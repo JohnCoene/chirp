@@ -2,7 +2,7 @@
 
 # |tʃəːp|
 
-Chirp is a Twitter network visualisation platform, visit the [Website](https://chirp.sh) for more information.
+Chirp is a Twitter network visualisation platform, visit the [Website](https://chrip.netlify.app/) for more information.
 
 ![](https://github.com/JohnCoene/chirp/blob/master/website/static/img/chirp_gif_1.gif)
 
